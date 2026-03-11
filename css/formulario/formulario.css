@@ -1,0 +1,157 @@
+/* ========================================
+   Formulario de login/registro
+   layout centrado + tarjeta + validación visual
+   ======================================== */
+
+.pagina-formulario {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.formulario-layout {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 2rem 0;
+}
+
+.tarjeta-formulario {
+  width: min(100%, 480px);
+  background: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 1.4rem;
+}
+
+.kicker {
+  margin: 0 0 0.5rem;
+  color: var(--color-texto-suave);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.tarjeta-formulario h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.subtexto {
+  margin: 0.55rem 0 1rem;
+  color: var(--color-texto-suave);
+}
+
+.tarjeta-formulario form {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.tarjeta-formulario label {
+  margin-top: 0.55rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.campo-obligatorio {
+  color: #a92f2f;
+  font-weight: 700;
+}
+
+.tarjeta-formulario input {
+  width: 100%;
+  padding: 0.62rem 0.7rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  background: #fbfcfa;
+  color: var(--color-texto);
+}
+
+.tarjeta-formulario select {
+  width: 100%;
+  padding: 0.62rem 0.7rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  background: #fbfcfa;
+  color: var(--color-texto);
+}
+
+/* ======== VALIDACIÓN VISUAL ======== */
+
+.campo-invalido {
+  border: 2px solid #dc3545 !important;
+  box-shadow: 0 0 4px rgba(220, 53, 69, 0.4) !important;
+}
+
+.campo-valido {
+  border: 2px solid #198754 !important;
+  box-shadow: 0 0 4px rgba(25, 135, 84, 0.4) !important;
+}
+
+.tarjeta-formulario input:focus {
+  outline: 2px solid #1f2b11;
+  outline-offset: 1px;
+}
+
+.tarjeta-formulario .boton--primario {
+  margin-top: 0.95rem;
+}
+
+.contenedor-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.65rem;
+}
+
+.contenedor-checkbox input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  transform: translateY(1px);
+}
+
+.contenedor-checkbox label {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ======== MENSAJES DE FEEDBACK ======== */
+
+.mensaje-formulario {
+  display: none;
+  border-radius: var(--radio-pequeno);
+  border: 1px solid transparent;
+  padding: 0.68rem 0.72rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.88rem;
+}
+
+.mensaje-formulario--error {
+  display: block;
+  background: #fff3f3;
+  border-color: #efb5b5;
+  color: #7a1f1f;
+}
+
+.mensaje-formulario--ok {
+  display: block;
+  background: #f1f8ea;
+  border-color: #c7dfab;
+  color: #254b12;
+}
+
+.enlace-alterno {
+  margin: 0.95rem 0 0;
+  color: var(--color-texto-suave);
+  font-size: 0.92rem;
+}
+
+.enlace-alterno a {
+  color: #2f382b;
+  font-weight: 700;
+}
+
+.pie {
+  margin-top: auto;
+}
