@@ -1,0 +1,40 @@
+/* ========================================
+   Base para la página Sobre Nosotros
+   usa las variables globales de variables.css
+   solo añade --verde-secundario (color propio)
+   ======================================== */
+
+:root {
+  --verde-secundario: #5d8c16;
+}
+
+body.pagina-about {
+  font-family: Inter, "Segoe UI", Tahoma, sans-serif;
+  color: var(--color-texto);
+}
+
+.pagina-about main h1,
+.pagina-about main h2,
+.pagina-about main h3 {
+  color: var(--color-texto);
+  font-weight: 800;
+}
+
+.pagina-about main h1 {
+  font-size: 28px;
+  line-height: 1.15;
+}
+
+.pagina-about main h2 {
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.pagina-about main p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.pagina-about main small {
+  font-size: 14px;
+}

@@ -1,0 +1,248 @@
+/* ========================================
+   Secciones de la página Sobre Nosotros
+   ======================================== */
+
+.seccion-about {
+  padding: 48px 0;
+}
+
+.seccion-about--intro {
+  background: var(--color-blanco);
+}
+
+.seccion-about--negocio,
+.seccion-about--seguridad {
+  background: #f8f9f7;
+}
+
+.seccion-about--treecore,
+.seccion-about--comunidad,
+.seccion-about--impacto {
+  background: var(--color-blanco);
+}
+
+.seccion-about--proyecto,
+.seccion-about--actividad,
+.seccion-about--sostenibilidad,
+.seccion-about--seguridad {
+  background: #f8f9f7;
+}
+
+.seccion-about h2 {
+  margin: 0 0 0.9rem;
+  text-align: center;
+}
+
+.contenido-centrado {
+  max-width: 700px;
+}
+
+.bloque-texto {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.contenido-centrado p {
+  text-align: center;
+  color: var(--color-texto-suave);
+  margin: 0 0 0.8rem;
+}
+
+.bloque-texto p {
+  text-align: center;
+  color: var(--color-texto-suave);
+  margin: 0 0 0.8rem;
+}
+
+/* ======== GRID TEXTO + IMAGEN ======== */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.about-grid__texto h2 {
+  text-align: left;
+}
+
+.about-grid__texto h2 .about-treecore__logo {
+  width: auto;
+  height: 30px;
+  margin-left: 0.45rem;
+  vertical-align: middle;
+}
+
+.about-grid__texto p {
+  text-align: left;
+  color: var(--color-texto-suave);
+  margin: 0 0 0.8rem;
+}
+
+.about-grid__imagen {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.about-grid__imagen img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--color-borde);
+  display: block;
+}
+
+/* ======== TARJETAS DE ACTIVIDAD (info) ======== */
+
+.tarjeta-actividad-info {
+  height: 100%;
+  background: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tarjeta-actividad-info img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.tarjeta-actividad-info__cuerpo {
+  padding: 20px;
+}
+
+.tarjeta-actividad-info__cuerpo h3 {
+  margin: 0 0 0.55rem;
+  font-size: 1.1rem;
+}
+
+.tarjeta-actividad-info__cuerpo p {
+  margin: 0 0 0.6rem;
+  color: var(--color-texto-suave);
+  text-align: left;
+}
+
+.tarjeta-actividad-info__cuerpo p:last-child {
+  margin-bottom: 0;
+}
+
+/* ======== TARJETAS INFO Y SEGURIDAD ======== */
+
+.tarjeta-info,
+.tarjeta-seguridad {
+  height: 100%;
+  background: var(--color-blanco);
+  border: 1px solid var(--color-borde);
+  border-radius: 10px;
+  padding: 20px;
+  transition: box-shadow 0.2s ease;
+}
+
+.tarjeta-info:hover,
+.tarjeta-seguridad:hover {
+  box-shadow: 0 6px 18px rgba(34, 48, 31, 0.09);
+}
+
+.tarjeta-info__icono,
+.tarjeta-seguridad__icono {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: #e7efd7;
+  color: var(--verde-secundario);
+  margin: 0 0 0.8rem;
+}
+
+.tarjeta-info__icono i,
+.tarjeta-seguridad__icono i {
+  font-size: 1.1rem;
+}
+
+.tarjeta-info h3,
+.tarjeta-seguridad h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.55rem;
+}
+
+.tarjeta-info p,
+.tarjeta-seguridad p {
+  color: var(--color-texto-suave);
+  margin: 0;
+}
+
+/* ======== BLOQUE SEGURIDAD (DNI + REPORTES) ======== */
+
+.seguridad-layout {
+  display: grid;
+  gap: 1rem;
+}
+
+.seguridad-intro__etiqueta {
+  margin: 0 0 0.4rem;
+  color: var(--verde-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.seguridad-intro h2 {
+  text-align: left;
+  margin-bottom: 0.75rem;
+}
+
+.seguridad-intro > p {
+  color: var(--color-texto-suave);
+  margin: 0 0 0.45rem;
+}
+
+.seguridad-intro__dni {
+  border: 1px solid var(--color-lima);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #f6fde8;
+  margin-top: 1.1rem;
+  max-width: 320px;
+}
+
+.seguridad-intro__icono {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #e7efd7;
+  color: var(--verde-secundario);
+}
+
+.seguridad-intro__dni strong {
+  display: block;
+  line-height: 1.2;
+}
+
+.seguridad-intro__dni small {
+  color: var(--verde-secundario);
+}
+
+.seguridad-intro__reporte {
+  margin-top: 1rem !important;
+  font-size: 14px !important;
+}
+
+.seguridad-intro__meta {
+  font-size: 14px !important;
+  margin-bottom: 0 !important;
+}
+
+.seguridad-tarjetas {
+  margin-top: 0.2rem;
+}
