@@ -1,0 +1,2 @@
+@media (min-width: 768px) { .pagina-admin .rejilla-pagina { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 992px) { .pagina-admin .encabezado-pagina h1 { font-size: 2rem; } }
