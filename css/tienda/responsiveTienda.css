@@ -1,0 +1,13 @@
+@media (min-width: 768px) {
+  .pagina-tienda .rejilla--productos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 992px) {
+  .pagina-tienda .encabezado-pagina h1 {
+    font-size: 2rem;
+  }
+  .pagina-tienda .rejilla--productos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
