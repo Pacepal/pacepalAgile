@@ -1,0 +1,4 @@
+.pagina-rutas .encabezado-pagina { padding: 2rem 0 1rem; }
+.pagina-rutas .encabezado-pagina h1 { margin: 0; font-size: 1.7rem; }
+.pagina-rutas .encabezado-pagina p { margin: 0.5rem 0 0; color: var(--color-texto-suave); }
+.pagina-rutas .seccion-pagina { padding: 0.7rem 0 2.2rem; }
