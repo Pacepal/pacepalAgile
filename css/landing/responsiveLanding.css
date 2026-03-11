@@ -1,0 +1,130 @@
+/* ========================================
+   Responsive landing — breakpoints movil/tablet/desktop
+   ======================================== */
+
+/* tablet pequeño */
+@media (min-width: 576px) {
+  .contenedor {
+    width: min(100% - 2rem, var(--ancho-max));
+  }
+}
+
+/* tablet */
+@media (min-width: 768px) {
+  .hero h1 {
+    font-size: 2.3rem;
+  }
+
+  .rejilla--actividades,
+  .rejilla--productos,
+  .rejilla--beneficios {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rejilla--beneficios .beneficio:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* desktop */
+@media (min-width: 992px) {
+  .hero {
+    min-height: 76vh;
+    padding: 0;
+  }
+
+  .hero__contenido {
+    max-width: 680px;
+    background: rgba(28, 34, 29, 0.9);
+    padding: 1.8rem 1.5rem;
+  }
+
+  .cabecera {
+    position: sticky;
+  }
+
+  .cabecera__fila {
+    flex-wrap: nowrap;
+    min-height: 64px;
+    gap: 1rem;
+  }
+
+  .hamburguesa {
+    display: none;
+  }
+
+  .menu {
+    order: 0;
+    width: auto;
+    display: flex !important;
+    margin: 0 auto;
+    border-top: none;
+    background: transparent;
+  }
+
+  .menu a {
+    border-bottom: none;
+    padding: 0;
+    margin: 0 0.85rem;
+    font-size: 0.93rem;
+  }
+
+  .menu__login {
+    display: none;
+  }
+
+  .cabecera__login {
+    display: inline-block;
+    width: auto;
+    min-width: 96px;
+    margin-top: 0;
+  }
+
+  .cabecera__registro {
+    display: inline-block;
+    width: auto;
+    min-width: 96px;
+    margin-top: 0;
+  }
+
+  .chips {
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .rejilla--actividades,
+  .rejilla--productos,
+  .rejilla--beneficios {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .rejilla--beneficios .beneficio:last-child {
+    grid-column: auto;
+  }
+
+  .pie__rejilla {
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  }
+
+  .pie__inferior {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* pantallas grandes */
+@media (min-width: 1200px) {
+  .hero {
+    min-height: 82vh;
+  }
+
+  .hero h1 {
+    font-size: 3.2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+}

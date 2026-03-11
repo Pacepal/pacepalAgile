@@ -1,0 +1,54 @@
+/* ========================================
+   Hero de la landing — fondo con imagen,
+   caja central con overlay oscuro
+   ======================================== */
+
+.hero {
+  min-height: 360px;
+  position: relative;
+  overflow: hidden;
+  padding: var(--esp-4) 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__fondo {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("../../img/landing/hero.webp");
+  background-position: center;
+  background-size: cover;
+}
+
+.hero__contenido {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+  padding: var(--esp-4) var(--esp-3);
+  border-radius: var(--radio);
+  background: rgba(33, 39, 34, 0.9);
+  color: #fff;
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 0 0 var(--esp-2);
+  font-size: 2.05rem;
+  line-height: 1.06;
+  font-weight: 800;
+}
+
+.hero p {
+  margin: 0;
+  font-size: 0.93rem;
+}
+
+.hero small {
+  margin-top: var(--esp-3);
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.94;
+}

@@ -1,0 +1,8 @@
+/*
+ * Archivo puente para compatibilidad.
+ * Este archivo existia en versiones anteriores y puede quedar referenciado
+ * por cache del navegador. El estilo activo de landing esta dividido en:
+ * - hero.css
+ * - secciones.css
+ * - responsiveLanding.css
+ */

@@ -1,0 +1,130 @@
+/* ========================================
+   Cabecera — navbar sticky con menú hamburguesa
+   en móvil se colapsa, en desktop se abre inline
+   ======================================== */
+
+.cabecera {
+  background: var(--color-blanco);
+  border-bottom: 1px solid var(--color-borde);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.cabecera__fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  min-height: 60px;
+  padding: 0.15rem 0;
+}
+
+/* ======== LOGO ======== */
+
+.logo,
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-texto);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.logo__circulo {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-lima);
+  border: 2px solid #2d4210;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: #1f2a12;
+}
+
+.logo__img,
+.navbar-brand img {
+  width: auto !important;
+  height: 30px !important;
+  max-width: none !important;
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.cabecera .logo__circulo {
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+}
+
+.cabecera .logo__texto {
+  font-size: 1.08rem;
+}
+
+/* ======== HAMBURGUESA ======== */
+
+.hamburguesa {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  background: var(--color-blanco);
+  padding: var(--esp-1);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburguesa span {
+  display: block;
+  height: 2px;
+  background: #2d3727;
+  border-radius: 99px;
+}
+
+/* ======== MENÚ MÓVIL ======== */
+
+.menu {
+  width: 100%;
+  order: 3;
+  display: none;
+  border-top: 1px solid var(--color-borde);
+  background: var(--color-blanco);
+}
+
+.menu a {
+  display: block;
+  padding: 0.75rem 0.3rem;
+  color: #2f382b;
+  text-decoration: none;
+  border-bottom: 1px solid #eef1eb;
+  font-weight: 500;
+}
+
+.menu.menu--abierto {
+  display: block;
+}
+
+/* ======== BOTONES AUTH (desktop) ======== */
+
+.cabecera__login {
+  display: none;
+}
+
+.cabecera__registro {
+  display: none;
+  border: 1px solid var(--color-borde);
+  background: transparent;
+  color: var(--color-texto);
+  margin-left: 0.4rem;
+}
+
+.cabecera__registro:hover {
+  background: #edf0e8;
+}

@@ -1,0 +1,51 @@
+/* ==================================================
+	PACEPAL
+	CSS PRINCIPAL
+	================================================== */
+
+/* ---------- ESTILOS COMUNES ---------- */
+@import url("./comun/variables.css");
+@import url("./comun/estilosGlobalPacepal.css");
+@import url("./comun/cabecera.css");
+@import url("./comun/footer.css");
+
+/* ---------- LANDING ---------- */
+@import url("./landing/hero.css");
+@import url("./landing/secciones.css");
+@import url("./landing/responsiveLanding.css");
+
+/* ---------- FORMULARIOS ---------- */
+@import url("./formulario/formulario.css");
+
+/* ---------- TIENDA ---------- */
+@import url("./tienda/cssestilosTienda.css");
+@import url("./tienda/heroTienda.css");
+@import url("./tienda/seccionesTienda.css");
+@import url("./tienda/responsiveTienda.css");
+
+/* ---------- RUTAS ---------- */
+@import url("./rutas/cssestilosRutas.css");
+@import url("./rutas/heroRutas.css");
+@import url("./rutas/seccionesRutas.css");
+@import url("./rutas/responsiveRutas.css");
+
+/* ---------- ACTIVIDADES ---------- */
+@import url("./actividades/cssestilosActividades.css");
+@import url("./actividades/heroActividades.css");
+@import url("./actividades/seccionesActividades.css");
+@import url("./actividades/responsiveActividades.css");
+
+/* ---------- USUARIO ---------- */
+@import url("./usuario/cssestilosUsuario.css");
+@import url("./usuario/heroUsuario.css");
+@import url("./usuario/seccionesUsuario.css");
+@import url("./usuario/responsiveUsuario.css");
+
+/* ---------- ADMIN ---------- */
+@import url("./admin/cssestilosAdmin.css");
+@import url("./admin/heroAdmin.css");
+@import url("./admin/seccionesAdmin.css");
+@import url("./admin/responsiveAdmin.css");
+
+/* ---------- COOKIES ---------- */
+@import url("./comun/cookies.css");

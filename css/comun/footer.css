@@ -1,0 +1,188 @@
+/* ========================================
+   Footer — CTA final + pie con enlaces y redes
+   ======================================== */
+
+/* ======== CTA FINAL (bloque verde oscuro) ======== */
+
+.cta-final {
+  background: var(--color-verde-oscuro);
+  color: #fff;
+}
+
+.cta-final__contenido {
+  text-align: center;
+}
+
+.cta-final h2 {
+  font-size: 1.9rem;
+  margin: 0;
+}
+
+.cta-final p {
+  margin: 0.6rem auto 1rem;
+  max-width: 33ch;
+}
+
+.cta-final .boton--primario {
+  width: auto;
+  min-width: 138px;
+}
+
+/* ======== PIE PRINCIPAL ======== */
+
+.pie {
+  background: var(--color-verde-oscuro);
+  color: #d8ddcf;
+  padding: 2.4rem 0 1.1rem;
+}
+
+.pie__rejilla {
+  margin-bottom: 1rem;
+}
+
+.pie__col {
+  border: none;
+  border-radius: 0;
+  padding: 1rem 0.95rem;
+  background: transparent;
+}
+
+.pie h3,
+.pie h4 {
+  margin: 0 0 0.45rem;
+  color: #fff;
+}
+
+.pie p {
+  margin: 0;
+  font-size: 0.83rem;
+}
+
+.pie a {
+  display: block;
+  color: #d8ddcf;
+  text-decoration: none;
+  margin-bottom: 0.42rem;
+  font-size: 0.86rem;
+  transition: color 0.2s ease;
+}
+
+.pie a:hover {
+  color: #ffffff;
+}
+
+.pie__inferior {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.pie .credito-treecore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0;
+  color: #d8ddcf;
+  font-size: 0.83rem;
+  justify-content: center;
+}
+
+.credito-treecore img {
+  height: 24px;
+  width: auto;
+}
+
+.credito-treecore:hover {
+  color: #ffffff;
+}
+
+/* ======== REDES SOCIALES ======== */
+
+.redes {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.redes a {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(161, 242, 39, 0.2);
+  color: var(--color-lima);
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  transition: transform 0.2s ease;
+}
+
+.redes a:hover {
+  transform: translateY(-1px);
+}
+
+.redes a i {
+  font-size: 0.95rem;
+}
+
+/* Botón de configurar cookies en footer */
+.pie__btn-cookies {
+  display: block;
+  background: none;
+  border: none;
+  color: #d8ddcf;
+  text-decoration: none;
+  margin-bottom: 0.42rem;
+  font-size: 0.86rem;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s ease;
+}
+
+.pie__btn-cookies:hover {
+  color: #ffffff;
+}
+
+/* ======== PÁGINA LEGAL ======== */
+
+.legal-contenido h2 {
+  margin-top: 1.8rem;
+  margin-bottom: 0.6rem;
+  font-size: 1.25rem;
+  color: var(--color-texto);
+}
+
+.legal-contenido h3 {
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  color: var(--color-texto);
+}
+
+.legal-contenido p,
+.legal-contenido li {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--color-texto-suave);
+}
+
+.legal-contenido ul {
+  padding-left: 1.4rem;
+}
+
+.legal-contenido .table {
+  font-size: 0.85rem;
+  margin: 1rem 0;
+}
+
+.legal-actualizacion {
+  margin-top: 2rem;
+  font-size: 0.82rem;
+  color: var(--color-texto-suave);
+}

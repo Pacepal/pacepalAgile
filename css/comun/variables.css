@@ -1,0 +1,24 @@
+/* ========================================
+   Variables CSS — tokens de diseño de PacePal
+   colores, radios, sombras y espaciados
+   ======================================== */
+
+:root {
+  --color-fondo: #f2f3f1;
+  --color-blanco: #ffffff;
+  --color-texto: #202720;
+  --color-texto-suave: #5f6c5f;
+  --color-lima: #a1f227;
+  --color-lima-hover: #92df20;
+  --color-verde-oscuro: #2a400a;
+  --color-borde: #d9dfd2;
+  --radio: 12px;
+  --radio-pequeno: 9px;
+  --sombra: 0 1px 6px rgba(19, 27, 17, 0.1);
+  --ancho-max: 1100px;
+  --esp-1: 0.5rem;
+  --esp-2: 0.8rem;
+  --esp-3: 1rem;
+  --esp-4: 1.4rem;
+  --esp-5: 2rem;
+}
