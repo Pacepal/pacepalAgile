@@ -18,7 +18,7 @@
 (function () {
 
     function getBasePath() {
-        var mount = document.getElementById('footerSharedMount') || document.getElementById('navbarSharedMount');
+        var mount = document.getElementById('footerCompartido') || document.getElementById('navbarCompartida');
         if (mount && mount.dataset.base !== undefined) {
             return mount.dataset.base;
         }

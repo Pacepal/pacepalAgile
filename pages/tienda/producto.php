@@ -13,7 +13,7 @@
 </head>
 
 <body class="pagina-interna pagina-tienda">
-  <div id="navbarSharedMount" data-base="../../" data-current="tienda"></div>
+  <div id="navbarCompartida" data-base="../../" data-current="tienda"></div>
 
   <main>
     <!--
@@ -31,7 +31,7 @@
   </main>
 
   <!-- Footer del producto -->
-  <div id="footerSharedMount" data-base="../../"></div>
+  <div id="footerCompartido" data-base="../../"></div>
 
   <script src="../../js/formulario/ui.js?v=2"></script>
   <script src="../../js/app.js"></script>

@@ -29,7 +29,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['rol'])) {
 
 <body class="pagina-formulario">
   <div
-    id="navbarSharedMount"
+    id="navbarCompartida"
     data-base="../../"
     data-current="registro"></div>
 
@@ -126,7 +126,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['rol'])) {
           id="error-fechaNacimiento"
           aria-live="polite">
         </div>
-        
+
         <!-- Campo para la dirección del usuario -->
         <label for="direccion">Dirección</label>
         <input
@@ -205,7 +205,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['rol'])) {
   </main>
 
   <!-- Footer de la página de registro -->
-  <div id="footerSharedMount" data-base="../../"></div>
+  <div id="footerCompartido" data-base="../../"></div>
 
   <script src="../../js/formulario/validaciones.js"></script>
   <script src="../../js/formulario/ui.js?v=2"></script>

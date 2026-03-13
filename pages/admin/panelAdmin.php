@@ -13,7 +13,7 @@
 </head>
 
 <body class="pagina-interna pagina-admin">
-  <div id="navbarSharedMount" data-base="../../" data-current="admin"></div>
+  <div id="navbarCompartida" data-base="../../" data-current="admin"></div>
 
   <main>
     <!-- Encabezado de la página de admin -->
@@ -76,7 +76,7 @@
   </main>
 
   <!-- Footer de la página de admin -->
-  <div id="footerSharedMount" data-base="../../"></div>
+  <div id="footerCompartido" data-base="../../"></div>
 
   <script src="../../js/formulario/ui.js?v=2"></script>
   <script src="../../js/app.js"></script>

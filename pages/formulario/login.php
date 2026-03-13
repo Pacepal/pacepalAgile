@@ -25,7 +25,7 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['rol'])) {
 </head>
 
 <body class="pagina-formulario">
-  <div id="navbarSharedMount" data-base="../../" data-current="login"></div>
+  <div id="navbarCompartida" data-base="../../" data-current="login"></div>
 
   <main class="contenedor formulario-layout">
     <!-- Sección para el formulario de inicio de sesión -->
@@ -71,11 +71,22 @@ if (isset($_SESSION['usuario_id']) && isset($_SESSION['rol'])) {
       <p class="enlace-alterno">
         ¿No tienes cuenta? <a href="register.php">Crear cuenta</a>
       </p>
+
+      <!-- Contenedor para mostrar credenciales para prueba  -->
+      <div class="credenciales-prueba">
+        <br>
+        <p>Para probar la aplicación, puedes usar las siguientes credenciales:</p>
+        <ul>
+          <li>Usuario: admin@pacepal.com</li>
+          <li>Contraseña: Admin1234*</li>
+        </ul>
+      </div>
     </section>
+
   </main>
 
   <!-- Footer de la página de login -->
-  <div id="footerSharedMount" data-base="../../"></div>
+  <div id="footerCompartido" data-base="../../"></div>
 
   <script src="../../js/formulario/validaciones.js"></script>
   <script src="../../js/formulario/ui.js?v=2"></script>

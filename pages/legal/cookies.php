@@ -13,7 +13,7 @@
 </head>
 
 <body class="pagina-interna">
-    <div id="navbarSharedMount" data-base="../../" data-current="legal"></div>
+    <div id="navbarCompartida" data-base="../../" data-current="legal"></div>
 
     <main>
         <!-- Seccion de politica de cookies -->
@@ -159,7 +159,7 @@
     </main>
 
     <!-- Footer de la página de política de cookies -->
-    <div id="footerSharedMount" data-base="../../"></div>
+    <div id="footerCompartido" data-base="../../"></div>
 
     <script src="../../js/formulario/ui.js?v=2"></script>
     <script src="../../js/app.js"></script>

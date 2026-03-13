@@ -1,7 +1,7 @@
 // ===================================================================
 // UI COMPARTIDA — navbar y footer dinámicos
-// Se monta en cada página usando los divs #navbarSharedMount y
-// #footerSharedMount. Consulta la sesión del usuario para decidir
+// Se monta en cada página usando los divs #navbarCompartida y
+// #footerCompartido. Consulta la sesión del usuario para decidir
 // si mostrar login/register o perfil/logout.
 // ===================================================================
 
@@ -122,7 +122,7 @@ function buildAuthActions(base, current, sessionData) {
 }
 
 async function renderNavbarCompartida() {
-	const mount = document.getElementById('navbarSharedMount');
+	const mount = document.getElementById('navbarCompartida');
 	if (!mount) {
 		return;
 	}
@@ -191,7 +191,7 @@ async function renderNavbarCompartida() {
 }
 
 function renderFooterCompartido() {
-	const mount = document.getElementById('footerSharedMount');
+	const mount = document.getElementById('footerCompartido');
 	if (!mount) {
 		return;
 	}
@@ -253,7 +253,7 @@ renderFooterCompartido();
 
 // badge del carrito en el nav — cuenta total de items
 function actualizarContadorCarrito() {
-	var mount = document.getElementById('navbarSharedMount');
+	var mount = document.getElementById('navbarCompartida');
 	var base = mount ? (mount.dataset.base || '') : '';
 	var apiUrl = base + 'src/api/index.php/api/carrito';
 

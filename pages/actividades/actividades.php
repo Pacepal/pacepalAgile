@@ -13,7 +13,7 @@
 </head>
 
 <body class="pagina-interna pagina-actividades">
-  <div id="navbarSharedMount" data-base="../../" data-current="actividades"></div>
+  <div id="navbarCompartida" data-base="../../" data-current="actividades"></div>
 
   <main>
     <!-- Encabezado de la página de actividades -->
@@ -35,7 +35,7 @@
   </main>
 
   <!-- Footer de la página de actividades -->
-  <div id="footerSharedMount" data-base="../../"></div>
+  <div id="footerCompartido" data-base="../../"></div>
 
   <script src="../../js/formulario/ui.js?v=2"></script>
   <script src="../../js/app.js"></script>

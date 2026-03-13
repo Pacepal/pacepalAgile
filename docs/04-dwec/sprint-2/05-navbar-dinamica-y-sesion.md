@@ -6,7 +6,7 @@ No queríamos tener mil versiones de la barra de navegación ni andar duplicando
 
 ## ¿Cómo lo hemos hecho?
 
-Todo está en `js/formulario/ui.js`, que se carga en todas las páginas. Al cargar, monta la navbar y el footer en los divs `#navbarSharedMount` y `#footerSharedMount`. El div de la navbar lleva atributos `data-base` (para rutas relativas) y `data-current` (para marcar el enlace activo).
+Todo está en `js/formulario/ui.js`, que se carga en todas las páginas. Al cargar, monta la navbar y el footer en los divs `#navbarCompartida` y `#footerCompartido`. El div de la navbar lleva atributos `data-base` (para rutas relativas) y `data-current` (para marcar el enlace activo).
 
 La función `renderNavbarCompartida()` pide el estado de sesión a la API (`GET /api/session`). Según la respuesta, pinta unos enlaces u otros:
 

@@ -13,7 +13,7 @@
 </head>
 
 <body class="pagina-interna pagina-usuario">
-  <div id="navbarSharedMount" data-base="../../" data-current="perfil"></div>
+  <div id="navbarCompartida" data-base="../../" data-current="perfil"></div>
 
   <!-- Contenido principal de la página -->
   <main>
@@ -39,7 +39,7 @@
   </main>
 
   <!-- Footer de perfil -->
-  <div id="footerSharedMount" data-base="../../"></div>
+  <div id="footerCompartido" data-base="../../"></div>
 
   <script src="../../js/formulario/ui.js?v=2"></script>
   <script src="../../js/app.js"></script>
