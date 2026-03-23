@@ -35,7 +35,7 @@ $cookieController = new CookieController();
 // ===== PARSEAR MÉTODO Y RUTA =====
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
-// extraemos la ruta relativa quitando el base path del proyecto
+// Se extrae la ruta relativa
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $base = '/proyectoagilepacepal/src/api/index.php';
 $path = str_replace($base, '', $uri);
@@ -213,7 +213,6 @@ if ($handler === null) {
     }
 }
 
-// Si no hay handler, 404
 if ($handler === null) {
     jsonResponse([
         'status' => 'error',
@@ -221,8 +220,6 @@ if ($handler === null) {
         'path' => $path,
     ], 404);
 }
-
-// Ejecutar handler
 $handler();
 
 // ===== HELPER =====

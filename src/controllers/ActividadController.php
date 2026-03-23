@@ -118,7 +118,7 @@ class ActividadController
         }
     }
 
-    // Verifica si el usuario tiene rol usuario o admin (lo necesitamos en varios metodos)
+    // Verificar si el usuario tiene rol usuario o admin
     private function tieneRolUsuario(): bool
     {
         return isset($_SESSION['rol']) && ($_SESSION['rol'] === 'usuario' || $_SESSION['rol'] === 'admin');
@@ -144,7 +144,6 @@ class ActividadController
             $actividad['participantes'] = $participantes;
             $actividad['num_participantes'] = count($participantes);
 
-            // Info del usuario actual para saber si ya participa o si es el creador
             $this->iniciarSesion();
             $idUsuario = isset($_SESSION['usuario_id']) ? (int) $_SESSION['usuario_id'] : 0;
 
@@ -193,7 +192,7 @@ class ActividadController
             return;
         }
 
-        // comprobamos que no esté ya apuntado
+        // comprobar que no esté ya apuntado
         if ($this->actividadModel->isParticipante($idUsuario, $idActividad)) {
             $this->jsonResponse([
                 'status' => 'error',
@@ -248,7 +247,7 @@ class ActividadController
 
         $idUsuario = (int) $_SESSION['usuario_id'];
 
-        // Comprueba que esté efectivamente inscrito antes de borrar
+        // Comprobar que esté inscrito antes de borrar
         if (!$this->actividadModel->isParticipante($idUsuario, $idActividad)) {
             $this->jsonResponse([
                 'status' => 'error',

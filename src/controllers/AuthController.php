@@ -25,7 +25,6 @@ class AuthController
         $email = trim((string) ($input['email'] ?? ''));
         $password = (string) ($input['password'] ?? '');
 
-        // Validar que no falte nada
         if ($nombre === '' || $dni === '' || $email === '' || $password === '') {
             $this->jsonResponse([
                 'status' => 'error',
@@ -76,7 +75,6 @@ class AuthController
         $email = trim((string) ($input['email'] ?? ''));
         $password = (string) ($input['password'] ?? '');
 
-        // Validar que no falte nada
         if ($email === '' || $password === '') {
             $this->jsonResponse([
                 'status' => 'error',
@@ -111,7 +109,6 @@ class AuthController
             $_SESSION['usuario_id'] = (int) $usuario['id_usuario'];
             $_SESSION['rol'] = (string) $usuario['rol'];
 
-            // no devolvemos el password en la respuesta, obvio
             unset($usuario['password']);
 
             $this->jsonResponse([
