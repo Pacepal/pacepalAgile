@@ -5,6 +5,7 @@ Plataforma web para conectar personas y promover actividades deportivas en comun
 ## Demo
 
 - GitHub Pages: https://kampexiii.github.io/pacepalAgile/
+- Video Sprint 1 (YouTube): https://www.youtube.com/watch?v=lWd_V9rKP-k
 - Video Sprint 2 (YouTube): https://youtu.be/y_3bRf19TNg
 
 ## Objetivo
