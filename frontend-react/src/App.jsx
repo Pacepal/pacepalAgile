@@ -9,6 +9,11 @@ import AboutPage from './components/AboutPage.jsx';
 import { LoginPage, RegisterPage } from './components/AuthPages.jsx';
 import ProfilePage from './components/ProfilePage.jsx';
 import CreateActivityPage from './components/CreateActivityPage.jsx';
+import ProductDetailPage from './components/ProductDetailPage.jsx';
+import RouteDetailPage from './components/RouteDetailPage.jsx';
+import ActivityDetailPage from './components/ActivityDetailPage.jsx';
+import CookiesPage from './components/CookiesPage.jsx';
+import AdminPage from './components/AdminPage.jsx';
 import { buildPublicAssetUrl } from './services/api.js';
 import { useProducts } from './hooks/useProducts.js';
 import { useCart } from './hooks/useCart.js';
@@ -27,11 +32,20 @@ const validPages = new Set([
   'registro',
   'perfil',
   'crear-actividad',
+  'producto',
+  'ruta',
+  'actividad',
+  'cookies',
+  'admin',
 ]);
 
-function readPageFromHash() {
+function readRouteFromHash() {
   const hash = window.location.hash.replace(/^#/, '');
-  return validPages.has(hash) ? hash : 'inicio';
+  const [page, id] = hash.split('-');
+  return {
+    page: validPages.has(page) ? page : 'inicio',
+    id: id || null,
+  };
 }
 
 function App() {
@@ -40,11 +54,13 @@ function App() {
   const session = useSession();
   const routes = useRoutes();
   const activities = useActivities();
-  const [currentPage, setCurrentPage] = useState(readPageFromHash);
+  const [route, setRoute] = useState(readRouteFromHash);
+  const currentPage = route.page;
+  const currentId = route.id;
 
   useEffect(() => {
     function handleHashChange() {
-      setCurrentPage(readPageFromHash());
+      setRoute(readRouteFromHash());
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -52,12 +68,14 @@ function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  function navigate(page) {
+  function navigate(page, id = null) {
     const nextPage = validPages.has(page) ? page : 'inicio';
-    if (window.location.hash !== `#${nextPage}`) {
-      window.location.hash = nextPage;
+    const nextHash = id ? `#${nextPage}-${id}` : `#${nextPage}`;
+
+    if (window.location.hash !== nextHash) {
+      window.location.hash = nextHash;
     } else {
-      setCurrentPage(nextPage);
+      setRoute({ page: nextPage, id: id ? String(id) : null });
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
@@ -69,6 +87,7 @@ function App() {
     if (currentPage === 'rutas') return 'pagina-interna pagina-rutas';
     if (currentPage === 'actividades' || currentPage === 'crear-actividad') return 'pagina-interna pagina-actividades';
     if (currentPage === 'perfil') return 'pagina-interna pagina-usuario';
+    if (currentPage === 'admin') return 'pagina-interna pagina-admin';
     return 'pagina-interna pagina-tienda';
   }, [currentPage]);
 
@@ -78,7 +97,7 @@ function App() {
 
       {currentPage === 'inicio' ? <HomePage onNavigate={navigate} /> : null}
       {currentPage === 'actividades' ? <ActivitiesPage activities={activities} session={session} onNavigate={navigate} /> : null}
-      {currentPage === 'tienda' ? <ShopPage products={products} cart={cart} /> : null}
+      {currentPage === 'tienda' ? <ShopPage products={products} cart={cart} onNavigate={navigate} /> : null}
       {currentPage === 'rutas' ? <RoutesPage routes={routes} onNavigate={navigate} /> : null}
       {currentPage === 'about' ? <AboutPage /> : null}
       {currentPage === 'carrito' ? <CartPage cart={cart} onNavigate={navigate} /> : null}
@@ -86,6 +105,11 @@ function App() {
       {currentPage === 'registro' ? <RegisterPage session={session} onNavigate={navigate} /> : null}
       {currentPage === 'perfil' ? <ProfilePage session={session} /> : null}
       {currentPage === 'crear-actividad' ? <CreateActivityPage routes={routes} session={session} onNavigate={navigate} /> : null}
+      {currentPage === 'producto' ? <ProductDetailPage productId={currentId} products={products} cart={cart} onNavigate={navigate} /> : null}
+      {currentPage === 'ruta' ? <RouteDetailPage routeId={currentId} routes={routes} onNavigate={navigate} /> : null}
+      {currentPage === 'actividad' ? <ActivityDetailPage activityId={currentId} activities={activities} session={session} onNavigate={navigate} /> : null}
+      {currentPage === 'cookies' ? <CookiesPage /> : null}
+      {currentPage === 'admin' ? <AdminPage session={session} activities={activities} routes={routes} /> : null}
 
       <footer className="pie">
         <div className="contenedor">
@@ -110,7 +134,7 @@ function App() {
             </section>
             <section className="pie__col">
               <h4>Legal</h4>
-              <span>Politica de cookies</span>
+              <button type="button" onClick={() => navigate('cookies')}>Politica de cookies</button>
             </section>
           </div>
           <div className="pie__inferior">

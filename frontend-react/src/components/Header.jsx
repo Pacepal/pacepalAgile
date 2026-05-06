@@ -48,6 +48,11 @@ function Header({ cartCount, session, currentPage, onNavigate }) {
               <a className="boton boton--primario cabecera__login" href="#perfil" onClick={handleNavigate('perfil')}>
                 Perfil
               </a>
+              {session.user.rol === 'admin' ? (
+                <a className="boton" href="#admin" onClick={handleNavigate('admin')}>
+                  Admin
+                </a>
+              ) : null}
               <button type="button" className="boton cabecera__registro" onClick={session.logout}>
                 Logout
               </button>

@@ -8,6 +8,14 @@
       "fecha": "Sabado",
       "hora": "10:00",
       "plazas_max": 12,
+      "num_participantes": 4,
+      "estado": "abierta",
+      "ruta_nombre": "Casa de Campo",
+      "ruta_ubicacion": "Madrid",
+      "ruta_distancia": 6.5,
+      "ruta_dificultad": "principiante",
+      "ruta_imagen": "img/rutas/retiro.webp",
+      "creador_nombre": "Equipo PacePal",
       "descripcion": "Salida de running suave para retomar la rutina."
     },
     {
@@ -18,6 +26,14 @@
       "fecha": "Domingo",
       "hora": "09:30",
       "plazas_max": 8,
+      "num_participantes": 3,
+      "estado": "abierta",
+      "ruta_nombre": "Retiro",
+      "ruta_ubicacion": "Madrid",
+      "ruta_distancia": 4.0,
+      "ruta_dificultad": "principiante",
+      "ruta_imagen": "img/rutas/retiro.webp",
+      "creador_nombre": "Equipo PacePal",
       "descripcion": "Paseo urbano para empezar el domingo en grupo."
     },
     {
@@ -28,6 +44,14 @@
       "fecha": "Sabado",
       "hora": "18:00",
       "plazas_max": 15,
+      "num_participantes": 6,
+      "estado": "abierta",
+      "ruta_nombre": "Madrid Rio",
+      "ruta_ubicacion": "Madrid",
+      "ruta_distancia": 5.5,
+      "ruta_dificultad": "intermedio",
+      "ruta_imagen": "img/rutas/retiro.webp",
+      "creador_nombre": "Equipo PacePal",
       "descripcion": "Entrenamiento moderado junto al rio."
     },
     {
@@ -38,6 +62,14 @@
       "fecha": "Domingo",
       "hora": "08:30",
       "plazas_max": 10,
+      "num_participantes": 5,
+      "estado": "abierta",
+      "ruta_nombre": "Senda Schmidt",
+      "ruta_ubicacion": "Sierra de Guadarrama",
+      "ruta_distancia": 12.0,
+      "ruta_dificultad": "intermedio",
+      "ruta_imagen": "img/rutas/schmidt.webp",
+      "creador_nombre": "Equipo PacePal",
       "descripcion": "Ruta de montana para grupo con experiencia media."
     }
   ]

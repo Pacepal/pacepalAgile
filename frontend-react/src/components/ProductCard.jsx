@@ -6,7 +6,7 @@ function formatPrice(value) {
   return Number.isFinite(number) ? `${number.toFixed(2)} EUR` : 'Precio no disponible';
 }
 
-function ProductCard({ product, onAddToCart }) {
+function ProductCard({ product, onAddToCart, onViewProduct }) {
   const [quantity, setQuantity] = useState(1);
   const image = buildPublicAssetUrl(product.imagen1 || 'img/productos/zapatillaPacepal1.webp');
 
@@ -33,6 +33,13 @@ function ProductCard({ product, onAddToCart }) {
           onClick={() => onAddToCart(product, quantity)}
         >
           Anadir al carrito
+        </button>
+        <button
+          type="button"
+          className="boton"
+          onClick={() => onViewProduct(product.id_articulo)}
+        >
+          Ver producto
         </button>
       </div>
     </article>

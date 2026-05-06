@@ -325,6 +325,83 @@ a {
   color: var(--color-texto-suave);
 }
 
+.detalle-pagina {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.detalle-pagina > img {
+  width: 100%;
+  max-height: 430px;
+  object-fit: cover;
+  border-radius: var(--radio-pequeno);
+}
+
+.rejilla-pagina,
+.detalle-imagenes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.detalle-imagenes img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: var(--radio-pequeno);
+}
+
+.detalle-acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.cantidad-corta {
+  max-width: 90px;
+}
+
+.tabla-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-blanco);
+}
+
+th,
+td {
+  border: 1px solid var(--color-borde);
+  padding: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: var(--color-suave);
+  color: var(--color-verde-oscuro);
+  font-weight: 900;
+}
+
+.legal-contenido {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.legal-contenido h2,
+.legal-contenido h3 {
+  margin: 0.6rem 0 0;
+}
+
+.legal-actualizacion {
+  margin-top: 1rem;
+}
+
 .tarjeta-actividad .linea {
   color: var(--color-verde);
   font-weight: 800;
@@ -727,6 +804,15 @@ a {
 
   .cart-item {
     grid-template-columns: 64px 1fr;
+  }
+
+  .rejilla-pagina,
+  .detalle-imagenes {
+    grid-template-columns: 1fr;
+  }
+
+  .detalle-imagenes img {
+    height: 260px;
   }
 
   .cart-item .quantity-input,

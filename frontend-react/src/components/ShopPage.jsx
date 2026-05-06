@@ -1,7 +1,7 @@
 import ProductGallery from './ProductGallery.jsx';
 import SearchBar from './SearchBar.jsx';
 
-function ShopPage({ products, cart }) {
+function ShopPage({ products, cart, onNavigate }) {
   return (
     <main>
       <section className="seccion-pagina">
@@ -15,6 +15,7 @@ function ShopPage({ products, cart }) {
             message={products.message}
             products={products.filteredItems}
             onAddToCart={cart.addItem}
+            onViewProduct={(id) => onNavigate('producto', id)}
           />
         </div>
       </section>

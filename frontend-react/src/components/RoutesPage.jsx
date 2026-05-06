@@ -20,7 +20,10 @@ function RoutesPage({ routes, onNavigate }) {
                   <h3>{route.nombre || 'Ruta sin nombre'}</h3>
                   <p><i className="bi bi-geo-alt-fill" aria-hidden="true"></i> {route.ubicacion || 'No disponible'}</p>
                   <p><i className="bi bi-signpost-2-fill" aria-hidden="true"></i> {route.distancia ? `${route.distancia} km` : 'No disponible'}</p>
-                  <button type="button" className="boton boton--primario" onClick={() => onNavigate('crear-actividad')}>
+                  <button type="button" className="boton boton--primario" onClick={() => onNavigate('ruta', route.id_ruta)}>
+                    Ver detalle
+                  </button>
+                  <button type="button" className="boton" onClick={() => onNavigate('crear-actividad')}>
                     Crear actividad
                   </button>
                 </div>

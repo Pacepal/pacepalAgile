@@ -24,7 +24,9 @@ function ActivitiesPage({ activities, session, onNavigate }) {
                 <p className="linea">{activity.tipo || 'Actividad'} · nivel {activity.nivel || 'General'}</p>
                 <p><i className="bi bi-calendar3" aria-hidden="true"></i> {activity.fecha || 'Sin fecha'}{activity.hora ? ` · ${activity.hora}` : ''}</p>
                 <p><i className="bi bi-people-fill" aria-hidden="true"></i> {activity.plazas_max ? `${activity.plazas_max} plazas disponibles` : 'Plazas no disponibles'}</p>
-                <button type="button" className="boton boton--primario">Ver actividad</button>
+                <button type="button" className="boton boton--primario" onClick={() => onNavigate('actividad', activity.id_actividad)}>
+                  Ver actividad
+                </button>
               </article>
             ))}
           </div>
