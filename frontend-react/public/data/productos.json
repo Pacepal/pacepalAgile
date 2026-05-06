@@ -1,0 +1,104 @@
+{
+  "data": [
+    {
+      "id_articulo": 1,
+      "nombre": "Zapatillas deportivas PacePal",
+      "descripcion": "Zapatillas deportivas ligeras para entrenamiento, running urbano y uso diario.",
+      "precio": 89.9,
+      "stock": 25,
+      "imagen1": "img/productos/zapatillaPacepal1.webp",
+      "imagen2": "img/productos/zapatillaPacepal2.webp",
+      "id_categoria": 1
+    },
+    {
+      "id_articulo": 2,
+      "nombre": "Camiseta deportiva PacePal",
+      "descripcion": "Camiseta tecnica transpirable pensada para actividades deportivas y entrenamiento al aire libre.",
+      "precio": 29.9,
+      "stock": 50,
+      "imagen1": "img/productos/camisetaPacepal1.webp",
+      "imagen2": "img/productos/camisetaPacepal2.webp",
+      "id_categoria": 2
+    },
+    {
+      "id_articulo": 3,
+      "nombre": "Chaqueta deportiva PacePal",
+      "descripcion": "Chaqueta ligera y comoda para proteger del viento y del frio en actividades deportivas.",
+      "precio": 59.9,
+      "stock": 20,
+      "imagen1": "img/productos/chaquetaPacepal1.webp",
+      "imagen2": "img/productos/chaquetaPacepal2.webp",
+      "id_categoria": 2
+    },
+    {
+      "id_articulo": 4,
+      "nombre": "Pantalones deportivos PacePal",
+      "descripcion": "Pantalones deportivos ligeros, comodos y adaptados a entrenamiento, running y rutas.",
+      "precio": 34.9,
+      "stock": 30,
+      "imagen1": "img/productos/pantalonesPacepal1.webp",
+      "imagen2": "img/productos/pantalonesPacepal2.webp",
+      "id_categoria": 2
+    },
+    {
+      "id_articulo": 5,
+      "nombre": "Calcetines deportivos PacePal",
+      "descripcion": "Calcetines deportivos transpirables con ajuste comodo para caminar, correr o entrenar.",
+      "precio": 12.9,
+      "stock": 60,
+      "imagen1": "img/productos/calcetinesPacepal1.webp",
+      "imagen2": "img/productos/calcetinesPacepal2.webp",
+      "id_categoria": 2
+    },
+    {
+      "id_articulo": 6,
+      "nombre": "Chaleco de hidratacion PacePal",
+      "descripcion": "Chaleco tecnico de hidratacion ideal para trail, senderismo y actividades de resistencia.",
+      "precio": 49.9,
+      "stock": 18,
+      "imagen1": "img/productos/chalecoHidratacionPacepal1.webp",
+      "imagen2": "img/productos/chalecoHidratacionPacepal2.webp",
+      "id_categoria": 3
+    },
+    {
+      "id_articulo": 7,
+      "nombre": "Botella deportiva reutilizable PacePal",
+      "descripcion": "Botella reutilizable de acero inoxidable para mantener la hidratacion durante cualquier actividad.",
+      "precio": 14.9,
+      "stock": 60,
+      "imagen1": "img/productos/botellaPacepal1.webp",
+      "imagen2": "img/productos/botellaPacepal2.webp",
+      "id_categoria": 3
+    },
+    {
+      "id_articulo": 8,
+      "nombre": "Gorra deportiva PacePal",
+      "descripcion": "Gorra deportiva ligera y transpirable para proteger del sol durante entrenamientos y rutas.",
+      "precio": 19.9,
+      "stock": 45,
+      "imagen1": "img/productos/gorraPacepal1.webp",
+      "imagen2": "img/productos/gorraPacepal2.webp",
+      "id_categoria": 3
+    },
+    {
+      "id_articulo": 9,
+      "nombre": "Bastones de senderismo PacePal",
+      "descripcion": "Bastones ligeros y resistentes para rutas de senderismo, trekking y montana.",
+      "precio": 39.9,
+      "stock": 22,
+      "imagen1": "img/productos/bastonesPacepal1.webp",
+      "imagen2": "img/productos/bastonesPacepal2.webp",
+      "id_categoria": 3
+    },
+    {
+      "id_articulo": 10,
+      "nombre": "Kit deportivo PacePal",
+      "descripcion": "Kit compacto de accesorios deportivos y organizacion para salidas, entrenamientos y rutas.",
+      "precio": 24.9,
+      "stock": 15,
+      "imagen1": "img/productos/kitPpAaPAcepal1.webp",
+      "imagen2": "img/productos/kitPpAaPAcepal2.webp",
+      "id_categoria": 3
+    }
+  ]
+}

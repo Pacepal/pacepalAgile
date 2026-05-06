@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { buildPublicAssetUrl } from '../services/api.js';
 
 function formatPrice(value) {
   const number = Number(value);
@@ -7,7 +8,7 @@ function formatPrice(value) {
 
 function ProductCard({ product, onAddToCart }) {
   const [quantity, setQuantity] = useState(1);
-  const image = `../${product.imagen1 || 'img/productos/zapatillaPacepal1.webp'}`;
+  const image = buildPublicAssetUrl(product.imagen1 || 'img/productos/zapatillaPacepal1.webp');
 
   return (
     <article className="product-card">
@@ -29,7 +30,7 @@ function ProductCard({ product, onAddToCart }) {
         <button
           type="button"
           className="primary-button"
-          onClick={() => onAddToCart(product.id_articulo, quantity)}
+          onClick={() => onAddToCart(product, quantity)}
         >
           Anadir al carrito
         </button>

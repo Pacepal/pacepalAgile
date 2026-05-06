@@ -157,6 +157,20 @@ code {
   color: #8c1f1f;
 }
 
+.status-pill--demo {
+  background: rgba(33, 78, 52, 0.12);
+  color: #214e34;
+}
+
+.demo-notice {
+  margin: 1rem 0 0;
+  padding: 0.85rem 1rem;
+  border-left: 4px solid #dfa958;
+  border-radius: 0.75rem;
+  background: rgba(223, 169, 88, 0.16);
+  color: #4d3514;
+}
+
 .header-button {
   border: 1px solid rgba(248, 244, 236, 0.35);
   border-radius: 999px;

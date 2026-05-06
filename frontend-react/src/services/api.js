@@ -1,8 +1,13 @@
 const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL || '../../src/api/index.php/api').trim();
+const staticProductsUrl = `${import.meta.env.BASE_URL}data/productos.json`;
+
+export const DEMO_NOTICE =
+    'Modo demo estático: GitHub Pages no ejecuta PHP. La integración real con PHP y base de datos se valida en local con XAMPP.';
 
 export const apiConfig = {
     baseUrl: configuredBaseUrl,
-    note: 'Cliente React conectado a la API PHP existente.',
+    staticProductsUrl,
+    note: 'Cliente React preparado para API PHP local y demo estatica.',
 };
 
 export function buildApiUrl(path) {
@@ -33,4 +38,25 @@ export async function requestJson(path, options = {}) {
     }
 
     return payload;
+}
+
+export async function loadStaticProducts() {
+    const response = await fetch(staticProductsUrl, {
+        headers: { Accept: 'application/json' },
+    });
+
+    if (!response.ok) {
+        throw new Error('No se pudo cargar el catalogo estatico.');
+    }
+
+    const payload = await response.json();
+    return Array.isArray(payload.data) ? payload.data : [];
+}
+
+export function buildPublicAssetUrl(path) {
+    if (!path) {
+        return '';
+    }
+
+    return `${import.meta.env.BASE_URL}${String(path).replace(/^\/+/, '')}`;
 }

@@ -4,7 +4,7 @@ import ProductGallery from './components/ProductGallery.jsx';
 import Cart from './components/Cart.jsx';
 import LoginForm from './components/LoginForm.jsx';
 import RegisterForm from './components/RegisterForm.jsx';
-import { apiConfig } from './services/api.js';
+import { DEMO_NOTICE, apiConfig } from './services/api.js';
 import { useProducts } from './hooks/useProducts.js';
 import { useCart } from './hooks/useCart.js';
 import { useSession } from './hooks/useSession.js';
@@ -13,6 +13,7 @@ function App() {
   const products = useProducts();
   const cart = useCart();
   const session = useSession();
+  const isDemo = products.isDemo || cart.isDemo || session.isDemo;
 
   return (
     <div className="app-shell">
@@ -45,6 +46,7 @@ function App() {
               <span className="status-pill status-pill--ok">{cart.count} items</span>
             </article>
           </div>
+          {isDemo ? <p className="demo-notice">{DEMO_NOTICE}</p> : null}
         </section>
 
         <section className="shop-grid" aria-label="Escaparate React">

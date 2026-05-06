@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { requestJson } from '../services/api.js';
+import { DEMO_NOTICE, requestJson } from '../services/api.js';
 
 export function useSession() {
     const [user, setUser] = useState(null);
     const [status, setStatus] = useState('cargando');
     const [message, setMessage] = useState('Comprobando sesion.');
+    const [isDemo, setIsDemo] = useState(false);
 
     async function refreshSession() {
         setStatus('cargando');
@@ -17,20 +18,30 @@ export function useSession() {
                     rol: payload.rol,
                 });
                 setStatus('ok');
+                setIsDemo(false);
                 setMessage('Sesion activa.');
                 return;
             }
 
             setUser(null);
             setStatus('anonimo');
+            setIsDemo(false);
             setMessage('Sin sesion activa.');
         } catch (error) {
-            setStatus('error');
-            setMessage(error.message || 'No se pudo comprobar la sesion.');
+            setUser(null);
+            setStatus('demo');
+            setIsDemo(true);
+            setMessage(DEMO_NOTICE);
         }
     }
 
     async function login(credentials) {
+        if (isDemo) {
+            setStatus('demo');
+            setMessage('La autenticacion real requiere API PHP local con XAMPP. En GitHub Pages solo se validan los campos.');
+            return false;
+        }
+
         try {
             const payload = await requestJson('/login', {
                 method: 'POST',
@@ -42,13 +53,20 @@ export function useSession() {
             await refreshSession();
             return true;
         } catch (error) {
-            setStatus('error');
-            setMessage(error.message || 'No se pudo iniciar sesion.');
+            setStatus('demo');
+            setIsDemo(true);
+            setMessage('La autenticacion real requiere API PHP local con XAMPP. En GitHub Pages solo se validan los campos.');
             return false;
         }
     }
 
     async function register(data) {
+        if (isDemo) {
+            setStatus('demo');
+            setMessage('El registro real requiere API PHP local con XAMPP. En GitHub Pages solo se validan los campos.');
+            return false;
+        }
+
         try {
             await requestJson('/register', {
                 method: 'POST',
@@ -57,13 +75,21 @@ export function useSession() {
             setMessage('Registro correcto. Ya puedes iniciar sesion.');
             return true;
         } catch (error) {
-            setStatus('error');
-            setMessage(error.message || 'No se pudo completar el registro.');
+            setStatus('demo');
+            setIsDemo(true);
+            setMessage('El registro real requiere API PHP local con XAMPP. En GitHub Pages solo se validan los campos.');
             return false;
         }
     }
 
     async function logout() {
+        if (isDemo) {
+            setUser(null);
+            setStatus('demo');
+            setMessage(DEMO_NOTICE);
+            return;
+        }
+
         try {
             await requestJson('/logout', { method: 'POST' });
             setUser(null);
@@ -83,6 +109,7 @@ export function useSession() {
         status,
         user,
         message,
+        isDemo,
         login,
         register,
         logout,

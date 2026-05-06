@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { requestJson } from '../services/api.js';
+import { DEMO_NOTICE, loadStaticProducts, requestJson } from '../services/api.js';
 
 export function useProducts() {
     const [items, setItems] = useState([]);
     const [query, setQuery] = useState('');
     const [status, setStatus] = useState('cargando');
     const [message, setMessage] = useState('Cargando productos desde la API PHP.');
+    const [isDemo, setIsDemo] = useState(false);
 
     async function loadProducts() {
         setStatus('cargando');
@@ -15,11 +16,20 @@ export function useProducts() {
             const payload = await requestJson('/productos');
             const products = Array.isArray(payload.data) ? payload.data : [];
             setItems(products);
+            setIsDemo(false);
             setStatus('ok');
             setMessage(products.length ? 'Productos cargados correctamente.' : 'No hay productos disponibles.');
         } catch (error) {
-            setStatus('error');
-            setMessage(error.message || 'No se pudieron cargar los productos.');
+            try {
+                const products = await loadStaticProducts();
+                setItems(products);
+                setIsDemo(true);
+                setStatus('ok');
+                setMessage(DEMO_NOTICE);
+            } catch (staticError) {
+                setStatus('error');
+                setMessage(staticError.message || error.message || 'No se pudieron cargar los productos.');
+            }
         }
     }
 
@@ -48,6 +58,7 @@ export function useProducts() {
         filteredItems,
         query,
         setQuery,
+        isDemo,
         reload: loadProducts,
     };
 }

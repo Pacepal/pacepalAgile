@@ -1,9 +1,11 @@
 node_modules/
+frontend-react/node_modules
 frontend-react/node_modules/
 vendor/
 
 dist/
 build/
+frontend-react/dist
 frontend-react/dist/
 frontend-react/build/
 .vite/
@@ -42,5 +44,5 @@ venv/
 __pycache__/
 *.pyc
 
-.codex
+.c?dex
 .c?dex/

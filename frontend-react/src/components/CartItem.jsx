@@ -1,3 +1,5 @@
+import { buildPublicAssetUrl } from '../services/api.js';
+
 function formatPrice(value) {
   const number = Number(value);
   return Number.isFinite(number) ? `${number.toFixed(2)} EUR` : '0.00 EUR';
@@ -6,7 +8,7 @@ function formatPrice(value) {
 function CartItem({ item, onUpdate, onRemove }) {
   return (
     <article className="cart-item">
-      <img src={`../${item.imagen1 || 'img/productos/zapatillaPacepal1.webp'}`} alt={item.nombre || 'Producto'} />
+      <img src={buildPublicAssetUrl(item.imagen1 || 'img/productos/zapatillaPacepal1.webp')} alt={item.nombre || 'Producto'} />
       <div>
         <h3>{item.nombre || 'Producto'}</h3>
         <p>{formatPrice(item.precio_unitario)} x {item.cantidad}</p>
