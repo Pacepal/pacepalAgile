@@ -1,9 +1,7 @@
-# Dependencias
 node_modules/
 frontend-react/node_modules/
 vendor/
 
-# Builds y salidas generadas
 dist/
 build/
 frontend-react/dist/
@@ -11,7 +9,6 @@ frontend-react/build/
 .vite/
 frontend-react/.vite/
 
-# Variables de entorno y secretos
 .env
 .env.*
 !.env.example
@@ -23,7 +20,6 @@ frontend-react/.vite/
 *.cer
 *.pub
 
-# Logs y temporales
 *.log
 logs/
 npm-debug.log*
@@ -34,41 +30,17 @@ tmp/
 temp/
 .cache/
 
-# Sistema operativo
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Editor/IDE
 .vscode/
 .idea/
 
-# Python/entornos temporales
 .venv/
 venv/
 __pycache__/
 *.pyc
 
-# Archivos locales de IA, agentes, prompts o conversaciones
-*chatgpt*
-*ChatGPT*
-*copilot*
-*Copilot*
-*gemini*
-*Gemini*
-*claude*
-*Claude*
-*prompt*
-*prompts*
-*agente*
-*agentes*
-*agent*
-*agents*
-*conversation*
-*conversations*
-*copilot-chat*
-*agent-response*
-*respuesta-agente*
-
-# Herramientas locales del entorno
 .codex
+.c?dex/

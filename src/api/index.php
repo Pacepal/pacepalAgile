@@ -35,11 +35,21 @@ $cookieController = new CookieController();
 // ===== PARSEAR MÉTODO Y RUTA =====
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
-// Se extrae la ruta relativa
-$uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-$base = '/proyectoagilepacepal/src/api/index.php';
-$path = str_replace($base, '', $uri);
-$path = '/' . trim($path, '/');
+// Se decodifica la URL para que rutas con espacios (%20) coincidan con SCRIPT_NAME/PHP_SELF.
+$uri = rawurldecode(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/');
+$scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+$phpSelf = str_replace('\\', '/', $_SERVER['PHP_SELF'] ?? '');
+$scriptPathCandidates = array_values(array_unique(array_filter([$scriptName, $phpSelf])));
+
+$path = $uri;
+foreach ($scriptPathCandidates as $scriptPath) {
+    if ($scriptPath !== '' && str_starts_with($uri, $scriptPath)) {
+        $path = substr($uri, strlen($scriptPath));
+        break;
+    }
+}
+
+$path = '/' . trim((string) $path, '/');
 
 // ===== TABLA DE RUTAS =====
 $routes = [

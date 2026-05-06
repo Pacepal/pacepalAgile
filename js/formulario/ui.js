@@ -31,7 +31,7 @@ async function fetchSessionStatus(basePath) {
 			},
 		});
 
-		if (response.status !== 404) {
+		if (response.ok) {
 			const payload = await response.json().catch(function () {
 				return null;
 			});
@@ -80,7 +80,7 @@ async function doLogout(basePath) {
 			credentials: 'include',
 		});
 
-		if (response.status !== 404) {
+		if (response.ok) {
 			return;
 		}
 	} catch (_error) {

@@ -1,0 +1,380 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #14281d;
+  background: #f4efe6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(223, 169, 88, 0.24),
+      transparent 28%
+    ),
+    linear-gradient(180deg, #f8f4ec 0%, #efe6d8 100%);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+code {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(20, 40, 29, 0.08);
+  color: #19392b;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 2rem clamp(1.25rem, 3vw, 3rem);
+  background: rgba(20, 40, 29, 0.94);
+  color: #f8f4ec;
+  border-bottom: 1px solid rgba(248, 244, 236, 0.1);
+}
+
+.app-header__title {
+  margin: 0.25rem 0 0;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+.app-header__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.app-shell__content {
+  width: min(1180px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+}
+
+.hero-panel,
+.roadmap-panel,
+.panel-card {
+  border: 1px solid rgba(20, 40, 29, 0.1);
+  border-radius: 1.5rem;
+  background: rgba(255, 252, 247, 0.88);
+  box-shadow: 0 20px 45px rgba(20, 40, 29, 0.08);
+}
+
+.hero-panel,
+.roadmap-panel {
+  padding: 1.5rem;
+}
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: #7c5a27;
+  font-weight: 700;
+}
+
+.lead {
+  max-width: 70ch;
+  font-size: 1.05rem;
+}
+
+.status-grid,
+.shop-grid,
+.forms-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.status-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 1.5rem;
+}
+
+.status-card {
+  padding: 1.1rem;
+  border-radius: 1.1rem;
+  background: rgba(20, 40, 29, 0.04);
+}
+
+.status-card h2,
+.panel-card h2,
+.roadmap-panel h2 {
+  margin-top: 0;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.status-pill--ok {
+  background: rgba(45, 125, 78, 0.16);
+  color: #175233;
+}
+
+.status-pill--pending {
+  background: rgba(223, 169, 88, 0.22);
+  color: #7a4d09;
+}
+
+.status-pill--error {
+  background: rgba(170, 47, 47, 0.14);
+  color: #8c1f1f;
+}
+
+.header-button {
+  border: 1px solid rgba(248, 244, 236, 0.35);
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  background: transparent;
+  color: #f8f4ec;
+  font-weight: 700;
+}
+
+.shop-grid {
+  grid-template-columns: 1.5fr 1fr;
+  margin-top: 1.5rem;
+}
+
+.shop-column,
+.forms-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.forms-grid {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  margin-top: 1.5rem;
+}
+
+.panel-card {
+  padding: 1.25rem;
+}
+
+.panel-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.text-input {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(20, 40, 29, 0.14);
+  border-radius: 0.9rem;
+  background: #fff;
+}
+
+.card-grid,
+.stack-list {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.card-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.product-card,
+.cart-item,
+.summary-box {
+  border: 1px solid rgba(20, 40, 29, 0.12);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.product-card {
+  display: grid;
+  grid-template-rows: 170px 1fr;
+  gap: 1rem;
+}
+
+.product-card img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.85rem;
+  object-fit: cover;
+  background: rgba(20, 40, 29, 0.06);
+}
+
+.product-card__body {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.product-card__body h3,
+.cart-item h3 {
+  margin: 0;
+}
+
+.product-card__body p,
+.cart-item p {
+  margin: 0;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 64px 1fr 72px auto auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.cart-item img {
+  width: 64px;
+  height: 64px;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.summary-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form-shell {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.form-shell label,
+.quantity-field {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 700;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.check-field {
+  display: flex !important;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.field-error {
+  color: #8c1f1f;
+  font-size: 0.9rem;
+}
+
+.quantity-field input,
+.quantity-input {
+  width: 100%;
+  padding: 0.55rem;
+  border: 1px solid rgba(20, 40, 29, 0.14);
+  border-radius: 0.65rem;
+}
+
+.primary-button,
+.ghost-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.85rem 1.1rem;
+  font-weight: 700;
+}
+
+.primary-button {
+  background: #214e34;
+  color: #f8f4ec;
+}
+
+.primary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ghost-button {
+  background: rgba(20, 40, 29, 0.08);
+  color: #214e34;
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.roadmap-panel {
+  margin-top: 1.5rem;
+}
+
+.roadmap-panel ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+@media (max-width: 860px) {
+  .app-header {
+    flex-direction: column;
+  }
+
+  .app-header__badges {
+    justify-content: flex-start;
+  }
+
+  .shop-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-item {
+    grid-template-columns: 56px 1fr;
+  }
+
+  .cart-item .quantity-input,
+  .cart-item strong,
+  .cart-item button {
+    grid-column: 1 / -1;
+  }
+
+  .summary-box,
+  .panel-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
