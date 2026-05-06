@@ -22,7 +22,7 @@ function CartItem({ item, onUpdate, onRemove }) {
         aria-label={`Cantidad de ${item.nombre}`}
       />
       <strong>{formatPrice(item.subtotal)}</strong>
-      <button type="button" className="ghost-button" onClick={() => onRemove(item.id_articulo)}>
+      <button type="button" className="boton" onClick={() => onRemove(item.id_articulo)}>
         Eliminar
       </button>
     </article>

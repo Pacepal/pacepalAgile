@@ -1,19 +1,17 @@
 function SearchBar({ query, onQueryChange }) {
   return (
-    <section className="panel-card" aria-labelledby="search-bar-title">
-      <div className="panel-card__header">
-        <h2 id="search-bar-title">Buscador de productos</h2>
-        <span className="status-pill status-pill--ok">nombre y descripcion</span>
-      </div>
+    <div className="buscador-react" aria-labelledby="search-bar-title">
+      <span id="search-bar-title" className="visually-hidden">Buscador de productos</span>
       <input
-        className="text-input"
+        className="form-control"
         type="search"
         value={query}
-        placeholder="Buscar por nombre o descripcion"
+        placeholder="Buscar por nombre"
         aria-label="Buscar productos"
+        autoComplete="off"
         onChange={(event) => onQueryChange(event.target.value)}
       />
-    </section>
+    </div>
   );
 }
 

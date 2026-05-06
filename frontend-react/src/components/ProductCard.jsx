@@ -11,12 +11,12 @@ function ProductCard({ product, onAddToCart }) {
   const image = buildPublicAssetUrl(product.imagen1 || 'img/productos/zapatillaPacepal1.webp');
 
   return (
-    <article className="product-card">
+    <article className="tarjeta tarjeta-producto product-card">
       <img src={image} alt={product.nombre || 'Producto PacePal'} loading="lazy" />
-      <div className="product-card__body">
+      <div className="tarjeta-producto__cuerpo product-card__body">
         <h3>{product.nombre || 'Producto sin nombre'}</h3>
-        <p>{product.descripcion || 'Producto del catalogo PacePal.'}</p>
-        <strong>{formatPrice(product.precio)}</strong>
+        <p><span aria-hidden="true">●</span>{formatPrice(product.precio)}</p>
+        <p><span aria-hidden="true">●</span>{product.descripcion || 'Producto del catalogo PacePal.'}</p>
         <label className="quantity-field">
           Cantidad
           <input
@@ -29,7 +29,7 @@ function ProductCard({ product, onAddToCart }) {
         </label>
         <button
           type="button"
-          className="primary-button"
+          className="boton boton--primario"
           onClick={() => onAddToCart(product, quantity)}
         >
           Anadir al carrito

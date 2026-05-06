@@ -7,14 +7,14 @@ function formatPrice(value) {
 
 function Cart({ cart }) {
   return (
-    <section className="panel-card" aria-labelledby="cart-title">
-      <div className="panel-card__header">
+    <section id="carrito" className="tarjeta react-panel" aria-labelledby="cart-title">
+      <div className="react-panel__header">
         <h2 id="cart-title">Carrito</h2>
-        <span className={`status-pill status-pill--${cart.status === 'error' ? 'error' : 'ok'}`}>
+        <span className="contador-react">
           {cart.count}
         </span>
       </div>
-      <p>{cart.message}</p>
+      <p className="texto-suave">{cart.message}</p>
       <div className="stack-list">
         {cart.items.map((item) => (
           <CartItem
@@ -32,7 +32,7 @@ function Cart({ cart }) {
       </div>
       <button
         type="button"
-        className="primary-button full-width"
+        className="boton boton--primario full-width"
         disabled={cart.items.length === 0}
         onClick={cart.checkout}
       >
