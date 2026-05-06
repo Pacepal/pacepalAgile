@@ -1,0 +1,44 @@
+{
+  "data": [
+    {
+      "id_actividad": 1,
+      "nombre": "Casa de Campo",
+      "tipo": "Running suave",
+      "nivel": "principiante",
+      "fecha": "Sabado",
+      "hora": "10:00",
+      "plazas_max": 12,
+      "descripcion": "Salida de running suave para retomar la rutina."
+    },
+    {
+      "id_actividad": 2,
+      "nombre": "Retiro",
+      "tipo": "Walking relajado",
+      "nivel": "basico",
+      "fecha": "Domingo",
+      "hora": "09:30",
+      "plazas_max": 8,
+      "descripcion": "Paseo urbano para empezar el domingo en grupo."
+    },
+    {
+      "id_actividad": 3,
+      "nombre": "Madrid Rio",
+      "tipo": "Running moderado",
+      "nivel": "intermedio",
+      "fecha": "Sabado",
+      "hora": "18:00",
+      "plazas_max": 15,
+      "descripcion": "Entrenamiento moderado junto al rio."
+    },
+    {
+      "id_actividad": 4,
+      "nombre": "Senda Schmidt",
+      "tipo": "Senderismo",
+      "nivel": "intermedio",
+      "fecha": "Domingo",
+      "hora": "08:30",
+      "plazas_max": 10,
+      "descripcion": "Ruta de montana para grupo con experiencia media."
+    }
+  ]
+}

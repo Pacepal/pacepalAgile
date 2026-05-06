@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { DEMO_NOTICE, requestJson } from '../services/api.js';
+import { requestJson } from '../services/api.js';
 
 const demoStorageKey = 'pacepal-react-demo-cart';
 
@@ -38,7 +38,7 @@ export function useCart() {
     const [message, setMessage] = useState('Cargando carrito.');
     const [isDemo, setIsDemo] = useState(false);
 
-    function syncDemoCart(cartItems, nextMessage = DEMO_NOTICE) {
+    function syncDemoCart(cartItems, nextMessage = 'Carrito actualizado.') {
         const normalizedItems = cartItems.map((item) => ({
             ...item,
             id_articulo: Number(item.id_articulo),
@@ -67,7 +67,7 @@ export function useCart() {
             setStatus('ok');
             setMessage('Carrito sincronizado.');
         } catch (error) {
-            syncDemoCart(readDemoCart(), DEMO_NOTICE);
+            syncDemoCart(readDemoCart(), 'Carrito listo para esta visita.');
         }
     }
 
@@ -93,7 +93,7 @@ export function useCart() {
                         imagen1: product.imagen1,
                     },
                 ];
-            syncDemoCart(nextItems, 'Producto anadido al carrito demo.');
+            syncDemoCart(nextItems, 'Producto anadido al carrito.');
             return;
         }
 
@@ -117,7 +117,7 @@ export function useCart() {
                     imagen1: product.imagen1,
                 },
             ];
-            syncDemoCart(nextItems, DEMO_NOTICE);
+            syncDemoCart(nextItems, 'Producto anadido al carrito.');
         }
     }
 
@@ -128,7 +128,7 @@ export function useCart() {
                     ? { ...item, cantidad: Number(quantity || 1) }
                     : item
             );
-            syncDemoCart(nextItems, 'Cantidad actualizada en el carrito demo.');
+            syncDemoCart(nextItems, 'Cantidad actualizada.');
             return;
         }
 
@@ -148,7 +148,7 @@ export function useCart() {
     async function removeItem(productId) {
         if (isDemo) {
             const nextItems = readDemoCart().filter((item) => Number(item.id_articulo) !== Number(productId));
-            syncDemoCart(nextItems, 'Producto eliminado del carrito demo.');
+            syncDemoCart(nextItems, 'Producto eliminado del carrito.');
             return;
         }
 
@@ -167,7 +167,7 @@ export function useCart() {
 
     async function checkout() {
         if (isDemo) {
-            setMessage('El pedido real requiere API PHP local. En GitHub Pages el carrito es solo demostrativo.');
+            setMessage('Pedido revisado. La finalizacion completa no esta disponible en esta vista.');
             return;
         }
 

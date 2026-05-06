@@ -1,54 +1,125 @@
+import { useEffect, useMemo, useState } from 'react';
 import Header from './components/Header.jsx';
-import SearchBar from './components/SearchBar.jsx';
-import ProductGallery from './components/ProductGallery.jsx';
-import Cart from './components/Cart.jsx';
-import LoginForm from './components/LoginForm.jsx';
-import RegisterForm from './components/RegisterForm.jsx';
-import { DEMO_NOTICE } from './services/api.js';
+import HomePage from './components/HomePage.jsx';
+import ActivitiesPage from './components/ActivitiesPage.jsx';
+import RoutesPage from './components/RoutesPage.jsx';
+import ShopPage from './components/ShopPage.jsx';
+import CartPage from './components/CartPage.jsx';
+import AboutPage from './components/AboutPage.jsx';
+import { LoginPage, RegisterPage } from './components/AuthPages.jsx';
+import ProfilePage from './components/ProfilePage.jsx';
+import CreateActivityPage from './components/CreateActivityPage.jsx';
+import { buildPublicAssetUrl } from './services/api.js';
 import { useProducts } from './hooks/useProducts.js';
 import { useCart } from './hooks/useCart.js';
 import { useSession } from './hooks/useSession.js';
+import { useRoutes } from './hooks/useRoutes.js';
+import { useActivities } from './hooks/useActivities.js';
+
+const validPages = new Set([
+  'inicio',
+  'actividades',
+  'tienda',
+  'rutas',
+  'about',
+  'carrito',
+  'login',
+  'registro',
+  'perfil',
+  'crear-actividad',
+]);
+
+function readPageFromHash() {
+  const hash = window.location.hash.replace(/^#/, '');
+  return validPages.has(hash) ? hash : 'inicio';
+}
 
 function App() {
   const products = useProducts();
   const cart = useCart();
   const session = useSession();
-  const isDemo = products.isDemo || cart.isDemo || session.isDemo;
+  const routes = useRoutes();
+  const activities = useActivities();
+  const [currentPage, setCurrentPage] = useState(readPageFromHash);
+
+  useEffect(() => {
+    function handleHashChange() {
+      setCurrentPage(readPageFromHash());
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  function navigate(page) {
+    const nextPage = validPages.has(page) ? page : 'inicio';
+    if (window.location.hash !== `#${nextPage}`) {
+      window.location.hash = nextPage;
+    } else {
+      setCurrentPage(nextPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  const bodyClass = useMemo(() => {
+    if (currentPage === 'inicio') return 'pagina';
+    if (currentPage === 'login' || currentPage === 'registro') return 'pagina-formulario';
+    if (currentPage === 'about') return 'pagina pagina-about';
+    if (currentPage === 'rutas') return 'pagina-interna pagina-rutas';
+    if (currentPage === 'actividades' || currentPage === 'crear-actividad') return 'pagina-interna pagina-actividades';
+    if (currentPage === 'perfil') return 'pagina-interna pagina-usuario';
+    return 'pagina-interna pagina-tienda';
+  }, [currentPage]);
 
   return (
-    <div className="pagina-interna pagina-tienda app-shell">
-      <Header cartCount={cart.count} session={session} />
+    <div className={`${bodyClass} app-shell`}>
+      <Header cartCount={cart.count} session={session} currentPage={currentPage} onNavigate={navigate} />
 
-      <main>
-        <section className="seccion-pagina">
-          <div className="contenedor">
-            {isDemo ? <p className="demo-notice">{DEMO_NOTICE}</p> : null}
-
-            <div className="tienda-toolbar">
-              <h2>Productos disponibles</h2>
-              <SearchBar query={products.query} onQueryChange={products.setQuery} />
-            </div>
-
-            <ProductGallery
-              status={products.status}
-              message={products.message}
-              products={products.filteredItems}
-              onAddToCart={cart.addItem}
-            />
-
-            <div className="react-sprint-grid">
-              <Cart cart={cart} />
-              <LoginForm session={session} />
-              <RegisterForm onRegister={session.register} sessionMessage={session.message} />
-            </div>
-          </div>
-        </section>
-      </main>
+      {currentPage === 'inicio' ? <HomePage onNavigate={navigate} /> : null}
+      {currentPage === 'actividades' ? <ActivitiesPage activities={activities} session={session} onNavigate={navigate} /> : null}
+      {currentPage === 'tienda' ? <ShopPage products={products} cart={cart} /> : null}
+      {currentPage === 'rutas' ? <RoutesPage routes={routes} onNavigate={navigate} /> : null}
+      {currentPage === 'about' ? <AboutPage /> : null}
+      {currentPage === 'carrito' ? <CartPage cart={cart} onNavigate={navigate} /> : null}
+      {currentPage === 'login' ? <LoginPage session={session} onNavigate={navigate} /> : null}
+      {currentPage === 'registro' ? <RegisterPage session={session} onNavigate={navigate} /> : null}
+      {currentPage === 'perfil' ? <ProfilePage session={session} /> : null}
+      {currentPage === 'crear-actividad' ? <CreateActivityPage routes={routes} session={session} onNavigate={navigate} /> : null}
 
       <footer className="pie">
-        <div className="contenedor pie__legal">
-          <span>PacePal</span>
-          <span>Cliente React Sprint 3</span>
+        <div className="contenedor">
+          <div className="pie__rejilla">
+            <section className="pie__col">
+              <h3 className="logo pie__logo">
+                <img src={buildPublicAssetUrl('img/logo/logo.webp')} alt="Logo PacePal" className="logo__img" />
+                <span className="logo__texto">PacePal</span>
+              </h3>
+              <p>Conectando personas para actividades deportivas.</p>
+            </section>
+            <section className="pie__col">
+              <h4>Explora</h4>
+              <button type="button" onClick={() => navigate('actividades')}>Actividades</button>
+              <button type="button" onClick={() => navigate('rutas')}>Rutas</button>
+              <button type="button" onClick={() => navigate('about')}>Sobre nosotros</button>
+            </section>
+            <section className="pie__col">
+              <h4>Tienda</h4>
+              <button type="button" onClick={() => navigate('tienda')}>Productos</button>
+              <button type="button" onClick={() => navigate('registro')}>Crear cuenta</button>
+            </section>
+            <section className="pie__col">
+              <h4>Legal</h4>
+              <span>Politica de cookies</span>
+            </section>
+          </div>
+          <div className="pie__inferior">
+            <p>© 2026 PacePal. Todos los derechos reservados.</p>
+            <span className="credito-treecore">
+              Creado por el equipo de Treecore Studio
+              <img src={buildPublicAssetUrl('img/logo/logotipoTrecore.webp')} alt="Logo Treecore Studio" />
+            </span>
+          </div>
         </div>
       </footer>
     </div>

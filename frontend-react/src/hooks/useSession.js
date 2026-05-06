@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DEMO_NOTICE, requestJson } from '../services/api.js';
+import { requestJson } from '../services/api.js';
 
 export function useSession() {
     const [user, setUser] = useState(null);
@@ -31,14 +31,14 @@ export function useSession() {
             setUser(null);
             setStatus('demo');
             setIsDemo(true);
-            setMessage(DEMO_NOTICE);
+            setMessage('Puedes navegar por PacePal. El acceso completo no esta disponible en esta vista.');
         }
     }
 
     async function login(credentials) {
         if (isDemo) {
             setStatus('demo');
-            setMessage('La autenticacion real requiere API PHP local con XAMPP. En GitHub Pages solo se validan los campos.');
+            setMessage('Formulario validado. El acceso completo no esta disponible en esta vista.');
             return false;
         }
 
@@ -55,7 +55,7 @@ export function useSession() {
         } catch (error) {
             setStatus('demo');
             setIsDemo(true);
-            setMessage('La autenticacion real requiere API PHP local con XAMPP. En GitHub Pages solo se validan los campos.');
+            setMessage('Formulario validado. El acceso completo no esta disponible en esta vista.');
             return false;
         }
     }
@@ -63,7 +63,7 @@ export function useSession() {
     async function register(data) {
         if (isDemo) {
             setStatus('demo');
-            setMessage('El registro real requiere API PHP local con XAMPP. En GitHub Pages solo se validan los campos.');
+            setMessage('Formulario validado. El registro completo no esta disponible en esta vista.');
             return false;
         }
 
@@ -77,7 +77,7 @@ export function useSession() {
         } catch (error) {
             setStatus('demo');
             setIsDemo(true);
-            setMessage('El registro real requiere API PHP local con XAMPP. En GitHub Pages solo se validan los campos.');
+            setMessage('Formulario validado. El registro completo no esta disponible en esta vista.');
             return false;
         }
     }
@@ -86,7 +86,7 @@ export function useSession() {
         if (isDemo) {
             setUser(null);
             setStatus('demo');
-            setMessage(DEMO_NOTICE);
+            setMessage('Sesion cerrada.');
             return;
         }
 

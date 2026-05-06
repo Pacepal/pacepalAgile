@@ -105,76 +105,80 @@ function RegisterForm({ onRegister, sessionMessage }) {
   }
 
   return (
-    <section className="panel-card" aria-labelledby="register-form-title">
-      <div className="panel-card__header">
-        <h2 id="register-form-title">Registro</h2>
-        <span className="status-pill status-pill--ok">validado</span>
-      </div>
-      <p>{localMessage || sessionMessage}</p>
-      <form className="form-shell" onSubmit={handleSubmit} noValidate>
-        <label>
+    <section className="tarjeta-formulario" aria-labelledby="register-form-title">
+      <h1 id="register-form-title">Registro de usuario</h1>
+      <form id="formRegistro" onSubmit={handleSubmit} noValidate>
+        <label htmlFor="register-nombre">
           Nombre y apellidos
-          <input className="text-input" value={values.nombre} onChange={(event) => updateField('nombre', event.target.value)} />
-          {errors.nombre ? <span className="field-error">{errors.nombre}</span> : null}
+          <input id="register-nombre" name="nombreApellidos" value={values.nombre} onChange={(event) => updateField('nombre', event.target.value)} placeholder="Ejemplo: Pablo Sevillano" />
         </label>
-        <label>
+        <div className="mensaje-error" aria-live="polite">{errors.nombre || ''}</div>
+        <label htmlFor="register-email">
           Email
-          <input className="text-input" type="email" value={values.email} onChange={(event) => updateField('email', event.target.value)} />
-          {errors.email ? <span className="field-error">{errors.email}</span> : null}
+          <input id="register-email" name="email" type="email" value={values.email} onChange={(event) => updateField('email', event.target.value)} placeholder="ejemplo@email.com" />
         </label>
-        <label>
+        <div className="mensaje-error" aria-live="polite">{errors.email || ''}</div>
+        <label htmlFor="register-dni">
           DNI
-          <input className="text-input" value={values.dni} onChange={(event) => updateField('dni', event.target.value.toUpperCase().replace(/\s/g, ''))} />
-          {errors.dni ? <span className="field-error">{errors.dni}</span> : null}
+          <input id="register-dni" name="dni" value={values.dni} onChange={(event) => updateField('dni', event.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="12345678Z" maxLength="9" />
         </label>
-        <label>
+        <div className="mensaje-error" aria-live="polite">{errors.dni || ''}</div>
+        <label htmlFor="register-password">
           Contrasena
-          <input className="text-input" type="password" value={values.password} onChange={(event) => updateField('password', event.target.value)} />
-          {errors.password ? <span className="field-error">{errors.password}</span> : null}
+          <input id="register-password" name="password" type="password" value={values.password} onChange={(event) => updateField('password', event.target.value)} placeholder="Ejemplo: PacePal#2026" />
         </label>
-        <label>
+        <div className="mensaje-error" aria-live="polite">{errors.password || ''}</div>
+        <label htmlFor="register-confirm-password">
           Confirmar contrasena
-          <input className="text-input" type="password" value={values.confirmPassword} onChange={(event) => updateField('confirmPassword', event.target.value)} />
-          {errors.confirmPassword ? <span className="field-error">{errors.confirmPassword}</span> : null}
+          <input id="register-confirm-password" name="confirmPassword" type="password" value={values.confirmPassword} onChange={(event) => updateField('confirmPassword', event.target.value)} placeholder="Repite la contrasena" />
         </label>
+        <div className="mensaje-error" aria-live="polite">{errors.confirmPassword || ''}</div>
         <div className="form-grid">
-          <label>
+          <label htmlFor="register-sexo">
             Sexo
-            <select className="text-input" value={values.sexo} onChange={(event) => updateField('sexo', event.target.value)}>
-              <option value="">No indicado</option>
-              <option value="hombre">Hombre</option>
+            <select id="register-sexo" name="sexo" value={values.sexo} onChange={(event) => updateField('sexo', event.target.value)}>
+              <option value="">Selecciona una opcion</option>
               <option value="mujer">Mujer</option>
+              <option value="hombre">Hombre</option>
+            </select>
+          </label>
+          <label htmlFor="register-fecha">
+            Fecha de nacimiento
+            <input id="register-fecha" name="fechaNacimiento" type="date" value={values.fecha_nacimiento} onChange={(event) => updateField('fecha_nacimiento', event.target.value)} />
+          </label>
+        </div>
+        <div className="form-grid">
+          <label htmlFor="register-direccion">
+            Direccion
+            <input id="register-direccion" name="direccion" value={values.direccion} onChange={(event) => updateField('direccion', event.target.value)} placeholder="Ejemplo: Calle Mayor 15" />
+          </label>
+          <label htmlFor="register-pais">
+            Pais
+            <select id="register-pais" name="pais" value={values.pais} onChange={(event) => updateField('pais', event.target.value)}>
+              <option value="">Selecciona un pais</option>
+              <option value="es">Espana</option>
+              <option value="pt">Portugal</option>
+              <option value="fr">Francia</option>
+              <option value="it">Italia</option>
               <option value="otro">Otro</option>
             </select>
           </label>
-          <label>
-            Fecha de nacimiento
-            <input className="text-input" type="date" value={values.fecha_nacimiento} onChange={(event) => updateField('fecha_nacimiento', event.target.value)} />
-          </label>
         </div>
-        <div className="form-grid">
-          <label>
-            Direccion
-            <input className="text-input" value={values.direccion} onChange={(event) => updateField('direccion', event.target.value)} />
-            {errors.direccion ? <span className="field-error">{errors.direccion}</span> : null}
-          </label>
-          <label>
-            Pais
-            <input className="text-input" value={values.pais} onChange={(event) => updateField('pais', event.target.value)} />
-          </label>
-        </div>
+        <div className="mensaje-error" aria-live="polite">{errors.direccion || ''}</div>
         {showCard ? (
-          <label>
+          <label htmlFor="register-tarjeta">
             Tarjeta
             <input
-              className="text-input"
+              id="register-tarjeta"
+              name="tarjetaCredito"
               value={values.tarjeta}
               onChange={(event) => updateField('tarjeta', event.target.value.replace(/\D/g, '').slice(0, 19))}
+              placeholder="1234 5678 9012 3456"
             />
-            {errors.tarjeta ? <span className="field-error">{errors.tarjeta}</span> : null}
+            <span className="mensaje-error">{errors.tarjeta || ''}</span>
           </label>
         ) : null}
-        <label className="check-field">
+        <label className="contenedor-checkbox">
           <input
             type="checkbox"
             checked={values.notificaciones}
@@ -182,7 +186,7 @@ function RegisterForm({ onRegister, sessionMessage }) {
           />
           Notificaciones
         </label>
-        <label className="check-field">
+        <label className="contenedor-checkbox">
           <input
             type="checkbox"
             checked={values.revista}
@@ -190,9 +194,10 @@ function RegisterForm({ onRegister, sessionMessage }) {
           />
           Revista digital
         </label>
-        <button type="submit" className="primary-button">
+        <button type="submit" className="boton boton--primario">
           Crear cuenta
         </button>
+        <div className="mensaje-resultado" aria-live="polite">{localMessage || sessionMessage}</div>
       </form>
     </section>
   );

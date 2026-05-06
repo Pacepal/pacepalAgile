@@ -1,13 +1,12 @@
 const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL || '../../src/api/index.php/api').trim();
-const staticProductsUrl = `${import.meta.env.BASE_URL}data/productos.json`;
-
-export const DEMO_NOTICE =
-    'Modo demo estático: GitHub Pages no ejecuta PHP. La integración real con PHP y base de datos se valida en local con XAMPP.';
 
 export const apiConfig = {
     baseUrl: configuredBaseUrl,
-    staticProductsUrl,
-    note: 'Cliente React preparado para API PHP local y demo estatica.',
+    staticData: {
+        productos: `${import.meta.env.BASE_URL}data/productos.json`,
+        rutas: `${import.meta.env.BASE_URL}data/rutas.json`,
+        actividades: `${import.meta.env.BASE_URL}data/actividades.json`,
+    },
 };
 
 export function buildApiUrl(path) {
@@ -40,13 +39,19 @@ export async function requestJson(path, options = {}) {
     return payload;
 }
 
-export async function loadStaticProducts() {
-    const response = await fetch(staticProductsUrl, {
+export async function loadStaticData(type) {
+    const url = apiConfig.staticData[type];
+
+    if (!url) {
+        throw new Error('No se encontro el recurso solicitado.');
+    }
+
+    const response = await fetch(url, {
         headers: { Accept: 'application/json' },
     });
 
     if (!response.ok) {
-        throw new Error('No se pudo cargar el catalogo estatico.');
+        throw new Error('No se pudo cargar el recurso solicitado.');
     }
 
     const payload = await response.json();

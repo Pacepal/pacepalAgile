@@ -36,39 +36,47 @@ function LoginForm({ session }) {
   }
 
   return (
-    <section className="panel-card" aria-labelledby="login-form-title">
-      <div className="panel-card__header">
-        <h2 id="login-form-title">Login</h2>
-        <span className={`status-pill status-pill--${session.status === 'error' ? 'error' : 'ok'}`}>
-          {session.status}
-        </span>
-      </div>
-      <p>{session.message}</p>
-      <form className="form-shell" onSubmit={handleSubmit} noValidate>
-        <label>
+    <section className="tarjeta-formulario" aria-labelledby="login-form-title">
+      <h1 id="login-form-title">Iniciar sesion</h1>
+      <form id="formLogin" onSubmit={handleSubmit} noValidate>
+        <label htmlFor="login-email">
           Email
           <input
-            className="text-input"
+            id="login-email"
+            name="email"
             type="email"
+            autoComplete="email"
+            placeholder="ejemplo@email.com"
             value={values.email}
             onChange={(event) => updateField('email', event.target.value)}
           />
-          {errors.email ? <span className="field-error">{errors.email}</span> : null}
         </label>
-        <label>
+        <div className="mensaje-error" aria-live="polite">{errors.email || ''}</div>
+        <label htmlFor="login-password">
           Contrasena
           <input
-            className="text-input"
+            id="login-password"
+            name="password"
             type="password"
+            autoComplete="current-password"
+            placeholder="Introduce tu contrasena"
             value={values.password}
             onChange={(event) => updateField('password', event.target.value)}
           />
-          {errors.password ? <span className="field-error">{errors.password}</span> : null}
         </label>
-        <button type="submit" className="primary-button">
+        <div className="mensaje-error" aria-live="polite">{errors.password || ''}</div>
+        <button type="submit" className="boton boton--primario">
           Iniciar sesion
         </button>
+        <div className="mensaje-resultado" aria-live="polite">{session.message}</div>
       </form>
+      <div className="credenciales-prueba">
+        <p>Para probar la aplicacion, puedes usar estas credenciales:</p>
+        <ul>
+          <li>Usuario: admin@pacepal.com</li>
+          <li>Contrasena: Admin1234*</li>
+        </ul>
+      </div>
     </section>
   );
 }

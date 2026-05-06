@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "id_ruta": 1,
+      "nombre": "Casa de Campo",
+      "ubicacion": "Madrid",
+      "distancia": 6.5,
+      "dificultad": "principiante",
+      "imagen": "img/rutas/retiro.webp"
+    },
+    {
+      "id_ruta": 2,
+      "nombre": "Senda Schmidt",
+      "ubicacion": "Sierra de Guadarrama",
+      "distancia": 12.0,
+      "dificultad": "intermedio",
+      "imagen": "img/rutas/schmidt.webp"
+    },
+    {
+      "id_ruta": 3,
+      "nombre": "Penalara",
+      "ubicacion": "Puerto de Cotos",
+      "distancia": 14.2,
+      "dificultad": "avanzado",
+      "imagen": "img/rutas/penalara.webp"
+    },
+    {
+      "id_ruta": 4,
+      "nombre": "La Jarosa",
+      "ubicacion": "Guadarrama",
+      "distancia": 8.4,
+      "dificultad": "intermedio",
+      "imagen": "img/rutas/jarosa.webp"
+    },
+    {
+      "id_ruta": 5,
+      "nombre": "Siete Picos",
+      "ubicacion": "Cercedilla",
+      "distancia": 10.5,
+      "dificultad": "avanzado",
+      "imagen": "img/rutas/siete_picos.webp"
+    },
+    {
+      "id_ruta": 6,
+      "nombre": "Retiro",
+      "ubicacion": "Madrid",
+      "distancia": 4.0,
+      "dificultad": "principiante",
+      "imagen": "img/rutas/retiro.webp"
+    }
+  ]
+}
