@@ -4,7 +4,7 @@ function detectApiBaseUrl() {
         return explicit;
     }
 
-    if (typeof window !== 'undefined' && (window.location.port === '5173' || window.location.port === '4173')) {
+    if (import.meta.env.DEV) {
         return '/src/api/index.php/api';
     }
 
@@ -12,13 +12,39 @@ function detectApiBaseUrl() {
 }
 
 const configuredBaseUrl = detectApiBaseUrl();
+const publicBaseUrl = import.meta.env.BASE_URL;
+
+function normalizePublicPath(path) {
+    const rawPath = String(path || '').trim();
+
+    if (!rawPath) {
+        return '';
+    }
+
+    if (/^(?:[a-z]+:)?\/\//i.test(rawPath) || rawPath.startsWith('data:')) {
+        return rawPath;
+    }
+
+    const baseSegment = publicBaseUrl.replace(/^\/+|\/+$/g, '');
+    let normalizedPath = rawPath.replace(/\\/g, '/').replace(/^\.\/?/, '').replace(/^\/+/, '');
+
+    while (baseSegment && (normalizedPath === baseSegment || normalizedPath.startsWith(`${baseSegment}/`))) {
+        normalizedPath = normalizedPath.slice(baseSegment.length).replace(/^\/+/, '');
+    }
+
+    return normalizedPath ? `${publicBaseUrl}${normalizedPath}` : publicBaseUrl;
+}
+
+export function buildPublicAssetUrl(path) {
+    return normalizePublicPath(path);
+}
 
 export const apiConfig = {
     baseUrl: configuredBaseUrl,
     staticData: {
-        productos: `${import.meta.env.BASE_URL}data/productos.json`,
-        rutas: `${import.meta.env.BASE_URL}data/rutas.json`,
-        actividades: `${import.meta.env.BASE_URL}data/actividades.json`,
+        productos: buildPublicAssetUrl('data/productos.json'),
+        rutas: buildPublicAssetUrl('data/rutas.json'),
+        actividades: buildPublicAssetUrl('data/actividades.json'),
     },
 };
 
@@ -69,16 +95,4 @@ export async function loadStaticData(type) {
 
     const payload = await response.json();
     return Array.isArray(payload.data) ? payload.data : [];
-}
-
-export function buildPublicAssetUrl(path) {
-    if (!path) {
-        return '';
-    }
-
-    if (import.meta.env.DEV) {
-        return `/${String(path).replace(/^\/+/, '')}`;
-    }
-
-    return `${import.meta.env.BASE_URL}${String(path).replace(/^\/+/, '')}`;
 }

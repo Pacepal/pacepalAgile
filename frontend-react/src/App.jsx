@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
-import CookieConsent from './components/CookieConsent.jsx';
+import PrivacyNotice from './components/PrivacyNotice.jsx';
 import HomePage from './components/HomePage.jsx';
 import ActivitiesPage from './components/ActivitiesPage.jsx';
 import RoutesPage from './components/RoutesPage.jsx';
@@ -140,7 +140,7 @@ function App() {
       {currentPage === 'admin' ? <AdminPage session={session} activities={activities} routes={routes} /> : null}
 
       <Footer onNavigate={navigate} />
-      <CookieConsent onNavigate={navigate} />
+      <PrivacyNotice onNavigate={navigate} />
     </div>
   );
 }

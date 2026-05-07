@@ -71,7 +71,7 @@ function PreferenceGroup({ title, description, checked, disabled, onChange }) {
   );
 }
 
-function CookieConsent({ onNavigate }) {
+function PrivacyNotice({ onNavigate }) {
   const [view, setView] = useState(null);
   const [preferences, setPreferences] = useState(defaultConsent);
 
@@ -188,4 +188,4 @@ function CookieConsent({ onNavigate }) {
   );
 }
 
-export default CookieConsent;
+export default PrivacyNotice;
