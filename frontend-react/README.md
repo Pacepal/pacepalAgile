@@ -1,25 +1,15 @@
 # PacePal React Sprint 3
 
-Este directorio contiene el cliente React/Vite del Sprint 3 de Cliente de PacePal.
+Cliente React/Vite del Sprint 3 de Cliente de PacePal.
 
 ## Objetivo
 
-- aislar el nuevo cliente React/Vite dentro del mismo repositorio;
-- usar componentes reutilizables en formato `.jsx`;
-- consumir la API PHP real del proyecto;
-- conservar la aplicacion PHP + JavaScript existente como version previa y referencia de comportamiento.
+- aislar el cliente React dentro del mismo repositorio;
+- mantener el backend PHP/MySQL real como fuente de verdad en local;
+- publicar una demo defendible en GitHub Pages sin romper la experiencia cuando PHP no existe;
+- conservar el look and feel legacy reutilizando CSS e imagenes compartidas.
 
-## Funcionalidades migradas
-
-- galeria de productos obtenida desde `GET /api/productos`;
-- buscador por nombre y descripcion con actualizacion dinamica;
-- carrito conectado a sesion PHP mediante `GET/POST/PUT/DELETE /api/carrito`;
-- finalizacion de pedido con `POST /api/pedido`;
-- login con `POST /api/login` y consulta de sesion con `GET /api/session`;
-- registro con validaciones personalizadas y envio a `POST /api/register`.
-- fallback estatico para GitHub Pages cuando no hay PHP disponible.
-
-## Arquitectura
+## Entrada y despliegue
 
 Entrada Vite:
 
@@ -27,90 +17,108 @@ Entrada Vite:
 - `src/main.jsx`
 - `src/App.jsx`
 
-Componentes principales:
-
-- `Header.jsx`: cabecera y contador del carrito.
-- `SearchBar.jsx`: campo de busqueda.
-- `ProductGallery.jsx` y `ProductCard.jsx`: listado de productos y alta en carrito.
-- `Cart.jsx` y `CartItem.jsx`: contenido, cantidades, eliminacion y total.
-- `LoginForm.jsx` y `RegisterForm.jsx`: formularios sin recarga de pagina.
-
-Estado y servicios:
-
-- `hooks/useProducts.js`: carga productos, guarda busqueda y filtra resultados.
-- `hooks/useCart.js`: sincroniza carrito, cantidades, eliminacion, total y pedido.
-- `hooks/useSession.js`: login, registro, logout, estado de sesion y modo demo.
-- `services/api.js`: centraliza `fetch`, JSON, credenciales, URL base, aviso de demo y carga estatica.
-
-## Modo local real
-
-En local con XAMPP, React consume la API PHP existente. La URL base por defecto es:
-
-```text
-../../src/api/index.php/api
-```
-
-Puede sobrescribirse con:
-
-```bash
-VITE_API_BASE_URL=http://localhost/pacepal/src/api/index.php/api
-```
-
-La API PHP sigue gestionando usuarios, login, registro, sesion, catalogo, carrito, pedidos y base de datos. React no se conecta directamente a MySQL.
-
-## Modo GitHub Pages
-
-GitHub Pages publica archivos estaticos. No ejecuta PHP ni MySQL.
-
-Cuando la API no responde, React carga productos desde:
-
-```text
-public/data/productos.json
-```
-
-En ese modo:
-
-- se muestra un aviso visible sobre la limitacion de GitHub Pages;
-- el carrito funciona con `localStorage`;
-- login y registro validan campos, pero explican que la autenticacion real requiere la API PHP local.
-
-Vite esta configurado con:
+Configuracion publica:
 
 ```js
 base: '/pacepalAgile/'
 ```
 
-Esto prepara las rutas del build para publicacion bajo el repositorio `pacepalAgile`.
+El workflow de GitHub Pages construye `frontend-react/` y copia los assets compartidos de `img/` al `dist/` publicado.
+
+## Arquitectura
+
+### Paginas principales
+
+- `HomePage.jsx`
+- `ActivitiesPage.jsx`
+- `ActivityDetailPage.jsx`
+- `RoutesPage.jsx`
+- `RouteDetailPage.jsx`
+- `ShopPage.jsx`
+- `ProductDetailPage.jsx`
+- `CartPage.jsx`
+- `ProfilePage.jsx`
+- `AboutPage.jsx`
+- `CookiesPage.jsx`
+- `AuthPages.jsx`, `LoginPage.jsx`, `RegisterPage.jsx`
+
+### Componentes principales
+
+- `Header.jsx`: cabecera, contador del carrito, estado de sesion.
+- `Footer.jsx`: pie y accesos legales.
+- `PrivacyNotice.jsx`: banner y panel de consentimiento.
+- `SearchBar.jsx`: busqueda en catalogos.
+- `ProductCard.jsx`, `ActivityCard.jsx`, `RouteCard.jsx`: tarjetas reutilizables.
+- `LoginForm.jsx` y `RegisterForm.jsx`: formularios SPA.
+
+### Estado y servicios
+
+- `hooks/useProducts.js`: catalogo de tienda y filtrado.
+- `hooks/useActivities.js`: actividades.
+- `hooks/useRoutes.js`: rutas.
+- `hooks/useCart.js`: carrito real o demo.
+- `hooks/useSession.js`: sesion real o demo.
+- `services/api.js`: URL base, peticiones JSON y carga de datos estaticos.
+- `services/demo.js`: cookies, sesion demo, registro demo y carrito demo.
+
+### Reutilizacion legacy
+
+React importa `../../../css/estilos.css` desde `src/styles/global.css` y reutiliza las imagenes compartidas de `img/`. Esto mantiene la mayor parte del aspecto visual de la aplicacion original.
+
+## Modo local real
+
+En desarrollo, React apunta por defecto a:
+
+```text
+/src/api/index.php/api
+```
+
+Requisitos:
+
+1. Apache y MySQL activos en XAMPP.
+2. `db/schema.sql` y `db/seed.sql` importados.
+3. Proyecto servido desde `htdocs`.
+
+Con ese entorno activo, PHP sigue gestionando:
+
+- usuarios;
+- login y registro;
+- sesion PHP;
+- productos;
+- carrito;
+- pedidos;
+- perfil.
+
+## Modo GitHub Pages
+
+GitHub Pages no ejecuta PHP ni MySQL. El cliente intenta primero la API real y, cuando falla, activa el fallback demo.
+
+El fallback demo usa:
+
+- JSON estaticos en `public/data/`;
+- `localStorage` para `pacepal_demo_user`, `pacepal_demo_users` y `pacepal_demo_cart`;
+- `sessionStorage` para `pacepal_demo_session`;
+- cookies para `pacepal_cookie_consent` y `pacepal_session_demo`.
+
+Las cookies demo se escriben con `path=/pacepalAgile`, de modo que son visibles correctamente en la publicacion del repositorio.
 
 ## Comandos
 
 ```bash
 npm install
-npm run dev
+npm run dev -- --host 127.0.0.1
 npm run build
 ```
 
-Para probar el modo local real:
+## Verificacion final cerrada el 2026-05-07
 
-1. Arrancar Apache y MySQL en XAMPP.
-2. Importar `db/schema.sql` y `db/seed.sql`.
-3. Servir el proyecto desde `htdocs`.
-4. Ejecutar React con `npm run dev`.
-5. Verificar que `GET /api/productos`, carrito, login y registro responden desde PHP.
+- `npm run build` -> correcto.
+- `npm run dev -- --host 127.0.0.1` -> correcto.
+- GitHub Pages validado en `https://pacepal.github.io/pacepalAgile/pacepal-react.html?v=86f609d`.
+- Cookies validadas con `Aceptar todas` y `Solo tecnicas`.
+- Login demo, logout, registro demo, duplicado y carrito demo validados en Pages.
+- Sesion real local validada contra PHP con `GET /src/api/index.php/api/session` devolviendo `200`.
 
-Para probar el modo demo:
+## Limitacion tecnica conocida
 
-1. Ejecutar `npm run build`.
-2. Servir el resultado como frontend estatico.
-3. Comprobar que se cargan productos desde `public/data/productos.json` si PHP no responde.
-
-## Relacion con PHP
-
-El backend PHP no se sustituye. React usa los endpoints ya implementados en `src/api/index.php`, manteniendo PDO, sesiones PHP, roles y persistencia en la base de datos.
-
-## Evidencias esperadas
-
-- salida correcta de `npm run build`;
-- capturas de galeria, busqueda, carrito y formularios;
-- prueba local contra API PHP;
-- prueba demo sin API PHP, con aviso visible y carrito en `localStorage`.
+En GitHub Pages pueden verse `404` o `405` de rutas PHP en consola antes de que el cliente complete el fallback demo. Es una limitacion del hosting estatico, no un bloqueo funcional del cliente React.

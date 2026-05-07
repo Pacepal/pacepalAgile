@@ -1,61 +1,84 @@
 # Pruebas React Sprint 3
 
-Casos manuales preparados para validar el cliente React. No se ha ejecutado Selenium en esta carpeta.
+Estado de la verificacion final realizada el 2026-05-07 sobre la rama `sprint-3-react-jsx`.
+
+No se ha ejecutado Selenium desde esta carpeta. Este documento recoge las pruebas manuales validadas en GitHub Pages y en local con Vite.
 
 ## Preparacion
 
 ```bash
 cd frontend-react
 npm install
-npm run dev
+npm run dev -- --host 127.0.0.1
+npm run build
 ```
 
-Para modo local real, arrancar XAMPP, importar `db/schema.sql` y `db/seed.sql`, y comprobar que la API PHP responde.
+Para el modo local real tambien hay que arrancar Apache y MySQL en XAMPP e importar `db/schema.sql` y `db/seed.sql`.
 
-## Casos manuales
+## Estado Git y despliegue
 
-### Carga inicial de productos
+- Rama validada: `sprint-3-react-jsx`.
+- Estado inicial de trabajo: limpio, sin cambios pendientes.
+- `HEAD` al iniciar la fase: `c201d6a`.
+- Workflow `Deploy React Sprint 3 to GitHub Pages`:
+	- run `#8` para `86f609d` -> `completed successfully`.
+	- run `#9` para `c201d6a` -> `completed successfully`.
 
-1. Abrir el cliente React.
-2. Verificar que aparece la galeria de productos.
-3. En local, confirmar que la carga viene de `GET /api/productos`.
-4. Sin API disponible, confirmar que se muestra el aviso de modo demo y se cargan productos del JSON estatico.
+## Pruebas realizadas
 
-### Buscador
+### GitHub Pages
 
-1. Escribir un texto que coincida con el nombre de un producto.
-2. Confirmar que la lista se filtra sin recargar pagina.
-3. Buscar por una palabra de la descripcion.
-4. Confirmar estado sin resultados con una busqueda inexistente.
-5. Vaciar el campo y confirmar que vuelve el listado completo.
+URL validada:
 
-### Carrito
+```text
+https://pacepal.github.io/pacepalAgile/pacepal-react.html?v=86f609d
+```
 
-1. Anadir un producto.
-2. Confirmar que sube el contador del carrito.
-3. Cambiar cantidad.
-4. Confirmar que cambia subtotal y total.
-5. Eliminar el producto.
-6. Confirmar que contador y total se actualizan.
+Resultados comprobados:
 
-### Pedido
+- carga inicial sin pantalla blanca;
+- aviso de cookies visible tras limpiar `localStorage`, `sessionStorage` y cookies;
+- `Aceptar todas` crea `pacepal_cookie_consent` en `localStorage` y en `Cookies`;
+- `Solo tecnicas` crea la misma evidencia visible en `Application`;
+- login demo con `admin@pacepal.com / Admin1234*`:
+	- header autenticado;
+	- `pacepal_demo_user` en `localStorage`;
+	- `pacepal_demo_session` en `sessionStorage`;
+	- `pacepal_session_demo` en cookies;
+- recarga con sesion demo recompuesta desde almacenamiento;
+- logout limpiando `pacepal_session_demo`, `pacepal_demo_session` y `pacepal_demo_user`;
+- registro demo de `usuario.pages@pacepal.com` guardado en `pacepal_demo_users` y con auto login;
+- email duplicado rechazado con el mensaje `Ya existe una cuenta con ese correo electronico.`;
+- carrito demo:
+	- producto anadido;
+	- cantidad actualizada a `2`;
+	- total `179.80 EUR`;
+	- persistencia tras recarga en `pacepal_demo_cart`;
+	- limpieza final del carrito con `pacepal_demo_cart = []`.
 
-1. En local con sesion valida, anadir productos.
-2. Pulsar finalizar pedido.
-3. Confirmar respuesta de `POST /api/pedido`.
-4. En modo demo, confirmar que se informa de que el pedido real requiere API PHP local.
+### Local con Vite
 
-### Registro
+Resultados comprobados:
 
-1. Enviar formulario vacio.
-2. Confirmar mensajes de validacion.
-3. Probar email invalido, DNI invalido y contrasenas distintas.
-4. En local, enviar datos validos y comprobar `POST /api/register`.
-5. En modo demo, confirmar que no se indica persistencia real.
+- `npm run build` completado correctamente;
+- `npm run dev -- --host 127.0.0.1` arrancado correctamente;
+- URL local usada en esta verificacion:
 
-### Login y logout
+```text
+http://127.0.0.1:5176/pacepalAgile/pacepal-react.html
+```
 
-1. En local, introducir credenciales validas.
-2. Confirmar `POST /api/login` y consulta de sesion.
-3. Pulsar cerrar sesion y confirmar `POST /api/logout`.
-4. En modo demo, confirmar que se indica que la autenticacion real requiere API PHP local.
+- carga sin pantalla blanca;
+- sin ` /pacepalAgile/pacepalAgile/ ` en el DOM generado;
+- sin imagenes rotas en la home validada;
+- `GET /src/api/index.php/api/session` responde `200` con JSON valido.
+
+## Pendiente
+
+- capturas manuales para memoria o defensa, detalladas en `docs/evidencias/dwec/sprint-3/README.md`;
+- si se quiere ampliar automatizacion, preparar Selenium sobre el cliente React ya estable.
+
+## Limitaciones conocidas
+
+- GitHub Pages no ejecuta PHP ni MySQL. El cliente intenta la API y despues entra en fallback demo. Por eso pueden aparecer `404` o `405` de las rutas PHP en consola antes de completarse la rehidratacion del modo demo.
+- Esa limitacion no impide la navegacion ni la demostracion funcional publicada.
