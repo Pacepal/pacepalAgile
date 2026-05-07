@@ -26,11 +26,13 @@ function LoginForm({ session, onNavigate }) {
   const [values, setValues] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [localMessage, setLocalMessage] = useState('');
+  const [localMessageType, setLocalMessageType] = useState('');
 
   function setField(field, value) {
     setValues((current) => ({ ...current, [field]: value }));
     setErrors((current) => ({ ...current, [field]: '' }));
     setLocalMessage('');
+    setLocalMessageType('');
   }
 
   async function handleSubmit(event) {
@@ -45,16 +47,19 @@ function LoginForm({ session, onNavigate }) {
 
     if (nextErrors.email || nextErrors.password) {
       setLocalMessage('Revisa los errores del formulario.');
+      setLocalMessageType('error');
       return;
     }
 
     setLocalMessage('Verificando credenciales...');
+    setLocalMessageType('ok');
     const ok = await session.login({
       email: limpiarTexto(values.email),
       password: values.password,
     });
 
     setLocalMessage('');
+    setLocalMessageType('');
 
     if (ok) {
       onNavigate('perfil');
@@ -107,7 +112,13 @@ function LoginForm({ session, onNavigate }) {
 
         <div
           id="mensajeLogin"
-          className={(localMessage || session.message) ? `mensaje-formulario mensaje-formulario--${errors.email || errors.password || session.message.includes('incorrect') || session.message.includes('No se') ? 'error' : 'ok'}` : 'mensaje-resultado'}
+          className={(localMessage || session.message)
+            ? `mensaje-formulario mensaje-formulario--${
+              localMessage
+                ? (localMessageType || 'ok')
+                : (session.messageType || 'error')
+            }`
+            : 'mensaje-resultado'}
           aria-live="polite"
         >
           {localMessage || session.message}

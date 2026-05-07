@@ -13,9 +13,14 @@ function ShopPage({ products, cart, onNavigate }) {
           <ProductGallery
             status={products.status}
             message={products.message}
-            products={products.filteredItems}
+            products={products.pagedItems}
+            hasActiveQuery={products.hasActiveQuery}
+            query={products.normalizedQuery}
             onAddToCart={cart.addItem}
             onViewProduct={(id) => onNavigate('producto', id)}
+            page={products.page}
+            totalPages={products.totalPages}
+            onPageChange={products.setPage}
           />
         </div>
       </section>

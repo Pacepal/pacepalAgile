@@ -11,6 +11,16 @@ function detectApiBaseUrl() {
     return '../../src/api/index.php/api';
 }
 
+export class ApiError extends Error {
+    constructor(message, options = {}) {
+        super(message);
+        this.name = 'ApiError';
+        this.status = Number.isFinite(options.status) ? options.status : 0;
+        this.payload = options.payload || null;
+        this.isNetworkError = !!options.isNetworkError;
+    }
+}
+
 const configuredBaseUrl = detectApiBaseUrl();
 const publicBaseUrl = import.meta.env.BASE_URL;
 
@@ -59,20 +69,31 @@ export function buildApiUrl(path) {
 }
 
 export async function requestJson(path, options = {}) {
-    const response = await fetch(buildApiUrl(path), {
-        credentials: 'include',
-        headers: {
-            Accept: 'application/json',
-            ...(options.body ? { 'Content-Type': 'application/json' } : {}),
-            ...(options.headers || {}),
-        },
-        ...options,
-    });
+    let response;
+
+    try {
+        response = await fetch(buildApiUrl(path), {
+            credentials: 'include',
+            headers: {
+                Accept: 'application/json',
+                ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+                ...(options.headers || {}),
+            },
+            ...options,
+        });
+    } catch (_error) {
+        throw new ApiError('No se pudo contactar con la API.', {
+            isNetworkError: true,
+        });
+    }
 
     const payload = await response.json().catch(() => ({}));
 
     if (!response.ok || payload.status === 'error') {
-        throw new Error(payload.message || 'No se pudo completar la petición.');
+        throw new ApiError(payload.message || 'No se pudo completar la petición.', {
+            status: response.status,
+            payload,
+        });
     }
 
     return payload;

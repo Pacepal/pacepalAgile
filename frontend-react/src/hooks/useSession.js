@@ -4,6 +4,27 @@ import { clearDemoSession, findDemoUser, restoreDemoSession, saveDemoSession, sa
 
 const apiTimeoutMs = 2000;
 
+function shouldUseDemoFallback(error) {
+    if (!error) {
+        return true;
+    }
+
+    if (error.isNetworkError) {
+        return true;
+    }
+
+    const status = Number(error.status) || 0;
+    return status === 404 || status === 405 || status >= 500;
+}
+
+function getErrorMessage(error, fallbackMessage) {
+    if (error && typeof error.message === 'string' && error.message.trim() !== '') {
+        return error.message;
+    }
+
+    return fallbackMessage;
+}
+
 function buildTimeoutSignal(timeoutMs) {
     const controller = new AbortController();
     const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
@@ -33,12 +54,14 @@ export function useSession() {
     const [user, setUser] = useState(null);
     const [status, setStatus] = useState('cargando');
     const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('');
     const [isDemo, setIsDemo] = useState(false);
 
     function applyAnonymousState() {
         setUser(null);
         setStatus('anonimo');
         setMessage('');
+        setMessageType('');
     }
 
     function applyRealSession(payload) {
@@ -59,6 +82,7 @@ export function useSession() {
 
         setIsDemo(false);
         setMessage('');
+        setMessageType('');
     }
 
     function applyDemoSession() {
@@ -68,6 +92,7 @@ export function useSession() {
         setStatus(demoUser ? 'ok' : 'anonimo');
         setIsDemo(true);
         setMessage('');
+        setMessageType('');
     }
 
     async function checkSession() {
@@ -79,7 +104,14 @@ export function useSession() {
                 applyRealSession(payload);
                 return;
             }
-        } catch (_error) {
+        } catch (error) {
+            if (!shouldUseDemoFallback(error)) {
+                applyAnonymousState();
+                setMessage(getErrorMessage(error, 'No se pudo verificar la sesion.'));
+                setMessageType('error');
+                return;
+            }
+
             // Si la API no esta disponible, se activa el modo demo.
         }
 
@@ -95,18 +127,28 @@ export function useSession() {
             setUser(payload.usuario || null);
             setStatus('ok');
             setMessage('Login correcto. Redirigiendo...');
+            setMessageType('ok');
             setIsDemo(false);
             await checkSession();
             return true;
         }
 
-        catch (_error) {
+        catch (error) {
+            if (!shouldUseDemoFallback(error)) {
+                applyAnonymousState();
+                setIsDemo(false);
+                setMessage(getErrorMessage(error, 'No se pudo iniciar sesion.'));
+                setMessageType('error');
+                return false;
+            }
+
             const demoUser = findDemoUser(credentials.email, credentials.password);
 
             if (!demoUser) {
                 applyAnonymousState();
                 setIsDemo(true);
                 setMessage('Email o contrasena incorrectos.');
+                setMessageType('error');
                 return false;
             }
 
@@ -115,6 +157,7 @@ export function useSession() {
             setStatus('ok');
             setIsDemo(true);
             setMessage('Login correcto. Redirigiendo...');
+            setMessageType('ok');
             return true;
         }
     }
@@ -126,8 +169,15 @@ export function useSession() {
                 body: JSON.stringify(data),
             });
             setMessage('Registro correcto. Redirigiendo a login...');
+            setMessageType('ok');
             return { ok: true, autoLogged: false };
         } catch (error) {
+            if (!shouldUseDemoFallback(error)) {
+                setMessage(getErrorMessage(error, 'No se pudo completar el registro.'));
+                setMessageType('error');
+                return { ok: false, autoLogged: false };
+            }
+
             const savedUser = saveDemoUser({
                 nombre: data.nombre,
                 email: data.email,
@@ -145,6 +195,7 @@ export function useSession() {
 
             if (!savedUser) {
                 setMessage('Ya existe una cuenta con ese correo electronico.');
+                setMessageType('error');
                 return { ok: false, autoLogged: false };
             }
 
@@ -153,6 +204,7 @@ export function useSession() {
             setStatus('ok');
             setIsDemo(true);
             setMessage('Registro correcto. Sesion iniciada.');
+            setMessageType('ok');
             return { ok: true, autoLogged: true };
         }
     }
@@ -177,6 +229,7 @@ export function useSession() {
         status,
         user,
         message,
+        messageType,
         isDemo,
         login,
         register,

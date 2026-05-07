@@ -70,8 +70,8 @@ function AdminPage({ session, activities, routes }) {
       <section className="seccion-pagina">
         <div className="contenedor">
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <h2 className="mb-0">Usuarios registrados</h2>
-            <button type="button" id="btn-admin-crear-usuario" className="boton boton--primario">Crear usuario</button>
+            <h2 className="mb-0" style={{ whiteSpace: 'nowrap' }}>Usuarios registrados</h2>
+            <button type="button" id="btn-admin-crear-usuario" className="boton boton--primario" style={{ width: 'auto', minWidth: '300px', fontSize: '0.85rem', padding: '0.35rem 0.75rem' }}>Crear usuario</button>
           </div>
           <div id="admin-form-usuario" style={{ display: 'none' }} className="mb-4"></div>
           <div id="admin-usuarios" aria-live="polite">
@@ -110,7 +110,7 @@ function AdminPage({ session, activities, routes }) {
         <div className="contenedor">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="mb-0">Actividades</h2>
-            <button type="button" id="btn-admin-crear-actividad" className="boton boton--primario">Crear actividad</button>
+            <button type="button" id="btn-admin-crear-actividad" className="boton boton--primario" style={{ width: 'auto', minWidth: '300px', fontSize: '0.85rem', padding: '0.35rem 0.75rem' }}>Crear actividad</button>
           </div>
           <div id="admin-form-actividad" style={{ display: 'none' }} className="mb-4"></div>
           <div id="admin-actividades" aria-live="polite">
@@ -118,7 +118,7 @@ function AdminPage({ session, activities, routes }) {
               rows={activities.items}
               columns={[
                 { key: 'id_actividad', label: 'ID' },
-                { key: 'nombre', label: 'Actividad' },
+                { key: 'descripcion', label: 'Actividad' },
                 { key: 'fecha', label: 'Fecha' },
                 { key: 'nivel', label: 'Nivel' },
               ]}
@@ -131,7 +131,7 @@ function AdminPage({ session, activities, routes }) {
         <div className="contenedor">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <h2 className="mb-0">Rutas</h2>
-            <button type="button" id="btn-admin-crear-ruta" className="boton boton--primario">Crear ruta</button>
+            <button type="button" id="btn-admin-crear-ruta" className="boton boton--primario" style={{ width: 'auto', minWidth: '300px', fontSize: '0.85rem', padding: '0.35rem 0.75rem' }}>Crear ruta</button>
           </div>
           <div id="admin-form-ruta" style={{ display: 'none' }} className="mb-4"></div>
           <div id="admin-rutas" aria-live="polite">

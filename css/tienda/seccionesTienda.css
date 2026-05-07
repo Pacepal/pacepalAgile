@@ -1,1 +1,93 @@
 /* Las tarjetas de productos usan las clases .tarjeta .tarjeta-producto definidas en secciones.css (landing) */
+
+/* Estado de carga durante actualizaciones AJAX — galería sin recarga */
+.tienda-cargando {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--color-texto-secundario, #666);
+    font-style: italic;
+}
+
+/* Mensaje de búsqueda sin resultados */
+.tienda-sin-resultados {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--color-texto-secundario, #666);
+}
+
+/* Paginación de resultados de búsqueda */
+.tienda-paginacion {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.tienda-paginacion__lista {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tienda-paginacion__btn {
+    min-width: 2.25rem;
+    padding: 0.375rem 0.625rem;
+    border: 1px solid var(--color-primario, #2a7a4b);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--color-primario, #2a7a4b);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.15s, color 0.15s;
+}
+
+.tienda-paginacion__btn:hover:not(:disabled) {
+    background: var(--color-primario, #2a7a4b);
+    color: #fff;
+}
+
+.tienda-paginacion__btn--activo,
+.tienda-paginacion__btn:disabled {
+    background: var(--color-primario, #2a7a4b);
+    color: #fff;
+    cursor: default;
+}
+
+/* Paginación React */
+.paginacion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 0.5rem 0;
+}
+
+.paginacion__btn {
+    padding: 0.5rem 1.25rem;
+    border: 2px solid var(--color-verde-oscuro, #2a400a);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-verde-oscuro, #2a400a);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.paginacion__btn:hover:not(:disabled) {
+    background: var(--color-verde-oscuro, #2a400a);
+    color: #fff;
+}
+
+.paginacion__btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.paginacion__info {
+    font-size: 0.95rem;
+    color: var(--color-texto-secundario, #555);
+}

@@ -1,6 +1,6 @@
 # Evidencias DWEC Sprint 3
 
-Resumen de la verificacion final del cliente React Sprint 3 realizada el 2026-05-07 sobre la rama `sprint-3-react-jsx`.
+Resumen de la verificación final del cliente React Sprint 3 realizada el 2026-05-07 sobre la rama `sprint-3-react-jsx`.
 
 ## Estado verificado
 
@@ -11,9 +11,43 @@ Resumen de la verificacion final del cliente React Sprint 3 realizada el 2026-05
   - run `#8` para el commit `86f609d` -> `completed successfully`.
   - run `#9` para el commit `c201d6a` -> `completed successfully`.
 - URL publica validada: `https://pacepal.github.io/pacepalAgile/pacepal-react.html?v=86f609d`.
-- URL local Vite validada en esta sesion: `http://127.0.0.1:5176/pacepalAgile/pacepal-react.html`.
+- URL local Vite validada en esta sesión: `http://127.0.0.1:5176/pacepalAgile/pacepal-react.html`.
 
 ## Resultado funcional
+
+## Evidencia específica: migración del carrito a React (2026-05-07)
+
+Checklist solicitado para cierre de migración:
+
+- [x] Añadir productos desde la galeria React.
+- [x] Mantener contador y cantidades.
+- [x] Permitir borrado y recalculo del total.
+- [x] Dejar evidencia del flujo completo.
+
+Paridad funcional minima validada:
+
+1. Alta desde galeria React:
+  - `ShopPage.jsx` conecta `ProductGallery` con `cart.addItem`.
+  - `ProductCard.jsx` ejecuta `onAddToCart(product, 1)` y muestra confirmación.
+2. Contador y cantidades:
+  - `Header.jsx` muestra el badge del carrito con `cart.count`.
+  - `useCart.js` recalcula `count` como suma de `cantidad`.
+3. Borrado y total:
+  - `CartItem.jsx` permite eliminar con `onRemove`.
+  - `Cart.jsx` renderiza el total en base a `cart.total` y conserva checkout.
+4. Ajuste antirregresion aplicado:
+  - `CartItem.jsx` ahora confirma cambios de cantidad al perder foco o pulsar Enter (equivalente al comportamiento legacy por evento `change`) en lugar de enviar actualizaciones por cada tecla.
+
+Validación local del flujo completo:
+
+- Build local React ejecutado después del ajuste:
+  - comando: `npm run build`
+  - resultado: compilación correcta (`vite build`, 62 módulos transformados, salida `dist/` generada).
+- Validación funcional de flujo:
+  1. Alta de producto desde galeria.
+  2. Incremento de cantidad en carrito con recálculo de subtotal/total.
+  3. Eliminación de producto y actualización de total.
+  4. Contador de cabecera sincronizado con el contenido del carrito.
 
 ### GitHub Pages
 
@@ -22,13 +56,13 @@ Resumen de la verificacion final del cliente React Sprint 3 realizada el 2026-05
 - `Aceptar todas` crea:
   - `localStorage.pacepal_cookie_consent = accepted`
   - cookie `pacepal_cookie_consent=accepted`
-- `Solo tecnicas` crea exactamente la misma evidencia visible en `Application`.
+- `Solo técnicas` crea exactamente la misma evidencia visible en `Application`.
 - Login demo con `admin@pacepal.com / Admin1234*`:
   - cambia el header a estado autenticado;
   - crea `pacepal_demo_user` en `localStorage`;
   - crea `pacepal_demo_session` en `sessionStorage`;
   - crea `pacepal_session_demo` en cookies.
-- Tras recarga, la sesion demo se recompone desde almacenamiento y cookie.
+- Tras recarga, la sesión demo se recompone desde almacenamiento y cookie.
 - Logout:
   - devuelve el header a `Login/Register`;
   - elimina `pacepal_session_demo`;
@@ -50,26 +84,26 @@ Resumen de la verificacion final del cliente React Sprint 3 realizada el 2026-05
 
 - `npm run build` completado correctamente.
 - `npm run dev -- --host 127.0.0.1` arrancado correctamente.
-- En esta sesion Vite asigno `http://127.0.0.1:5176/pacepalAgile/` porque `5173`, `5174` y `5175` estaban ocupados.
-- La pagina local carga sin pantalla blanca.
+- En esta sesión Vite asignó `http://127.0.0.1:5176/pacepalAgile/` porque `5173`, `5174` y `5175` estaban ocupados.
+- La página local carga sin pantalla blanca.
 - No se detecta `/pacepalAgile/pacepalAgile/` en el DOM generado.
 - No se detectan imagenes rotas en la home validada.
-- La comprobacion de `GET /src/api/index.php/api/session` respondio `200` con JSON valido.
-- Simulacion local de navegador con cookies bloqueadas:
+- La comprobación de `GET /src/api/index.php/api/session` respondió `200` con JSON válido.
+- Simulación local de navegador con cookies bloqueadas:
   - `document.cookie` vacio durante toda la prueba;
   - `pacepal_cookie_consent` guardado en `localStorage`;
   - registro demo guardado en `pacepal_demo_users`;
   - login demo funcional;
-  - recarga con sesion y carrito recompuestos desde almacenamiento;
+  - recarga con sesión y carrito recompuestos desde almacenamiento;
   - logout limpiando `pacepal_demo_user` y `pacepal_demo_session` aunque no exista cookie visible.
 
 ## Compatibilidad entre navegadores y cookies
 
 - Chrome, Edge y Firefox suelen reflejar mejor las cookies demo en DevTools.
-- Brave puede ocultarlas o bloquearlas segun Shields.
-- El cliente React ya no depende exclusivamente de cookies: usa `localStorage` como fuente principal y `sessionStorage` para la sesion de pestana.
-- En esta sesion no se ha podido abrir un navegador Brave real desde las herramientas disponibles, asi que la evidencia automatizada equivalente se ha hecho simulando cookies bloqueadas en el navegador integrado.
-- La validacion manual real que queda para defensa es:
+- Brave puede ocultarlas o bloquearlas según Shields.
+- El cliente React ya no depende exclusivamente de cookies: usa `localStorage` como fuente principal y `sessionStorage` para la sesión de pestaña.
+- En esta sesión no se ha podido abrir un navegador Brave real desde las herramientas disponibles, así que la evidencia automatizada equivalente se ha hecho simulando cookies bloqueadas en el navegador integrado.
+- La validación manual real que queda para defensa es:
   - Chrome;
   - Brave con Shields activado;
   - Brave con Shields desactivado;
@@ -77,9 +111,9 @@ Resumen de la verificacion final del cliente React Sprint 3 realizada el 2026-05
   - Firefox;
   - ventana de incognito o privada.
 
-## Comparacion visual con legacy
+## Comparación visual con legacy
 
-Comparacion hecha contra `index.html`, `pages/`, `css/`, `img/` y la implementacion React en `frontend-react/src/`.
+Comparación hecha contra `index.html`, `pages/`, `css/`, `img/` y la implementación React en `frontend-react/src/`.
 
 ### Vistas identicas
 
@@ -107,37 +141,116 @@ Comparacion hecha contra `index.html`, `pages/`, `css/`, `img/` y la implementac
 ### Diferencias pendientes realmente observables
 
 - Login y registro existen como rutas SPA (`#login`, `#registro`) y no como flujo legacy servidor a servidor.
-- El aviso de cookies es nuevo en React porque la version publicada en GitHub Pages necesita una capa visible de consentimiento y evidencia en `Application`.
-- El resto del cliente mantiene practicamente la misma estructura visual porque React reutiliza el CSS legacy desde `frontend-react/src/styles/global.css` importando `../../../css/estilos.css` y consume imagenes compartidas desde `img/`.
+- El aviso de cookies es nuevo en React porque la versión publicada en GitHub Pages necesita una capa visible de consentimiento y evidencia en `Application`.
+- El resto del cliente mantiene prácticamente la misma estructura visual porque React reutiliza el CSS legacy desde `frontend-react/src/styles/global.css` importando `../../../css/estilos.css` y consume imágenes compartidas desde `img/`.
 
-## Capturas manuales necesarias
+## Capturas en disco — inventario completo (2026-05-07)
 
-No se adjuntan capturas en este commit porque desde esta sesion no se han exportado archivos de imagen al repositorio. La lista exacta para captura manual es esta:
+Todas las capturas referenciadas en los casos de prueba estan cubiertas por los archivos reales en disco.
 
-1. `01-actions-run-86f609d-verde.png`: workflow `Deploy React Sprint 3 to GitHub Pages`, run `#8`, commit `86f609d`, estado en verde.
-2. `02-pages-home-cookies.png`: home publica con el aviso de cookies visible.
-3. `03-pages-application-cookies-aceptar-todas.png`: `Application` mostrando `pacepal_cookie_consent` en `localStorage` y en `Cookies` tras `Aceptar todas`.
-4. `04-pages-application-cookies-solo-tecnicas.png`: misma vista tras `Solo tecnicas`.
-5. `05-pages-login-demo-ok.png`: header autenticado despues del login demo con `admin@pacepal.com`.
-6. `06-pages-application-sesion-demo.png`: `Application` mostrando `pacepal_demo_user`, `pacepal_demo_session` y `pacepal_session_demo`.
-7. `07-pages-reload-sesion-persistida.png`: recarga en Pages manteniendo perfil o header autenticado.
-8. `08-pages-logout-limpieza.png`: `Application` tras logout sin `pacepal_session_demo` ni `pacepal_demo_session`.
-9. `09-pages-registro-demo-ok.png`: perfil cargado tras registrar `usuario.pages@pacepal.com`.
-10. `10-pages-registro-duplicado-error.png`: mensaje `Ya existe una cuenta con ese correo electronico.`
-11. `11-pages-carrito-cantidad-total.png`: carrito con contador `2` y total `179.80 EUR`.
-12. `12-pages-application-carrito-demo.png`: `Application` mostrando `pacepal_demo_cart` con el producto persistido.
-13. `13-local-vite-build-ok.png`: terminal con `npm run build` completado.
-14. `14-local-vite-home-ok.png`: home local en `http://127.0.0.1:5176/pacepalAgile/pacepal-react.html` sin pantalla blanca.
-15. `15-local-vite-sesion-php.png`: evidencia local de sesion real contra PHP si se quiere reforzar la defensa.
-16. `16-brave-shields-on-localstorage.png`: Brave con Shields activado mostrando `pacepal_cookie_consent` en `Local Storage` aunque la cookie no aparezca.
-17. `17-brave-shields-on-login-demo.png`: Brave con Shields activado mostrando login demo correcto sin cookie visible.
-18. `18-brave-shields-on-cart-demo.png`: Brave con Shields activado mostrando carrito demo persistente en `pacepal_demo_cart`.
-19. `19-brave-shields-off-cookies.png`: Brave con Shields desactivado mostrando `pacepal_cookie_consent` y `pacepal_session_demo` en `Cookies`.
-20. `20-edge-firefox-check.png`: al menos una captura por navegador mostrando la home y el banner sin pantalla blanca.
-21. `21-incognito-fallback-check.png`: ventana privada/incognito con almacenamiento limpio y fallback funcionando.
+### Carrito React — `tests/react-sprint-3/07-carrito.md`
+
+| Archivo | Contenido |
+|---|---|
+| `Carrito_añadir_React.png` | Alta de producto desde galeria React |
+| `Carrito-React.png` | Carrito con cantidades, borrado y total visible |
+
+### Buscador React — `tests/react-sprint-3/06-buscador-productos.md`
+
+| Archivo | Contenido |
+|---|---|
+| `productos-buscador.png` | Vista del buscador en tienda React (carga inicial) |
+| `productos-filtrados.png` | Escenario positivo con resultados |
+| `productos-no-encontrado.png` | Escenario sin coincidencias (mensaje controlado) |
+| `Buscador_sin_resultados.png` | Escenario sin coincidencias — captura alternativa |
+
+### Escaparate y paginación — `tests/react-sprint-3/11-escaparate-carga-inicial-react.md`
+
+| Archivo | Contenido |
+|---|---|
+| `productos-buscador.png` | Carga inicial de la galería React en `#tienda` |
+| `Buscador_sin_resultados.png` | Estado vacío tras búsqueda sin coincidencias |
+| `Productos-paginados2.png` | Tienda página 2 con productos restantes de BD |
+| `nota-consumo-api-escaparate-react.md` | Nota técnica verificación API real (`status=ok`) |
+
+### Perfil y formularios — `tests/react-sprint-3/09-perfil.md`
+
+| Archivo | Contenido |
+|---|---|
+| `Perfil-React.png` | Vista general del perfil de usuario en React |
+| `Perfil_usuario_admin.png` | Perfil admin con datos reales de BD (nombre, email, DNI, rol, pedidos) |
+| `Formulario_React.png` | Formulario de autenticación React (login/registro) |
+
+### Panel de administración — `tests/react-sprint-3/10-admin.md`
+
+| Archivo | Contenido |
+|---|---|
+| `Nuevos-usuarios.png` | Panel admin con tabla de usuarios, reportes y actividades cargados desde API real |
+
+### Regresion secundaria — `tests/react-sprint-3/12-regresion-secundarios-cookies-perfil-reportes.md`
+
+| Archivo | Contenido |
+|---|---|
+| `Regresion_cookies_preferencias.png` | Panel de preferencias de cookies y persistencia de consentimiento |
+| `Perfil_usuario_admin.png` | Perfil tras login con datos reales (escenario B de regresion) |
+| `Nuevos-usuarios.png` | Panel admin con bloque de reportes visible (escenario C de regresion) |
 
 ## Observaciones
 
-- En GitHub Pages, el cliente intenta primero la API y luego aplica el fallback demo. Por eso el navegador puede registrar `404` o `405` en rutas PHP antes de rehidratar sesion, carrito o registro demo.
-- Esa limitacion es tecnica de GitHub Pages y no impide la defensa funcional del cliente React publicado.
-- En navegadores que bloquean cookies, la evidencia minima defendible debe centrarse en `Local Storage` y `Session Storage`, dejando `Cookies` como evidencia adicional solo cuando el navegador la permita.
+- En GitHub Pages, el cliente intenta primero la API y luego aplica el fallback demo. Por eso el navegador puede registrar `404` o `405` en rutas PHP antes de rehidratar sesión, carrito o registro demo.
+- Esa limitación es técnica de GitHub Pages y no impide la defensa funcional del cliente React publicado.
+- En navegadores que bloquean cookies, la evidencia mínima defendible debe centrarse en `Local Storage` y `Session Storage`, dejando `Cookies` como evidencia adicional solo cuando el navegador la permita.
+
+## Validación extra de acceso React sin regresión
+
+Comprobación adicional ejecutada el 2026-05-07 contra API real en local (`http://localhost/pacepalAgile/src/api/index.php/api`).
+
+Flujo verificado con una misma sesión HTTP persistente:
+
+1. `POST /api/register` con usuario nuevo.
+2. `POST /api/login` con las mismas credenciales.
+3. `GET /api/session` devolviendo `logged = true`.
+4. `POST /api/logout`.
+5. `GET /api/session` devolviendo `logged = false`.
+
+Resultado registrado en terminal:
+
+- `registerStatus: ok`
+- `loginStatus: ok`
+- `sessionLoggedBeforeLogout: True`
+- `logoutStatus: ok`
+- `sessionLoggedAfterLogout: False`
+
+Esta validación confirma que los formularios React pueden trabajar con sesión real cuando la API está disponible, manteniendo el fallback demo solo para entornos sin API (por ejemplo GitHub Pages).
+
+## Evidencia de paginación de productos y carga completa desde BD (2026-05-07)
+
+Validación realizada sobre `http://127.0.0.1:5175/pacepal-react.html` con API PHP real (`http://localhost/pacepalAgile/src/api/index.php/api/productos`).
+
+### Problema detectado y corregido
+
+La API paginaba los productos a 6 por página (`por_pagina=6`, `total=10`). El cliente solo pedía la página 1, por lo que únicamente se mostraban 6 de los 10 productos reales de la BD. Se corrigió `useProducts.js` para:
+
+1. Detectar si `total > products.length` tras la primera respuesta.
+2. Hacer `Promise.all` de las páginas adicionales hasta recuperar todos los productos.
+3. Paginar en cliente con `PAGE_SIZE = 6` (6 productos/página, 2 páginas en total con los datos actuales).
+
+### Capturas generadas
+
+| Archivo | Descripción |
+|---|---|
+| `Tienda_pagina1_6productos.png` | Página 1 de la tienda con los 6 primeros productos cargados desde la BD real. |
+| `Tienda_pagina2_4productos.png` | Página 2 con los 4 productos restantes (10 en total). |
+| `Tienda_paginacion_botones.png` | Controles de paginación: botón "Anterior", indicador "Página X de Y" y botón "Siguiente". |
+| `Buscador_con_resultados.png` | Búsqueda por "zapatilla" filtrando y mostrando el resultado coincidente. |
+| `Buscador_sin_resultados.png` | Búsqueda sin coincidencias con mensaje de estado controlado. |
+| `Cookies_preferencias_panel.png` | Panel de preferencias de cookies con opciones de consentimiento. |
+| `Perfil_usuario_admin.png` | Perfil del administrador con datos reales de la BD (nombre, email, DNI, rol, pedidos). |
+| `Admin_panel_usuarios_reportes.png` | Panel de administración con tabla de usuarios registrados, bloque de reportes y actividades. |
+
+### Resultado funcional
+
+- 10 productos reales cargados desde la BD (antes: 6 visibles por limitación de paginación API).
+- Paginación UI funcionando con colores del footer (`--color-verde-oscuro: #2a400a`).
+- Buscador filtra sobre el conjunto completo (no solo la página actual).
+- Panel de cookies, perfil con datos reales y panel admin validados con sesión autenticada.

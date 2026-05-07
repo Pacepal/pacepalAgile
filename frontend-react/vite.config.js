@@ -21,7 +21,7 @@ function copyLegacyImages() {
 
 export default defineConfig({
   plugins: [react(), copyLegacyImages()],
-  base: '/pacepalAgile/',
+  base: './',
   build: {
     rollupOptions: {
       input: resolve(__dirname, 'pacepal-react.html'),
@@ -35,20 +35,20 @@ export default defineConfig({
     },
     proxy: {
       '/src/api': {
-        target: 'http://localhost/treecore%20Trabajos/pacepal',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/img': {
-        target: 'http://localhost/treecore%20Trabajos/pacepal',
+        target: 'http://localhost/pacepalAgile',
         changeOrigin: true,
         secure: false,
       },
       '/pacepalAgile/img': {
-        target: 'http://localhost/treecore%20Trabajos/pacepal',
+        target: 'http://localhost/pacepalAgile',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/pacepalAgile/, ''),
+      },
+      '/img': {
+        target: 'http://localhost/pacepalAgile',
+        changeOrigin: true,
+        secure: false,
       },
     },
   },

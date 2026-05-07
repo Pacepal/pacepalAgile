@@ -21,17 +21,28 @@
       <div class="contenedor">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
           <h2 class="mb-0">Productos disponibles</h2>
-          <!-- Buscador de productos por nombre -->
-          <input
-            id="buscadorProductosInput"
-            type="search"
-            class="form-control"
-            style="max-width:300px"
-            placeholder="Buscar por nombre"
-            autocomplete="off" />
+          <!-- Buscador de productos por nombre y descripción -->
+          <div class="d-flex align-items-center gap-2">
+            <input
+              id="buscadorProductosInput"
+              type="search"
+              class="form-control"
+              style="max-width:300px"
+              placeholder="Buscar por nombre o descripción"
+              autocomplete="off" />
+            <button
+              id="btnVerDestacados"
+              type="button"
+              class="boton boton--secundario text-nowrap"
+              hidden>
+              Ver destacados
+            </button>
+          </div>
         </div>
         <!-- Lista de productos se carga dinamicamente con JavaScript -->
         <div id="lista-productos" class="rejilla rejilla--productos" aria-live="polite"></div>
+        <!-- Paginación: aparece dinámicamente si los resultados superan 6 -->
+        <div id="tienda-paginacion" class="tienda-paginacion"></div>
       </div>
     </section>
   </main>

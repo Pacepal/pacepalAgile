@@ -34,12 +34,14 @@ function ProductCard({ product, onAddToCart, onViewProduct }) {
         <h3>{product.nombre || 'Producto sin nombre'}</h3>
         <p><i className="bi bi-leaf-fill" aria-hidden="true"></i> {formatPrice(product.precio)}</p>
         <p><i className="bi bi-leaf-fill" aria-hidden="true"></i> Producción responsable</p>
-        <button type="button" className="boton boton--primario" disabled={disabled} onClick={handleAdd}>
-          {buttonText}
-        </button>
-        <a className="boton boton--primario" href={`#producto-${product.id_articulo || ''}`} onClick={handleView}>
-          Ver producto
-        </a>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
+          <button type="button" className="boton boton--primario" disabled={disabled} onClick={handleAdd}>
+            {buttonText}
+          </button>
+          <a className="boton boton--primario" href={`#producto-${product.id_articulo || ''}`} onClick={handleView}>
+            Ver producto
+          </a>
+        </div>
       </div>
     </article>
   );

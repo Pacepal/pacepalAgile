@@ -12,7 +12,12 @@ export function LoginPage({ session, onNavigate }) {
 export function RegisterPage({ session, onNavigate }) {
   return (
     <main className="contenedor formulario-layout">
-      <RegisterForm onRegister={session.register} sessionMessage={session.message} onNavigate={onNavigate} />
+      <RegisterForm
+        onRegister={session.register}
+        sessionMessage={session.message}
+        sessionMessageType={session.messageType}
+        onNavigate={onNavigate}
+      />
     </main>
   );
 }

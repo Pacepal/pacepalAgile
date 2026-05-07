@@ -17,11 +17,29 @@ class ProductoController
     public function getProductos(): void
     {
         try {
-            $productos = $this->productoModel->getAllProductos();
+            $q             = isset($_GET['q']) ? trim((string) $_GET['q']) : '';
+            $soloDestacados = isset($_GET['destacados']) && ($_GET['destacados'] === '1' || $_GET['destacados'] === 'true');
+            $porPagina     = 6;
+            $pagina        = max(1, (int) ($_GET['page'] ?? 1));
+            $offset        = ($pagina - 1) * $porPagina;
+
+            if ($q !== '') {
+                $total    = $this->productoModel->contarBusqueda($q);
+                $productos = $this->productoModel->buscarProductos($q, $porPagina, $offset);
+            } elseif ($soloDestacados) {
+                $productos = $this->productoModel->getProductosDestacados(6);
+                $total     = count($productos);
+            } else {
+                $total    = $this->productoModel->contarTodos();
+                $productos = $this->productoModel->getAllProductos($porPagina, $offset);
+            }
 
             $this->jsonResponse([
-                'status' => 'ok',
-                'data' => $productos,
+                'status'     => 'ok',
+                'data'       => $productos,
+                'total'      => $total,
+                'pagina'     => $pagina,
+                'por_pagina' => $porPagina,
             ]);
         } catch (Throwable $exception) {
 

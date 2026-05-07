@@ -12,7 +12,7 @@ Usamos `fetch` nativo en todos los scripts, mandando y recibiendo JSON. Si la ac
 
 Cada funcionalidad tiene su endpoint y su script. Por ejemplo:
 
-- `GET /api/productos` (productos.js): carga el catálogo de la tienda.
+- `GET /api/productos?destacados=1` (productos.js): carga los productos destacados al entrar en la tienda.
 - `GET /api/productos/{id}` (productoDetalle.js): muestra el detalle de un producto.
 - `GET /api/rutas` (rutas.js, crearActividad.js): lista todas las rutas.
 - `GET /api/rutas/{id}` (rutaDetalle.js): muestra el detalle de una ruta.

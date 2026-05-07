@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { loadStaticData, requestJson } from '../services/api.js';
 
+const PAGE_SIZE = 6;
+
 export function useProducts() {
     const [items, setItems] = useState([]);
     const [query, setQuery] = useState('');
+    const [page, setPage] = useState(1);
     const [status, setStatus] = useState('cargando');
     const [message, setMessage] = useState('Cargando productos.');
     const [isDemo, setIsDemo] = useState(false);
@@ -15,6 +18,24 @@ export function useProducts() {
         try {
             const payload = await requestJson('/productos');
             const products = Array.isArray(payload.data) ? payload.data : [];
+
+            // Si la API pagina, recuperar el resto de páginas
+            const total = typeof payload.total === 'number' ? payload.total : products.length;
+            const perPage = typeof payload.por_pagina === 'number' ? payload.por_pagina : products.length;
+            if (total > products.length && perPage > 0) {
+                const totalPages = Math.ceil(total / perPage);
+                const extraRequests = [];
+                for (let page = 2; page <= totalPages; page++) {
+                    extraRequests.push(requestJson(`/productos?page=${page}`));
+                }
+                const extraResults = await Promise.all(extraRequests);
+                for (const res of extraResults) {
+                    if (Array.isArray(res.data)) {
+                        products.push(...res.data);
+                    }
+                }
+            }
+
             setItems(products);
             setIsDemo(false);
             setStatus('ok');
@@ -44,16 +65,37 @@ export function useProducts() {
             return items;
         }
 
-        return items.filter((product) => String(product.nombre || '').toLowerCase().includes(normalizedQuery));
+        return items.filter((product) => {
+            const name = String(product.nombre || '').toLowerCase();
+            const description = String(product.descripcion || '').toLowerCase();
+            return name.includes(normalizedQuery) || description.includes(normalizedQuery);
+        });
     }, [items, query]);
+
+    const normalizedQuery = query.trim();
+    const hasActiveQuery = normalizedQuery.length > 0;
+    const totalPages = Math.max(1, Math.ceil(filteredItems.length / PAGE_SIZE));
+    const safePage = Math.min(page, totalPages);
+    const pagedItems = filteredItems.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
+
+    function setQueryAndReset(q) {
+        setQuery(q);
+        setPage(1);
+    }
 
     return {
         status,
         message,
         items,
         filteredItems,
+        pagedItems,
+        page: safePage,
+        totalPages,
+        setPage,
         query,
-        setQuery,
+        normalizedQuery,
+        hasActiveQuery,
+        setQuery: setQueryAndReset,
         isDemo,
         reload: loadProducts,
     };

@@ -88,7 +88,7 @@ function fieldClass(value, error) {
   return limpiarTexto(value) ? 'campo-valido' : '';
 }
 
-function RegisterForm({ onRegister, sessionMessage, onNavigate }) {
+function RegisterForm({ onRegister, sessionMessage, sessionMessageType, onNavigate }) {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
   const [localMessage, setLocalMessage] = useState('');
@@ -210,6 +210,7 @@ function RegisterForm({ onRegister, sessionMessage, onNavigate }) {
   }
 
   const resultMessage = localMessage || sessionMessage;
+  const resultMessageType = localMessage ? (messageType || 'ok') : (sessionMessageType || 'error');
 
   return (
     <section className="tarjeta-formulario" aria-labelledby="tituloRegistro">
@@ -385,7 +386,7 @@ function RegisterForm({ onRegister, sessionMessage, onNavigate }) {
         </button>
         <div
           id="mensajeRegistro"
-          className={resultMessage ? `mensaje-formulario mensaje-formulario--${messageType || 'error'}` : 'mensaje-resultado'}
+          className={resultMessage ? `mensaje-formulario mensaje-formulario--${resultMessageType}` : 'mensaje-resultado'}
           aria-live="polite"
         >
           {resultMessage}

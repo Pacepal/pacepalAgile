@@ -6,7 +6,7 @@ No queríamos una tienda estática donde hay que tocar el HTML cada vez que se a
 
 ## ¿Cómo funciona la tienda?
 
-Toda la lógica está en `js/tienda/productos.js`, que se monta en `pages/tienda/tienda.php`. Al cargar la página, el script pide los productos a la API (`GET /api/productos`). Si la respuesta trae productos, genera una tarjeta para cada uno y las mete en el contenedor `#lista-productos` usando un `DocumentFragment` para que vaya más rápido y no parpadee la interfaz. Si no hay productos, sale el mensaje "No hay productos disponibles.". Si la API falla, mostramos el error.
+Toda la lógica está en `js/tienda/productos.js`, que se monta en `pages/tienda/tienda.php`. Al cargar la página, el script pide los productos destacados a la API (`GET /api/productos?destacados=1`). Si la respuesta trae productos, genera una tarjeta para cada uno y las mete en el contenedor `#lista-productos` usando un `DocumentFragment` para que vaya más rápido y no parpadee la interfaz. Si no hay productos, sale el mensaje "No hay productos disponibles.". Si la API falla, mostramos el error.
 
 Cada tarjeta de producto la monta la función `crearTarjetaProducto(producto)`. El formato es el mismo que usamos en la landing (DIW): imagen, nombre, precio, sello de producción responsable, botón para añadir al carrito y enlace para ver el detalle. La imagen usa `loading="lazy"` para que la carga sea más fluida, y si el producto no tiene imagen, ponemos una por defecto.
 

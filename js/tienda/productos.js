@@ -2,17 +2,37 @@
 // incluye buscador por nombre y boton de añadir al carrito
 
 document.addEventListener('DOMContentLoaded', function () {
-    const endpointProductos = '../../src/api/index.php/api/productos';
+    const endpointProductos = '../../src/api/index.php/api/productos?destacados=1';
     const listaProductos = document.getElementById('lista-productos');
 
     if (!listaProductos) {
         return;
     }
 
+    // ── Estado compartido — declarado antes de cualquier fetch ───────────────
+    var PRODUCTOS_POR_PAGINA = 6;
+    var paginaActual         = 1;
+    var terminoBusqueda      = '';
+    var debounceTimer        = null;
+    var controladorActual    = null;
+
+    var buscador         = document.getElementById('buscadorProductosInput');
+    var btnVerDestacados = document.getElementById('btnVerDestacados');
+    var paginacion       = document.getElementById('tienda-paginacion');
+
     function limpiarContenedor() {
         while (listaProductos.firstChild) {
             listaProductos.removeChild(listaProductos.firstChild);
         }
+    }
+
+    function mostrarCargando() {
+        limpiarContenedor();
+        const spinner = document.createElement('p');
+        spinner.className = 'tienda-cargando';
+        spinner.setAttribute('aria-live', 'polite');
+        spinner.textContent = 'Cargando productos...';
+        listaProductos.appendChild(spinner);
     }
 
     function mostrarErrorCarga() {
@@ -135,13 +155,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function cargarProductos() {
+        // Cancelar cualquier fetch anterior (búsqueda o carga de destacados)
+        if (controladorActual) { controladorActual.abort(); }
+        controladorActual = new AbortController();
+        var signal = controladorActual.signal;
+
+        mostrarCargando();
         try {
             const response = await fetch(endpointProductos, {
                 method: 'GET',
                 credentials: 'include',
-                headers: {
-                    Accept: 'application/json',
-                },
+                headers: { Accept: 'application/json' },
+                signal: signal,
             });
 
             if (!response.ok) {
@@ -151,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             const productos = Array.isArray(data && data.data) ? data.data : [];
 
+            controladorActual = null;
             limpiarContenedor();
 
             if (productos.length === 0) {
@@ -167,25 +193,133 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             listaProductos.appendChild(fragment);
-        } catch (_error) {
-            mostrarErrorCarga();
+        } catch (err) {
+            if (err.name !== 'AbortError') { mostrarErrorCarga(); }
         }
     }
 
     cargarProductos();
 
-    // Buscador de productos
-    var buscador = document.getElementById('buscadorProductosInput');
+    // ── Helpers de paginación ─────────────────────────────────────────────────
+    function limpiarPaginacion() {
+        if (!paginacion) { return; }
+        while (paginacion.firstChild) {
+            paginacion.removeChild(paginacion.firstChild);
+        }
+    }
+
+    function renderizarPaginacion(total, pagina, porPagina) {
+        limpiarPaginacion();
+        if (!paginacion || total <= porPagina) { return; }
+
+        var totalPaginas = Math.ceil(total / porPagina);
+        var nav = document.createElement('nav');
+        nav.setAttribute('aria-label', 'Paginación de productos');
+        var ul = document.createElement('ul');
+        ul.className = 'tienda-paginacion__lista';
+
+        for (var p = 1; p <= totalPaginas; p++) {
+            var li  = document.createElement('li');
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.textContent = String(p);
+            btn.className = 'tienda-paginacion__btn' + (p === pagina ? ' tienda-paginacion__btn--activo' : '');
+            btn.setAttribute('aria-current', p === pagina ? 'page' : 'false');
+            btn.disabled = (p === pagina);
+            (function (numPagina) {
+                btn.addEventListener('click', function () {
+                    ejecutarBusqueda(terminoBusqueda, numPagina);
+                });
+            })(p);
+            li.appendChild(btn);
+            ul.appendChild(li);
+        }
+
+        nav.appendChild(ul);
+        paginacion.appendChild(nav);
+    }
+
+    // ── Fetch de búsqueda con soporte de paginación ───────────────────────────
+    function ejecutarBusqueda(q, pagina) {
+        paginaActual    = pagina;
+        terminoBusqueda = q;
+
+        if (controladorActual) { controladorActual.abort(); }
+        controladorActual = new AbortController();
+
+        var url = '../../src/api/index.php/api/productos?q=' + encodeURIComponent(q) + '&page=' + pagina;
+
+        mostrarCargando();
+        fetch(url, {
+            method: 'GET',
+            credentials: 'include',
+            headers: { Accept: 'application/json' },
+            signal: controladorActual.signal,
+        })
+            .then(function (res) {
+                if (!res.ok) { throw new Error('Error API'); }
+                return res.json();
+            })
+            .then(function (data) {
+                controladorActual = null;
+                var productos = Array.isArray(data && data.data) ? data.data : [];
+                var total     = Number(data.total) || 0;
+
+                limpiarContenedor();
+
+                if (productos.length === 0) {
+                    limpiarPaginacion();
+                    var aviso = document.createElement('p');
+                    aviso.className = 'tienda-sin-resultados';
+                    aviso.setAttribute('aria-live', 'polite');
+                    aviso.textContent = 'No se encontraron productos para "' + q + '".';
+                    listaProductos.appendChild(aviso);
+                    return;
+                }
+
+                var frag = document.createDocumentFragment();
+                for (var i = 0; i < productos.length; i++) {
+                    frag.appendChild(crearTarjetaProducto(productos[i]));
+                }
+                listaProductos.appendChild(frag);
+                renderizarPaginacion(total, pagina, PRODUCTOS_POR_PAGINA);
+            })
+            .catch(function (err) {
+                if (err.name !== 'AbortError') { mostrarErrorCarga(); }
+            });
+    }
+
+    // ── Retorno a destacados ──────────────────────────────────────────────────
+    function volverADestacados() {
+        if (buscador)        { buscador.value = ''; }
+        if (btnVerDestacados) { btnVerDestacados.hidden = true; }
+        if (controladorActual) { controladorActual.abort(); controladorActual = null; }
+        clearTimeout(debounceTimer);
+        limpiarPaginacion();
+        cargarProductos();
+    }
+
+    if (btnVerDestacados) {
+        btnVerDestacados.addEventListener('click', volverADestacados);
+    }
+
+    // ── Buscador ──────────────────────────────────────────────────────────────
     if (buscador) {
         buscador.addEventListener('input', function () {
-            var filtro = buscador.value.toLowerCase().trim();
-            var tarjetas = listaProductos.querySelectorAll('.tarjeta-producto');
+            var q = buscador.value.trim();
 
-            for (var i = 0; i < tarjetas.length; i++) {
-                var nombre = tarjetas[i].querySelector('h3');
-                var texto = nombre ? nombre.textContent.toLowerCase() : '';
-                tarjetas[i].style.display = texto.indexOf(filtro) !== -1 ? '' : 'none';
-            }
+            if (btnVerDestacados) { btnVerDestacados.hidden = (q === ''); }
+
+            clearTimeout(debounceTimer);
+            if (controladorActual) { controladorActual.abort(); controladorActual = null; }
+
+            debounceTimer = setTimeout(function () {
+                if (q === '') {
+                    volverADestacados();
+                    return;
+                }
+                ejecutarBusqueda(q, 1);
+            }, 300);
         });
     }
 });
