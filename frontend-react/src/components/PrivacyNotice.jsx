@@ -1,60 +1,27 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl } from '../services/api.js';
+import { COOKIE_CONSENT_COOKIE, COOKIE_CONSENT_STORAGE_KEY, LEGACY_COOKIE_CONSENT_STORAGE_KEY, hasAcceptedCookieConsent, persistCookieConsent, readCookie } from '../services/demo.js';
 
-const storageKey = 'pacepal_cookies';
 const defaultConsent = { tecnicas: true, analiticas: false, marketing: false };
 
-function readLocalConsent() {
+function readLegacyConsent() {
   try {
-    const raw = localStorage.getItem(storageKey);
+    const raw = localStorage.getItem(LEGACY_COOKIE_CONSENT_STORAGE_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch (_error) {
     return null;
   }
 }
 
-function writeLocalConsent(consent) {
-  try {
-    localStorage.setItem(storageKey, JSON.stringify(consent));
-  } catch (_error) {
-    // El consentimiento visual no debe bloquear la navegacion.
-  }
-}
-
-async function getConsent() {
-  try {
-    const response = await fetch(buildApiUrl('/cookies'), {
-      method: 'GET',
-      credentials: 'include',
-      headers: { Accept: 'application/json' },
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (response.ok && payload.status === 'ok') {
-      return payload.consentimiento || null;
-    }
-  } catch (_error) {
-    // GitHub Pages no ejecuta PHP; se usa almacenamiento local sin mostrarlo.
+function getConsent() {
+  if (hasAcceptedCookieConsent()) {
+    return { tecnicas: true, analiticas: false, marketing: false };
   }
 
-  return readLocalConsent();
-}
-
-async function saveConsent(consent) {
-  writeLocalConsent(consent);
-
-  try {
-    await fetch(buildApiUrl('/cookies'), {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(consent),
-    });
-  } catch (_error) {
-    // Silencioso para mantener la misma interfaz publicada.
+  if (readCookie(COOKIE_CONSENT_COOKIE) === 'accepted' || localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY) === 'accepted') {
+    return { tecnicas: true, analiticas: false, marketing: false };
   }
+
+  return readLegacyConsent();
 }
 
 function PreferenceGroup({ title, description, checked, disabled, onChange }) {
@@ -78,19 +45,19 @@ function PrivacyNotice({ onNavigate }) {
   useEffect(() => {
     let active = true;
 
-    getConsent().then((consent) => {
-      if (!active) return;
+    const consent = getConsent();
+    if (active) {
       if (consent) {
         setPreferences({ ...defaultConsent, ...consent });
         setView(null);
       } else {
         setView('banner');
       }
-    });
+    }
 
-    async function openPreferences() {
-      const consent = await getConsent();
-      setPreferences({ ...defaultConsent, ...(consent || {}) });
+    function openPreferences() {
+      const currentConsent = getConsent();
+      setPreferences({ ...defaultConsent, ...(currentConsent || {}) });
       setView('panel');
     }
 
@@ -101,8 +68,8 @@ function PrivacyNotice({ onNavigate }) {
     };
   }, []);
 
-  async function accept(consent) {
-    await saveConsent(consent);
+  function accept(consent) {
+    persistCookieConsent();
     setPreferences(consent);
     setView(null);
   }

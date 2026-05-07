@@ -28,6 +28,27 @@ function ProfilePage({ session }) {
       return;
     }
 
+    if (session.isDemo) {
+      const demoProfile = {
+        nombre: session.user.nombre || 'Usuario PacePal',
+        email: session.user.email || '',
+        dni: 'No disponible',
+        rol: session.user.rol || 'usuario',
+        sexo: 'No indicado',
+        fecha_nacimiento: 'No indicada',
+        direccion: 'No indicada',
+        pais: 'No indicado',
+        fecha_registro: 'Disponible en modo local',
+      };
+
+      setPerfil(demoProfile);
+      setEditValues(emptyEditValues(demoProfile));
+      setPedidos([]);
+      setEditing(false);
+      setMessage('');
+      return;
+    }
+
     try {
       const profilePayload = await requestJson('/perfil');
       setPerfil(profilePayload.data || null);
@@ -56,6 +77,13 @@ function ProfilePage({ session }) {
 
   async function saveProfile(event) {
     event.preventDefault();
+
+    if (session.isDemo) {
+      setPerfil((current) => ({ ...current, ...editValues }));
+      setEditing(false);
+      setMessage('Cambios guardados correctamente.');
+      return;
+    }
 
     try {
       const payload = await requestJson('/perfil', {

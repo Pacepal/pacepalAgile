@@ -1,90 +1,187 @@
 import { useEffect, useState } from 'react';
 import { requestJson } from '../services/api.js';
+import { clearDemoSession, createDemoSession, findDemoUser, readDemoSessionUser, saveDemoUser } from '../services/demo.js';
+
+const apiTimeoutMs = 2000;
+
+function buildTimeoutSignal(timeoutMs) {
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+
+    return {
+        signal: controller.signal,
+        clear() {
+            window.clearTimeout(timeoutId);
+        },
+    };
+}
+
+async function requestJsonWithTimeout(path, options = {}, timeoutMs = apiTimeoutMs) {
+    const timeout = buildTimeoutSignal(timeoutMs);
+
+    try {
+        return await requestJson(path, {
+            ...options,
+            signal: timeout.signal,
+        });
+    } finally {
+        timeout.clear();
+    }
+}
 
 export function useSession() {
     const [user, setUser] = useState(null);
     const [status, setStatus] = useState('cargando');
     const [message, setMessage] = useState('');
+    const [isDemo, setIsDemo] = useState(false);
 
-    async function refreshSession() {
-        setStatus('cargando');
-
-        try {
-            const payload = await requestJson('/session');
-            if (payload.logged) {
-                setUser({
-                    id: payload.usuario_id,
-                    rol: payload.rol,
-                });
-                setStatus('ok');
-                setMessage('');
-                return;
-            }
-        } catch (_error) {
-            // Sin PHP disponible se mantiene la misma vista publica sin mensajes tecnicos.
-        }
-
+    function applyAnonymousState() {
         setUser(null);
         setStatus('anonimo');
         setMessage('');
     }
 
+    function applyRealSession(payload) {
+        clearDemoSession();
+
+        if (payload.logged) {
+            setUser({
+                id: payload.usuario_id,
+                rol: payload.rol || 'usuario',
+                nombre: payload.nombre || '',
+                email: payload.email || '',
+            });
+            setStatus('ok');
+        } else {
+            setUser(null);
+            setStatus('anonimo');
+        }
+
+        setIsDemo(false);
+        setMessage('');
+    }
+
+    function applyDemoSession() {
+        const demoUser = readDemoSessionUser();
+
+        setUser(demoUser);
+        setStatus(demoUser ? 'ok' : 'anonimo');
+        setIsDemo(true);
+        setMessage('');
+    }
+
+    async function checkSession() {
+        setStatus('cargando');
+
+        try {
+            const payload = await requestJsonWithTimeout('/session');
+            if (typeof payload.logged === 'boolean') {
+                applyRealSession(payload);
+                return;
+            }
+        } catch (_error) {
+            // Si la API no esta disponible, se activa el modo demo.
+        }
+
+        applyDemoSession();
+    }
+
     async function login(credentials) {
         try {
-            const payload = await requestJson('/login', {
+            const payload = await requestJsonWithTimeout('/login', {
                 method: 'POST',
                 body: JSON.stringify(credentials),
             });
             setUser(payload.usuario || null);
             setStatus('ok');
             setMessage('Login correcto. Redirigiendo...');
-            await refreshSession();
+            setIsDemo(false);
+            await checkSession();
             return true;
-        } catch (error) {
-            setStatus('anonimo');
-            setMessage(error.message || 'No se pudo iniciar sesion.');
-            return false;
+        }
+
+        catch (_error) {
+            const demoUser = findDemoUser(credentials.email, credentials.password);
+
+            if (!demoUser) {
+                applyAnonymousState();
+                setIsDemo(true);
+                setMessage('Email o contrasena incorrectos.');
+                return false;
+            }
+
+            createDemoSession(demoUser);
+            setUser(demoUser);
+            setStatus('ok');
+            setIsDemo(true);
+            setMessage('Login correcto. Redirigiendo...');
+            return true;
         }
     }
 
     async function register(data) {
         try {
-            await requestJson('/register', {
+            await requestJsonWithTimeout('/register', {
                 method: 'POST',
                 body: JSON.stringify(data),
             });
             setMessage('Registro correcto. Redirigiendo a login...');
-            return true;
+            return { ok: true, autoLogged: false };
         } catch (error) {
-            setMessage(error.message || 'No se pudo completar el registro.');
-            return false;
+            const savedUser = saveDemoUser({
+                nombre: data.nombre,
+                email: data.email,
+                password: data.password,
+                dni: data.dni,
+                sexo: data.sexo,
+                fecha_nacimiento: data.fecha_nacimiento,
+                direccion: data.direccion,
+                pais: data.pais,
+                tarjeta: data.tarjeta,
+                notificaciones: data.notificaciones,
+                revista: data.revista,
+                rol: 'usuario',
+            });
+
+            if (!savedUser) {
+                setMessage('Ya existe una cuenta con ese correo electronico.');
+                return { ok: false, autoLogged: false };
+            }
+
+            createDemoSession(savedUser);
+            setUser(savedUser);
+            setStatus('ok');
+            setIsDemo(true);
+            setMessage('Registro correcto. Sesion iniciada.');
+            return { ok: true, autoLogged: true };
         }
     }
 
     async function logout() {
         try {
-            await requestJson('/logout', { method: 'POST' });
+            await requestJsonWithTimeout('/logout', { method: 'POST' });
         } catch (_error) {
-            // Si la sesion ya no existe, la interfaz debe quedar cerrada igualmente.
+            // Si la API no responde, se limpia igualmente el estado local.
         }
 
-        setUser(null);
-        setStatus('anonimo');
-        setMessage('');
+        clearDemoSession();
+        setIsDemo(false);
+        applyAnonymousState();
     }
 
     useEffect(() => {
-        refreshSession();
+        checkSession();
     }, []);
 
     return {
         status,
         user,
         message,
-        isDemo: false,
+        isDemo,
         login,
         register,
         logout,
-        refreshSession,
+        refreshSession: checkSession,
+        checkSession,
     };
 }

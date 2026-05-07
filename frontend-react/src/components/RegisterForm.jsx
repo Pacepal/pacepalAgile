@@ -183,13 +183,22 @@ function RegisterForm({ onRegister, sessionMessage, onNavigate }) {
 
     setLocalMessage('Registrando usuario...');
     setMessageType('ok');
-    const ok = await onRegister(payload);
+    const result = await onRegister(payload);
+    const ok = typeof result === 'object' ? !!result.ok : !!result;
+    const autoLogged = typeof result === 'object' ? !!result.autoLogged : false;
+
+    setLocalMessage('');
 
     if (ok) {
-      setLocalMessage('Registro correcto. Redirigiendo a login...');
-      setMessageType('ok');
       setValues(initialValues);
-      setTimeout(() => onNavigate('login'), 1500);
+      setMessageType('ok');
+
+      if (autoLogged) {
+        onNavigate('perfil');
+      } else {
+        setLocalMessage('Registro correcto. Redirigiendo a login...');
+        setTimeout(() => onNavigate('login'), 1500);
+      }
     } else {
       setMessageType('error');
     }

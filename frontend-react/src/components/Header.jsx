@@ -10,6 +10,7 @@ const navItems = [
 
 function Header({ cartCount, session, currentPage, onNavigate }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const isReady = session.status !== 'cargando';
 
   function handleNavigate(page) {
     return (event) => {
@@ -60,7 +61,7 @@ function Header({ cartCount, session, currentPage, onNavigate }) {
           ))}
         </nav>
 
-        {session.user ? (
+        {isReady && session.user ? (
           <>
             <a className="boton cabecera__carrito" href="#carrito" title="Mi carrito" id="enlaceCarritoNav" onClick={handleNavigate('carrito')}>
               <i className="bi bi-cart3" aria-hidden="true"></i> Carrito{' '}
@@ -80,7 +81,7 @@ function Header({ cartCount, session, currentPage, onNavigate }) {
               Logout
             </button>
           </>
-        ) : (
+        ) : isReady ? (
           <>
             <a className="boton boton--primario cabecera__login" href="#login" aria-current={currentPage === 'login' ? 'page' : undefined} onClick={handleNavigate('login')}>
               Login
@@ -89,7 +90,7 @@ function Header({ cartCount, session, currentPage, onNavigate }) {
               Register
             </a>
           </>
-        )}
+        ) : null}
       </div>
     </header>
   );

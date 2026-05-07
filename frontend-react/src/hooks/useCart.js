@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { requestJson } from '../services/api.js';
+import { buildDemoCartItem, buildDemoCartSummary, readDemoCart, writeDemoCart } from '../services/demo.js';
 
 function normalizeProduct(productOrId) {
     if (typeof productOrId === 'object' && productOrId !== null) {
@@ -14,27 +15,62 @@ export function useCart() {
     const [total, setTotal] = useState(0);
     const [status, setStatus] = useState('cargando');
     const [message, setMessage] = useState('');
+    const [isDemo, setIsDemo] = useState(false);
+
+    function applyDemoCart(itemsToPersist, nextMessage = '') {
+        const persistedItems = writeDemoCart(itemsToPersist);
+        const summary = buildDemoCartSummary(persistedItems);
+
+        setItems(summary.items);
+        setTotal(summary.total);
+        setStatus('ok');
+        setIsDemo(true);
+        setMessage(nextMessage);
+    }
+
+    function applyRealCart(payload) {
+        const data = payload.data || {};
+
+        setItems(Array.isArray(data.items) ? data.items : []);
+        setTotal(Number(data.total || 0));
+        setStatus('ok');
+        setIsDemo(false);
+        setMessage('');
+    }
 
     async function loadCart() {
         setStatus('cargando');
 
         try {
             const payload = await requestJson('/carrito');
-            const data = payload.data || {};
-            setItems(Array.isArray(data.items) ? data.items : []);
-            setTotal(Number(data.total || 0));
-            setStatus('ok');
-            setMessage('');
+            applyRealCart(payload);
         } catch (_error) {
-            setItems([]);
-            setTotal(0);
-            setStatus('ok');
-            setMessage('');
+            applyDemoCart(readDemoCart());
         }
     }
 
     async function addItem(productOrId, quantity = 1) {
         const product = normalizeProduct(productOrId);
+
+        if (isDemo) {
+            const currentItems = readDemoCart();
+            const nextItem = buildDemoCartItem(product, quantity);
+
+            if (!nextItem) {
+                setMessage('No se pudo anadir.');
+                return false;
+            }
+
+            const existingItem = currentItems.find((item) => item.id_articulo === nextItem.id_articulo);
+            const nextItems = existingItem
+                ? currentItems.map((item) => item.id_articulo === nextItem.id_articulo
+                    ? { ...item, cantidad: item.cantidad + nextItem.cantidad, subtotal: Number(((item.cantidad + nextItem.cantidad) * item.precio_unitario).toFixed(2)) }
+                    : item)
+                : [...currentItems, nextItem];
+
+            applyDemoCart(nextItems, 'Anadido!');
+            return true;
+        }
 
         try {
             await requestJson('/carrito', {
@@ -51,6 +87,16 @@ export function useCart() {
     }
 
     async function updateItem(productId, quantity) {
+        if (isDemo) {
+            const currentItems = readDemoCart();
+            const nextItems = currentItems.map((item) => item.id_articulo === Number(productId)
+                ? { ...item, cantidad: Math.max(1, Number(quantity) || 1), subtotal: Number((Math.max(1, Number(quantity) || 1) * Number(item.precio_unitario || 0)).toFixed(2)) }
+                : item);
+
+            applyDemoCart(nextItems);
+            return true;
+        }
+
         try {
             await requestJson('/carrito', {
                 method: 'PUT',
@@ -66,6 +112,14 @@ export function useCart() {
     }
 
     async function removeItem(productId) {
+        if (isDemo) {
+            const currentItems = readDemoCart();
+            const nextItems = currentItems.filter((item) => item.id_articulo !== Number(productId));
+
+            applyDemoCart(nextItems, 'Producto eliminado del carrito.');
+            return true;
+        }
+
         try {
             await requestJson('/carrito', {
                 method: 'DELETE',
@@ -82,6 +136,11 @@ export function useCart() {
 
     async function checkout() {
         setMessage('Procesando pedido...');
+
+        if (isDemo) {
+            applyDemoCart([], 'Pedido realizado correctamente. ID: DEMO');
+            return true;
+        }
 
         try {
             const payload = await requestJson('/pedido', { method: 'POST' });
@@ -112,7 +171,7 @@ export function useCart() {
         items,
         total,
         count,
-        isDemo: false,
+        isDemo,
         addItem,
         updateItem,
         removeItem,

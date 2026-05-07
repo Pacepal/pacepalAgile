@@ -54,6 +54,8 @@ function LoginForm({ session, onNavigate }) {
       password: values.password,
     });
 
+    setLocalMessage('');
+
     if (ok) {
       onNavigate('perfil');
     }
