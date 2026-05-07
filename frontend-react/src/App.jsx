@@ -16,6 +16,7 @@ import RouteDetailPage from './components/RouteDetailPage.jsx';
 import ActivityDetailPage from './components/ActivityDetailPage.jsx';
 import CookiesPage from './components/CookiesPage.jsx';
 import AdminPage from './components/AdminPage.jsx';
+import ContactPage from './components/ContactPage.jsx';
 import { useProducts } from './hooks/useProducts.js';
 import { useCart } from './hooks/useCart.js';
 import { useSession } from './hooks/useSession.js';
@@ -38,6 +39,7 @@ const validPages = new Set([
   'actividad',
   'cookies',
   'admin',
+  'contacto',
 ]);
 
 function readRouteFromHash() {
@@ -115,6 +117,7 @@ function App() {
     if (currentPage === 'actividades' || currentPage === 'crear-actividad' || currentPage === 'actividad') return 'pagina-interna pagina-actividades';
     if (currentPage === 'perfil') return 'pagina-interna pagina-usuario';
     if (currentPage === 'admin') return 'pagina-interna pagina-admin';
+    if (currentPage === 'contacto') return 'pagina-interna pagina-contacto';
     if (currentPage === 'cookies') return 'pagina-interna';
     return 'pagina-interna pagina-tienda';
   }, [currentPage]);
@@ -131,7 +134,7 @@ function App() {
     <div className={`${bodyClass} app-shell`}>
       <Header cartCount={cart.count} session={session} currentPage={currentPage} onNavigate={navigate} />
 
-      {currentPage === 'inicio' ? <HomePage session={session} onNavigate={navigate} /> : null}
+      {currentPage === 'inicio' ? <HomePage session={session} products={products} activities={activities} onNavigate={navigate} /> : null}
       {currentPage === 'actividades' ? <ActivitiesPage activities={activities} session={session} onNavigate={navigate} /> : null}
       {currentPage === 'tienda' ? <ShopPage products={products} cart={cart} onNavigate={navigate} /> : null}
       {currentPage === 'rutas' ? <RoutesPage routes={routes} onNavigate={navigate} /> : null}
@@ -145,7 +148,8 @@ function App() {
       {currentPage === 'ruta' ? <RouteDetailPage routeId={currentId} routes={routes} onNavigate={navigate} /> : null}
       {currentPage === 'actividad' ? <ActivityDetailPage activityId={currentId} activities={activities} session={session} onNavigate={navigate} /> : null}
       {currentPage === 'cookies' ? <CookiesPage /> : null}
-      {currentPage === 'admin' ? <AdminPage session={session} activities={activities} routes={routes} /> : null}
+      {currentPage === 'admin' ? <AdminPage session={session} products={products} activities={activities} routes={routes} /> : null}
+      {currentPage === 'contacto' ? <ContactPage onNavigate={navigate} /> : null}
 
       <Footer onNavigate={navigate} />
       <PrivacyNotice onNavigate={navigate} />

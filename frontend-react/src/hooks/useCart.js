@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { requestJson } from '../services/api.js';
+import { apiConfig, getApiUnavailableMessage, requestJson, warnAboutFallback } from '../services/api.js';
 import { buildDemoCartItem, buildDemoCartSummary, readDemoCart, writeDemoCart } from '../services/demo.js';
 
 function normalizeProduct(productOrId) {
@@ -44,8 +44,18 @@ export function useCart() {
         try {
             const payload = await requestJson('/carrito');
             applyRealCart(payload);
-        } catch (_error) {
-            applyDemoCart(readDemoCart());
+        } catch (error) {
+            if (!apiConfig.allowStaticFallback) {
+                setItems([]);
+                setTotal(0);
+                setStatus('error');
+                setIsDemo(false);
+                setMessage(error.message || 'No se pudo cargar el carrito desde la API PHP.');
+                return;
+            }
+
+            warnAboutFallback('carrito', error);
+            applyDemoCart(readDemoCart(), getApiUnavailableMessage('No se pudo contactar con la API PHP real. Mostrando carrito demo temporal.'));
         }
     }
 
@@ -68,7 +78,7 @@ export function useCart() {
                     : item)
                 : [...currentItems, nextItem];
 
-            applyDemoCart(nextItems, 'Anadido!');
+            applyDemoCart(nextItems, 'Anadido en carrito demo.');
             return true;
         }
 
@@ -93,7 +103,7 @@ export function useCart() {
                 ? { ...item, cantidad: Math.max(1, Number(quantity) || 1), subtotal: Number((Math.max(1, Number(quantity) || 1) * Number(item.precio_unitario || 0)).toFixed(2)) }
                 : item);
 
-            applyDemoCart(nextItems);
+            applyDemoCart(nextItems, 'Cantidad actualizada en carrito demo.');
             return true;
         }
 
@@ -116,7 +126,7 @@ export function useCart() {
             const currentItems = readDemoCart();
             const nextItems = currentItems.filter((item) => item.id_articulo !== Number(productId));
 
-            applyDemoCart(nextItems, 'Producto eliminado del carrito.');
+            applyDemoCart(nextItems, 'Producto eliminado del carrito demo.');
             return true;
         }
 
@@ -138,7 +148,7 @@ export function useCart() {
         setMessage('Procesando pedido...');
 
         if (isDemo) {
-            applyDemoCart([], 'Pedido realizado correctamente. ID: DEMO');
+            applyDemoCart([], 'Pedido demo realizado correctamente. ID: DEMO');
             return true;
         }
 

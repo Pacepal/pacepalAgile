@@ -6,7 +6,7 @@ $host = '127.0.0.1';
 $dbname = 'pacepal';
 $username = 'root';
 $password = '';
-$charset = 'utf8';
+$charset = 'utf8mb4';
 $ports = [3306, 3307, 3308];
 
 $pdo = null;
@@ -30,6 +30,8 @@ if ($pdo === null) {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode([
         'status' => 'error',
+        'ok' => false,
+        'error' => 'Error de conexión con la base de datos. Ningún puerto disponible (3306, 3307, 3308).',
         'message' => 'Error de conexión con la base de datos. Ningún puerto disponible (3306, 3307, 3308).',
     ], JSON_UNESCAPED_UNICODE);
 

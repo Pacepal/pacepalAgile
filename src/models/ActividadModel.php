@@ -17,9 +17,19 @@ class ActividadModel
 
     public function getAllActividades(): array
     {
-        $sql = 'SELECT id_actividad, id_ruta, id_usuario_creador, fecha, hora, nivel, plazas_max, descripcion, estado
-                FROM actividades
-                ORDER BY id_actividad ASC';
+        $sql = 'SELECT a.id_actividad, a.id_ruta, a.id_usuario_creador, a.fecha, a.hora,
+                       a.nivel, a.plazas_max, a.descripcion, a.estado,
+                       r.nombre AS nombre, r.nombre AS ruta_nombre, r.ubicacion AS ruta_ubicacion,
+                       r.distancia AS ruta_distancia, r.dificultad AS ruta_dificultad,
+                       r.imagen AS imagen, r.imagen AS ruta_imagen,
+                       u.nombre AS creador_nombre,
+                       (SELECT COUNT(*)
+                        FROM participaciones p
+                        WHERE p.id_actividad = a.id_actividad) AS num_participantes
+                FROM actividades a
+                LEFT JOIN rutas r ON r.id_ruta = a.id_ruta
+                LEFT JOIN usuarios u ON u.id_usuario = a.id_usuario_creador
+                ORDER BY a.id_actividad ASC';
 
         $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
@@ -71,8 +81,8 @@ class ActividadModel
                        r.dificultad AS ruta_dificultad, r.imagen AS ruta_imagen,
                        u.nombre AS creador_nombre
                 FROM actividades a
-                JOIN rutas r ON r.id_ruta = a.id_ruta
-                JOIN usuarios u ON u.id_usuario = a.id_usuario_creador
+                LEFT JOIN rutas r ON r.id_ruta = a.id_ruta
+                LEFT JOIN usuarios u ON u.id_usuario = a.id_usuario_creador
                 WHERE a.id_actividad = :id_actividad
                 LIMIT 1';
 
@@ -149,12 +159,13 @@ class ActividadModel
 
     public function updateActividad(int $idActividad, array $data): void
     {
-        $sql = 'UPDATE actividades SET fecha = :fecha, hora = :hora, nivel = :nivel,
+        $sql = 'UPDATE actividades SET id_ruta = :id_ruta, fecha = :fecha, hora = :hora, nivel = :nivel,
                        plazas_max = :plazas_max, descripcion = :descripcion, estado = :estado
                 WHERE id_actividad = :id_actividad';
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
+            'id_ruta' => $data['id_ruta'],
             'fecha' => $data['fecha'] ?? null,
             'hora' => $data['hora'] ?? null,
             'nivel' => $data['nivel'] ?? null,

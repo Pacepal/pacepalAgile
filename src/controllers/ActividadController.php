@@ -305,9 +305,19 @@ class ActividadController
         }
 
         $input = $this->getJsonInput();
+        $idRuta = isset($input['id_ruta']) ? (int) $input['id_ruta'] : (int) $actividad['id_ruta'];
+
+        if ($idRuta <= 0) {
+            $this->jsonResponse([
+                'status' => 'error',
+                'message' => 'El campo id_ruta es obligatorio.'
+            ], 400);
+            return;
+        }
 
         // Datos actualizados
         $data = [
+            'id_ruta' => $idRuta,
             'fecha' => $input['fecha'] ?? $actividad['fecha'],
             'hora' => $input['hora'] ?? $actividad['hora'],
             'nivel' => $input['nivel'] ?? $actividad['nivel'],
@@ -382,6 +392,14 @@ class ActividadController
 
     private function jsonResponse(array $payload, int $statusCode = 200): void
     {
+        if (!array_key_exists('ok', $payload)) {
+            $payload['ok'] = ($payload['status'] ?? '') !== 'error';
+        }
+
+        if (($payload['status'] ?? '') === 'error' && !array_key_exists('error', $payload)) {
+            $payload['error'] = $payload['message'] ?? 'Error de API.';
+        }
+
         http_response_code($statusCode);
         echo json_encode($payload, JSON_UNESCAPED_UNICODE);
     }

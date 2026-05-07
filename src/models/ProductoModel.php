@@ -89,4 +89,56 @@ class ProductoModel
         // Si no existe, devolver null
         return $producto === false ? null : $producto;
     }
+
+    public function createProducto(array $data): int
+    {
+        $sql = 'INSERT INTO articulos (nombre, descripcion, precio, stock, imagen1, imagen2, id_categoria)
+                VALUES (:nombre, :descripcion, :precio, :stock, :imagen1, :imagen2, :id_categoria)';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'nombre' => $data['nombre'],
+            'descripcion' => $data['descripcion'] ?? null,
+            'precio' => $data['precio'],
+            'stock' => $data['stock'] ?? 0,
+            'imagen1' => $data['imagen1'] ?? null,
+            'imagen2' => $data['imagen2'] ?? null,
+            'id_categoria' => $data['id_categoria'],
+        ]);
+
+        return (int) $this->pdo->lastInsertId();
+    }
+
+    public function updateProducto(int $idArticulo, array $data): void
+    {
+        $sql = 'UPDATE articulos
+                SET nombre = :nombre,
+                    descripcion = :descripcion,
+                    precio = :precio,
+                    stock = :stock,
+                    imagen1 = :imagen1,
+                    imagen2 = :imagen2,
+                    id_categoria = :id_categoria
+                WHERE id_articulo = :id_articulo';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'nombre' => $data['nombre'],
+            'descripcion' => $data['descripcion'] ?? null,
+            'precio' => $data['precio'],
+            'stock' => $data['stock'] ?? 0,
+            'imagen1' => $data['imagen1'] ?? null,
+            'imagen2' => $data['imagen2'] ?? null,
+            'id_categoria' => $data['id_categoria'],
+            'id_articulo' => $idArticulo,
+        ]);
+    }
+
+    public function deleteProducto(int $idArticulo): void
+    {
+        $sql = 'DELETE FROM articulos WHERE id_articulo = :id_articulo';
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id_articulo' => $idArticulo]);
+    }
 }

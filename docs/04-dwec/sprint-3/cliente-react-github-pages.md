@@ -13,10 +13,10 @@ frontend-react/pacepal-react.html
 La base publica esta configurada como:
 
 ```js
-base: "/pacepalAgile/";
+base: "./";
 ```
 
-El cliente React mantiene el look and feel legacy porque importa `../../../css/estilos.css` desde `frontend-react/src/styles/global.css` y reutiliza las imagenes compartidas de `img/`.
+El cliente React mantiene el look and feel legacy porque importa `../../../css/estilos.css` desde `frontend-react/src/styles/global.css`. Sus assets publicos estan duplicados en `frontend-react/public/img`, y Vite los copia al `dist/` junto con `public/data/`.
 
 ## Comandos
 
@@ -37,10 +37,10 @@ npm run build
 
 ### Comportamiento
 
-En desarrollo, `frontend-react/src/services/api.js` resuelve la API como:
+En el build servido desde XAMPP, `frontend-react/src/services/api.js` resuelve la API como:
 
 ```text
-/src/api/index.php/api
+../../src/api/index.php/api
 ```
 
 Con ese modo activo, React delega en PHP y MySQL:
@@ -66,9 +66,7 @@ El parametro `?v=86f609d` se usa como bust de cache. GitHub Pages sirve siempre 
 
 ### Limitacion tecnica
 
-GitHub Pages no ejecuta PHP ni MySQL. Por eso las rutas `src/api/index.php/api/*` responden `404` o `405` en el navegador publicado.
-
-El cliente React intenta primero la API real y, cuando falla o no existe, activa el fallback demo sin romper la interfaz.
+GitHub Pages no ejecuta PHP ni MySQL. Por eso el cliente React detecta `github.io`, no intenta llamar a la API PHP y activa el fallback demo sin generar 404 de endpoints PHP.
 
 ### Que hace el fallback demo
 
@@ -95,7 +93,7 @@ Las claves comprobadas en la verificacion final son estas:
 
 `localStorage` es la fuente principal del fallback. `sessionStorage` simula el estado de sesion de la pestana. `document.cookie` se usa como apoyo visible adicional.
 
-Las cookies demo se intentan escribir en `path=/` y `path=/pacepalAgile` con `SameSite=Lax` y `Secure` en HTTPS. Si el navegador las bloquea, la aplicacion sigue funcionando igualmente.
+Las cookies demo se intentan escribir en `path=/` y en la ruta base detectada desde la URL actual, con `SameSite=Lax` y `Secure` en HTTPS. Si el navegador las bloquea, la aplicacion sigue funcionando igualmente.
 
 ## Compatibilidad entre navegadores y cookies
 
@@ -111,13 +109,11 @@ Si el navegador no acepta la cookie, la app sigue funcionando y solo desaparece 
 
 ## Validacion funcional cerrada el 2026-05-07
 
-### GitHub Actions
-
-- `Deploy React Sprint 3 to GitHub Pages` run `#8` para `86f609d` -> `completed successfully`.
-- `Deploy React Sprint 3 to GitHub Pages` run `#9` para `c201d6a` -> `completed successfully`.
-
 ### GitHub Pages
 
+- URL revisada el 2026-05-07: `https://pacepal.github.io/pacepalAgile/pacepal-react.html` -> `200`.
+- URL antigua del README raiz `https://kampexiii.github.io/pacepalAgile/` -> `404`.
+- HTML, JS, CSS, JSON, logo, imagen de producto e imagen de ruta publicados -> `200`.
 - carga sin pantalla blanca;
 - aviso de cookies visible tras limpiar el sitio;
 - `Aceptar todas` y `Solo tecnicas` crean `pacepal_cookie_consent` tanto en `localStorage` como en cookies;
@@ -131,9 +127,8 @@ Si el navegador no acepta la cookie, la app sigue funcionando y solo desaparece 
 ### Local con Vite
 
 - `npm run build` -> correcto;
-- `npm run dev -- --host 127.0.0.1` -> correcto;
-- URL usada en la sesion de validacion: `http://127.0.0.1:5176/pacepalAgile/pacepal-react.html`.
-- Simulacion local con cookies bloqueadas -> correcta usando `document.cookie = ''` y fallback sostenido por `localStorage` y `sessionStorage`.
+- `vite preview` -> HTML, JS, CSS, JSON e imagenes probadas con respuesta `200`.
+- Apache/XAMPP no estaba activo en el entorno de correccion, por lo que la validacion final en `localhost` queda como checklist manual en `docs/evidencias/rutas-react-xampp/README.md`.
 
 Para el detalle tecnico de esta decision, ver `docs/04-dwec/sprint-3/decision-fallback-github-pages.md`.
 

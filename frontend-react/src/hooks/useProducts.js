@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { loadStaticData, requestJson } from '../services/api.js';
+import { apiConfig, loadStaticData, requestJson, warnAboutFallback } from '../services/api.js';
 
 const PAGE_SIZE = 6;
 
@@ -41,12 +41,23 @@ export function useProducts() {
             setStatus('ok');
             setMessage(products.length ? 'Productos cargados correctamente.' : 'No hay productos disponibles.');
         } catch (error) {
+            console.error('[PacePal] No se pudieron cargar productos desde la API PHP real.', error);
+
+            if (!apiConfig.allowStaticFallback) {
+                setItems([]);
+                setIsDemo(false);
+                setStatus('error');
+                setMessage(error.message || 'No se pudieron cargar los productos desde la API PHP.');
+                return;
+            }
+
             try {
+                warnAboutFallback('productos', error);
                 const products = await loadStaticData('productos');
                 setItems(products);
                 setIsDemo(true);
                 setStatus('ok');
-                setMessage(products.length ? 'Productos disponibles.' : 'No hay productos disponibles.');
+                setMessage(products.length ? 'API PHP no disponible. Mostrando JSON temporal.' : 'No hay productos disponibles.');
             } catch (staticError) {
                 setStatus('error');
                 setMessage(staticError.message || error.message || 'No se pudieron cargar los productos.');

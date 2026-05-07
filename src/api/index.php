@@ -8,7 +8,41 @@ declare(strict_types=1);
 // correspondiente según método HTTP + ruta
 // ===================================================================
 
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
+$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowedOrigins = [
+    'http://127.0.0.1:4173',
+    'http://127.0.0.1:4174',
+    'http://127.0.0.1:4175',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174',
+    'http://127.0.0.1:5175',
+    'http://localhost:4173',
+    'http://localhost:4174',
+    'http://localhost:4175',
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+];
+
+if ($origin !== '' && in_array($origin, $allowedOrigins, true)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+    header('Vary: Origin');
+}
+
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Accept');
+header('Access-Control-Max-Age: 600');
 header('Content-Type: application/json; charset=utf-8');
+
+if ($method === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
 
 require_once __DIR__ . '/../controllers/ProductoController.php';
 require_once __DIR__ . '/../controllers/RutaController.php';
@@ -33,7 +67,6 @@ $reporteController = new ReporteController($pdo);
 $cookieController = new CookieController();
 
 // ===== PARSEAR MÉTODO Y RUTA =====
-$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 // Se decodifica la URL para que rutas con espacios (%20) coincidan con SCRIPT_NAME/PHP_SELF.
 $uri = rawurldecode(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/');
@@ -70,6 +103,15 @@ $routes = [
         '/api/session' => function () use ($authController): void {
             $authController->getSession();
         },
+        '/api/health' => function () use ($pdo): void {
+            $databaseName = (string) $pdo->query('SELECT DATABASE()')->fetchColumn();
+            jsonResponse([
+                'status' => 'ok',
+                'ok' => true,
+                'database' => $databaseName,
+                'connection' => 'ok',
+            ]);
+        },
         '/api/perfil' => function () use ($usuarioController): void {
             $usuarioController->getPerfil();
         },
@@ -93,6 +135,9 @@ $routes = [
     'POST' => [
         '/api/actividad' => function () use ($actividadController): void {
             $actividadController->createActividad();
+        },
+        '/api/productos' => function () use ($productoController): void {
+            $productoController->createProducto();
         },
         '/api/register' => function () use ($authController): void {
             $authController->register();
@@ -163,6 +208,14 @@ if ($handler === null) {
             if ($method === 'GET' && $resource === 'productos') {
                 $handler = function () use ($productoController, $id): void {
                     $productoController->getProducto((int) $id);
+                };
+            } elseif ($method === 'PUT' && $resource === 'productos') {
+                $handler = function () use ($productoController, $id): void {
+                    $productoController->updateProducto((int) $id);
+                };
+            } elseif ($method === 'DELETE' && $resource === 'productos') {
+                $handler = function () use ($productoController, $id): void {
+                    $productoController->deleteProducto((int) $id);
                 };
             } elseif ($method === 'GET' && $resource === 'rutas') {
                 $handler = function () use ($rutaController, $id): void {
@@ -235,7 +288,16 @@ $handler();
 // ===== HELPER =====
 function jsonResponse(array $payload, int $statusCode = 200): void
 {
+    if (!array_key_exists('ok', $payload)) {
+        $payload['ok'] = ($payload['status'] ?? '') !== 'error';
+    }
+
+    if (($payload['status'] ?? '') === 'error' && !array_key_exists('error', $payload)) {
+        $payload['error'] = $payload['message'] ?? 'Error de API.';
+    }
+
     http_response_code($statusCode);
     echo json_encode($payload, JSON_UNESCAPED_UNICODE);
     exit;
 }
+

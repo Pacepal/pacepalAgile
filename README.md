@@ -4,7 +4,7 @@ Plataforma web para conectar personas y promover actividades deportivas en comun
 
 ## Demo
 
-- GitHub Pages: https://kampexiii.github.io/pacepalAgile/
+- GitHub Pages: https://pacepal.github.io/pacepalAgile/
 - Video Sprint 1 (YouTube): https://www.youtube.com/watch?v=lWd_V9rKP-k
 - Video Sprint 2 (YouTube): https://youtu.be/y_3bRf19TNg
 
@@ -37,7 +37,7 @@ Diseño:
 ## Estructura
 
 **Generated:** 3/11/2026, 11:47:57 PM
-**Root Path:** `c:\xampp\htdocs\proyectoAgilePacepal`
+**Ubicacion local orientativa:** proyecto dentro de la carpeta web de XAMPP.
 
 ```
 ├── 📁 css

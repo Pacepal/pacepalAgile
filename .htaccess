@@ -1,15 +1,2 @@
 Options -Indexes
-
-RewriteEngine On
-RewriteBase /pacepalAgile/
-
-# Redirigir la raiz del proyecto directamente a la SPA React
-RewriteRule ^$ frontend-react/dist/pacepal-react.html [R=302,L]
-
-# API PHP: dejar pasar todas las rutas de la API sin modificar
-RewriteRule ^src/api/ - [L]
-
-# Archivos y carpetas que existen fisicamente: servirlos directamente
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+DirectoryIndex index.html

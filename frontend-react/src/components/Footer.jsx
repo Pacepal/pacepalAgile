@@ -1,5 +1,8 @@
 import { buildPublicAssetUrl } from '../services/api.js';
 
+const pacepalLogo = buildPublicAssetUrl('img/logo/logo.webp');
+const treecoreLogo = buildPublicAssetUrl('img/logo/logotipoTrecore.webp');
+
 function Footer({ onNavigate }) {
   function handleNavigate(page) {
     return (event) => {
@@ -18,7 +21,7 @@ function Footer({ onNavigate }) {
         <div className="row row-cols-1 row-cols-md-4 g-4 pie__rejilla">
           <section className="col pie__col">
             <h3 className="logo pie__logo">
-              <img src={buildPublicAssetUrl('img/logo/logo.webp')} alt="Logo PacePal" className="logo__img" />
+              <img src={pacepalLogo} alt="Logo PacePal" className="logo__img" />
               <span className="logo__texto">PacePal</span>
             </h3>
             <p>Conectando personas para actividades deportivas.</p>
@@ -34,7 +37,7 @@ function Footer({ onNavigate }) {
           <section className="col pie__col">
             <h4>Tienda</h4>
             <a href="#tienda" onClick={handleNavigate('tienda')}>Productos</a>
-            <a href="#tienda" onClick={handleNavigate('tienda')}>Contacto</a>
+            <a href="#contacto" onClick={handleNavigate('contacto')}>Contacto</a>
             <a href="#registro" onClick={handleNavigate('registro')}>Crear cuenta</a>
           </section>
 
@@ -57,7 +60,7 @@ function Footer({ onNavigate }) {
             aria-label="Web de Treecore Studio"
           >
             Creado por el equipo de Treecore Studio
-            <img src={buildPublicAssetUrl('img/logo/logotipoTrecore.webp')} alt="Logo Treecore Studio" />
+            <img src={treecoreLogo} alt="Logo Treecore Studio" />
           </a>
         </div>
       </div>

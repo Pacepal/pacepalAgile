@@ -13,17 +13,17 @@ Cliente React/Vite del Sprint 3 de Cliente de PacePal.
 
 Entrada Vite:
 
-- `pacepal-react.html`
+- `index.html`
 - `src/main.jsx`
 - `src/App.jsx`
 
 Configuracion publica:
 
 ```js
-base: "/pacepalAgile/";
+base: "./";
 ```
 
-El workflow de GitHub Pages construye `frontend-react/` y copia los assets compartidos de `img/` al `dist/` publicado.
+Los assets de React estan en `frontend-react/public/`. Vite copia `public/data/` y `public/img/` al `dist/` publicado, por lo que las rutas funcionan en subcarpetas de XAMPP y en GitHub Pages sin depender del nombre `pacepalAgile`.
 
 ## Arquitectura
 
@@ -39,6 +39,7 @@ El workflow de GitHub Pages construye `frontend-react/` y copia los assets compa
 - `CartPage.jsx`
 - `ProfilePage.jsx`
 - `AboutPage.jsx`
+- `ContactPage.jsx`
 - `CookiesPage.jsx`
 - `AuthPages.jsx`, `LoginPage.jsx`, `RegisterPage.jsx`
 
@@ -63,14 +64,14 @@ El workflow de GitHub Pages construye `frontend-react/` y copia los assets compa
 
 ### Reutilizacion legacy
 
-React importa `../../../css/estilos.css` desde `src/styles/global.css` y reutiliza las imagenes compartidas de `img/`. Esto mantiene la mayor parte del aspecto visual de la aplicacion original.
+React importa `../../../css/estilos.css` desde `src/styles/global.css` para mantener el aspecto visual original, pero sus datos e imagenes publicas se sirven desde `frontend-react/public/`.
 
 ## Modo local real
 
-En desarrollo, React apunta por defecto a:
+En el build servido desde XAMPP, React apunta por defecto a la API PHP relativa al proyecto:
 
 ```text
-/src/api/index.php/api
+../../src/api/index.php/api
 ```
 
 Requisitos:
@@ -78,6 +79,9 @@ Requisitos:
 1. Apache y MySQL activos en XAMPP.
 2. `db/schema.sql` y `db/seed.sql` importados.
 3. Proyecto servido desde `htdocs`.
+4. Build generado con `npm run build`.
+
+La raiz del proyecto usa un unico `index.html` como lanzador React. Calcula el destino con una URL relativa hacia `./frontend-react/dist/index.html`, sin rutas fisicas del sistema. `.htaccess` solo define `DirectoryIndex index.html` y no hace redirecciones.
 
 Con ese entorno activo, PHP sigue gestionando:
 
@@ -100,7 +104,7 @@ El fallback demo usa:
 - `sessionStorage` para simular la sesion de pestana mediante `pacepal_demo_session`;
 - cookies como apoyo visible para `pacepal_cookie_consent` y `pacepal_session_demo` cuando el navegador las permite.
 
-Las cookies demo se intentan escribir en `path=/` y `path=/pacepalAgile` con `SameSite=Lax` y `Secure` en HTTPS. Si el navegador las bloquea, la app sigue funcionando porque la persistencia principal esta en `localStorage` y `sessionStorage`.
+Las cookies demo se intentan escribir en `path=/` y en la ruta base detectada desde la URL actual con `SameSite=Lax` y `Secure` en HTTPS. Si el navegador las bloquea, la app sigue funcionando porque la persistencia principal esta en `localStorage` y `sessionStorage`.
 
 ## Compatibilidad entre navegadores y cookies
 
@@ -122,15 +126,21 @@ npm run dev -- --host 127.0.0.1
 npm run build
 ```
 
-## Verificacion final cerrada el 2026-05-07
+## Verificacion de rutas cerrada el 2026-05-08
 
 - `npm run build` -> correcto.
-- `npm run dev -- --host 127.0.0.1` -> correcto.
-- GitHub Pages validado en `https://pacepal.github.io/pacepalAgile/pacepal-react.html?v=86f609d`.
+- XAMPP/Apache -> raiz del proyecto, build directo `frontend-react/dist/index.html`, JS, CSS, JSON, logo e imagenes principales responden `200` desde `http://localhost/treecore%20Trabajos/pacepal/`.
+- La URL generada por los lanzadores no contiene `C:/xampp`, `htdocs`, `localhost/C:` ni `file://`.
+- GitHub Pages usa el `index.html` generado por Vite.
 - Cookies validadas con `Aceptar todas` y `Solo tecnicas`.
 - Login demo, logout, registro demo, duplicado y carrito demo validados en Pages.
-- Sesion real local validada contra PHP con `GET /src/api/index.php/api/session` devolviendo `200`.
-- Simulacion local de navegador con cookies bloqueadas validada: consentimiento, registro demo, login demo, recarga, logout y carrito siguen funcionando con `document.cookie` vacio.
+- La comprobacion visual de DevTools queda como evidencia manual pendiente en `docs/evidencias/rutas-react-xampp/README.md`.
+
+## Ajuste de Contacto
+
+- La pagina `ContactPage.jsx` se ha simplificado para alinearse visualmente con Login, Register y Sobre nosotros.
+- El formulario sigue siendo educativo, mantiene validacion en cliente y no realiza envios reales.
+- La carga del logo principal y del logo de Treecore en React se ha revisado usando imports estaticos empaquetados por Vite para evitar roturas visibles de ruta.
 
 ## Limitacion tecnica conocida
 

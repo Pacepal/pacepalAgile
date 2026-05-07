@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
-import { requestJson } from '../services/api.js';
+import { apiConfig, getApiUnavailableMessage, requestJson, warnAboutFallback } from '../services/api.js';
 import { clearDemoSession, findDemoUser, restoreDemoSession, saveDemoSession, saveDemoUser } from '../services/demo.js';
 
 const apiTimeoutMs = 2000;
 
 function shouldUseDemoFallback(error) {
+    if (!apiConfig.allowStaticFallback) {
+        return false;
+    }
+
     if (!error) {
         return true;
     }
@@ -85,14 +89,14 @@ export function useSession() {
         setMessageType('');
     }
 
-    function applyDemoSession() {
+    function applyDemoSession(nextMessage = '') {
         const demoUser = restoreDemoSession();
 
         setUser(demoUser);
         setStatus(demoUser ? 'ok' : 'anonimo');
         setIsDemo(true);
-        setMessage('');
-        setMessageType('');
+        setMessage(nextMessage);
+        setMessageType(nextMessage ? 'error' : '');
     }
 
     async function checkSession() {
@@ -112,10 +116,10 @@ export function useSession() {
                 return;
             }
 
-            // Si la API no esta disponible, se activa el modo demo.
+            warnAboutFallback('sesion', error);
         }
 
-        applyDemoSession();
+        applyDemoSession(getApiUnavailableMessage('No se pudo contactar con la API PHP real. Sesion demo temporal.'));
     }
 
     async function login(credentials) {
@@ -142,12 +146,14 @@ export function useSession() {
                 return false;
             }
 
+            warnAboutFallback('login', error);
+
             const demoUser = findDemoUser(credentials.email, credentials.password);
 
             if (!demoUser) {
                 applyAnonymousState();
-                setIsDemo(true);
-                setMessage('Email o contrasena incorrectos.');
+                setIsDemo(false);
+                setMessage(getApiUnavailableMessage('No se pudo iniciar sesion con la API PHP real y no hay una cuenta demo guardada para este email.'));
                 setMessageType('error');
                 return false;
             }
@@ -156,8 +162,8 @@ export function useSession() {
             setUser(restoredUser);
             setStatus('ok');
             setIsDemo(true);
-            setMessage('Login correcto. Redirigiendo...');
-            setMessageType('ok');
+            setMessage('API PHP no disponible. Sesion demo temporal iniciada.');
+            setMessageType('error');
             return true;
         }
     }
@@ -177,6 +183,8 @@ export function useSession() {
                 setMessageType('error');
                 return { ok: false, autoLogged: false };
             }
+
+            warnAboutFallback('registro', error);
 
             const savedUser = saveDemoUser({
                 nombre: data.nombre,
@@ -203,8 +211,8 @@ export function useSession() {
             setUser(restoredUser);
             setStatus('ok');
             setIsDemo(true);
-            setMessage('Registro correcto. Sesion iniciada.');
-            setMessageType('ok');
+            setMessage('API PHP no disponible. Cuenta demo temporal creada y sesion iniciada.');
+            setMessageType('error');
             return { ok: true, autoLogged: true };
         }
     }

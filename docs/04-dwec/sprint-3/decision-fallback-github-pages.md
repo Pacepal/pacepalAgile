@@ -31,6 +31,8 @@ La decision no sustituye la seguridad ni la persistencia reales del backend. Su 
 
 ## Como funciona el fallback
 
+En GitHub Pages el cliente detecta el dominio `github.io` y no intenta consultar la API PHP. De esta forma evita 404 de endpoints que el hosting estatico no puede ejecutar y pasa directamente al modo demo.
+
 ### 1. Fuente principal: localStorage
 
 `localStorage` es la fuente principal del modo demo persistente.
@@ -59,7 +61,7 @@ Si la sesion demo se restaura desde `localStorage`, la app recompone tambien est
 La app intenta escribir cookies demo con:
 
 - `path=/`;
-- `path=/pacepalAgile`;
+- la ruta base detectada desde la URL actual;
 - `SameSite=Lax`;
 - `Secure` cuando el sitio esta en HTTPS.
 
@@ -100,7 +102,7 @@ Al cerrar sesion, el cliente limpia el estado de autenticacion demo visible que 
 
 - elimina `pacepal_demo_user` de `localStorage`;
 - elimina `pacepal_demo_session` de `sessionStorage`;
-- elimina `pacepal_session_demo` intentando borrar la cookie tanto en `/` como en `/pacepalAgile`.
+- elimina `pacepal_session_demo` intentando borrar la cookie tanto en `/` como en la ruta base detectada.
 
 No se elimina automaticamente:
 

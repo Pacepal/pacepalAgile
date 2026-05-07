@@ -77,6 +77,18 @@
   color: var(--color-texto);
 }
 
+.tarjeta-formulario textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 0.62rem 0.7rem;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-pequeno);
+  background: #fbfcfa;
+  color: var(--color-texto);
+  font: inherit;
+  resize: vertical;
+}
+
 /* ======== VALIDACIÓN VISUAL ======== */
 
 .campo-invalido {
@@ -90,6 +102,13 @@
 }
 
 .tarjeta-formulario input:focus {
+  outline: 2px solid #1f2b11;
+  outline-offset: 1px;
+}
+
+.tarjeta-formulario select:focus,
+.tarjeta-formulario textarea:focus,
+.contenedor-checkbox input[type="checkbox"]:focus {
   outline: 2px solid #1f2b11;
   outline-offset: 1px;
 }
@@ -139,6 +158,13 @@
   background: #f1f8ea;
   border-color: #c7dfab;
   color: #254b12;
+}
+
+.mensaje-error {
+  min-height: 1.1rem;
+  margin: 0.15rem 0 0;
+  color: #a92f2f;
+  font-size: 0.84rem;
 }
 
 .enlace-alterno {

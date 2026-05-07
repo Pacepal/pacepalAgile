@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { loadStaticData, requestJson } from '../services/api.js';
+import { apiConfig, loadStaticData, requestJson, warnAboutFallback } from '../services/api.js';
 
 export function useActivities() {
   const [items, setItems] = useState([]);
@@ -19,12 +19,23 @@ export function useActivities() {
       setStatus('ok');
       setMessage(activities.length ? 'Actividades disponibles.' : 'No hay actividades disponibles.');
     } catch (error) {
+      console.error('[PacePal] No se pudieron cargar actividades desde la API PHP real.', error);
+
+      if (!apiConfig.allowStaticFallback) {
+        setItems([]);
+        setIsDemo(false);
+        setStatus('error');
+        setMessage(error.message || 'No se pudieron cargar las actividades desde la API PHP.');
+        return;
+      }
+
       try {
+        warnAboutFallback('actividades', error);
         const activities = await loadStaticData('actividades');
         setItems(activities);
         setIsDemo(true);
         setStatus('ok');
-        setMessage(activities.length ? 'Actividades disponibles.' : 'No hay actividades disponibles.');
+        setMessage(activities.length ? 'API PHP no disponible. Mostrando JSON temporal.' : 'No hay actividades disponibles.');
       } catch (staticError) {
         setStatus('error');
         setMessage(staticError.message || error.message || 'No se pudieron cargar las actividades.');

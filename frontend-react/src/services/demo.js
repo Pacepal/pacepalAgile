@@ -7,7 +7,7 @@ export const COOKIE_CONSENT_STORAGE_KEY = 'pacepal_cookie_consent';
 export const COOKIE_CONSENT_COOKIE = 'pacepal_cookie_consent';
 export const LEGACY_COOKIE_CONSENT_STORAGE_KEY = 'pacepal_cookies';
 
-const demoCookiePath = normalizeCookiePath((import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '/');
+const demoCookiePath = detectDemoCookiePath();
 const defaultAdminUser = {
     id: 1,
     nombre: 'Administrador PacePal',
@@ -17,6 +17,28 @@ const defaultAdminUser = {
     demo: true,
 };
 let cookieSupportCache = null;
+
+function detectDemoCookiePath() {
+    const baseUrl = String(import.meta.env.BASE_URL || '/').trim();
+
+    if (baseUrl.startsWith('/')) {
+        return normalizeCookiePath(baseUrl);
+    }
+
+    if (typeof window === 'undefined') {
+        return '/';
+    }
+
+    const pathname = window.location.pathname || '/';
+    const distMarker = '/frontend-react/dist/';
+    const distIndex = pathname.indexOf(distMarker);
+
+    if (distIndex >= 0) {
+        return normalizeCookiePath(pathname.slice(0, distIndex) || '/');
+    }
+
+    return normalizeCookiePath(pathname.replace(/\/[^/]*$/, '') || '/');
+}
 
 function normalizeCookiePath(path) {
     const rawPath = String(path || '/').trim();

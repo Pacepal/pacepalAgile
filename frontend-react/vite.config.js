@@ -1,56 +1,39 @@
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
-import { cpSync, existsSync } from 'node:fs';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const legacyImageDir = resolve(__dirname, '../img');
-const buildImageDir = resolve(__dirname, 'dist/img');
+const apiProxyTarget = (process.env.VITE_PACEPAL_API_PROXY_TARGET || process.env.VITE_API_PROXY_TARGET || '').trim();
+const apiProxyBasePath = normalizeProxyBasePath(process.env.VITE_PACEPAL_API_PROXY_BASE_PATH || process.env.VITE_API_PROXY_BASE_PATH || '');
 
-function copyLegacyImages() {
+function normalizeProxyBasePath(path) {
+  const normalizedPath = String(path || '').trim().replace(/\\/g, '/').replace(/^\/+|\/+$/g, '');
+  return normalizedPath ? `/${normalizedPath}` : '';
+}
+
+function buildDevProxy() {
+  if (!apiProxyTarget) {
+    return undefined;
+  }
+
   return {
-    name: 'copy-legacy-images',
-    closeBundle() {
-      if (existsSync(legacyImageDir)) {
-        cpSync(legacyImageDir, buildImageDir, { recursive: true });
-      }
+    '/src/api': {
+      target: apiProxyTarget,
+      changeOrigin: true,
+      secure: false,
+      rewrite: (path) => `${apiProxyBasePath}${path}`,
     },
   };
 }
 
 export default defineConfig({
-  plugins: [react(), copyLegacyImages()],
+  plugins: [react()],
   base: './',
-  build: {
-    rollupOptions: {
-      input: resolve(__dirname, 'pacepal-react.html'),
-    },
-  },
   server: {
     host: '127.0.0.1',
     port: 5173,
     fs: {
       allow: ['..'],
     },
-    proxy: {
-      '/src/api': {
-        target: 'http://localhost/pacepalAgile',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/pacepalAgile/img': {
-        target: 'http://localhost/pacepalAgile',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/pacepalAgile/, ''),
-      },
-      '/img': {
-        target: 'http://localhost/pacepalAgile',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
+    proxy: buildDevProxy(),
   },
   preview: {
     host: '127.0.0.1',

@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { buildPublicAssetUrl } from '../services/api.js';
 
+const pacepalLogo = buildPublicAssetUrl('img/logo/logo.webp');
+
 const navItems = [
   { page: 'actividades', label: 'Actividades' },
   { page: 'tienda', label: 'Tienda' },
   { page: 'rutas', label: 'Rutas' },
   { page: 'about', label: 'Sobre nosotros' },
+  { page: 'contacto', label: 'Contacto' },
 ];
 
 function Header({ cartCount, session, currentPage, onNavigate }) {
@@ -30,7 +33,7 @@ function Header({ cartCount, session, currentPage, onNavigate }) {
     <header className="cabecera">
       <div className="contenedor cabecera__fila">
         <a className="logo" href="#inicio" aria-label="Ir al inicio de PacePal" onClick={handleNavigate('inicio')}>
-          <img src={buildPublicAssetUrl('img/logo/logo.webp')} alt="Logo PacePal" className="logo__img" />
+          <img src={pacepalLogo} alt="Logo PacePal" className="logo__img" />
           <span className="logo__texto">PacePal</span>
         </a>
 
@@ -69,14 +72,14 @@ function Header({ cartCount, session, currentPage, onNavigate }) {
                 {cartCount > 0 ? cartCount : ''}
               </span>
             </a>
-            <a className="boton boton--primario cabecera__login" href="#perfil" aria-current={currentPage === 'perfil' ? 'page' : undefined} onClick={handleNavigate('perfil')}>
-              Perfil
-            </a>
             {session.user.rol === 'admin' ? (
               <a className="boton" href="#admin" aria-current={currentPage === 'admin' ? 'page' : undefined} onClick={handleNavigate('admin')}>
                 Admin
               </a>
             ) : null}
+            <a className="boton boton--primario cabecera__login" href="#perfil" aria-current={currentPage === 'perfil' ? 'page' : undefined} onClick={handleNavigate('perfil')}>
+              Perfil
+            </a>
             <button type="button" className="boton cabecera__registro" id="botonLogout" onClick={handleLogout}>
               Logout
             </button>

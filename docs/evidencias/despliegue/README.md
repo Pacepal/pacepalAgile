@@ -6,7 +6,9 @@ Base de evidencias del bloque **Despliegue** para PacePal.
 
 Carpeta creada: `docs/evidencias/despliegue/sprint-3/`.
 
-Actualmente no hay evidencias registradas en Sprint 3.
+Evidencia relacionada:
+
+- `docs/evidencias/rutas-react-xampp/README.md`
 
 ## Nota de trazabilidad
 

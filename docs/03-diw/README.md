@@ -40,6 +40,19 @@ Documentacion:
 
 ---
 
+### Sprint 3 - UX + interactividad
+
+- Integracion de audio en contacto
+- Integracion de video en tienda
+- Microinteracciones CSS y control de movimiento reducido
+
+Documentacion:
+
+- [Carpeta Sprint 3](./sprint-3/)
+- [DI8-DI9-DI10_UX_Interactividad.md](./sprint-3/DI8-DI9-DI10_UX_Interactividad.md)
+
+---
+
 ## Recursos visuales
 
 Las imagenes utilizadas en la documentacion se encuentran en:

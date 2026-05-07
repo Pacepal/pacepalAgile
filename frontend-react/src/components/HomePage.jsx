@@ -1,6 +1,9 @@
 import { buildPublicAssetUrl } from '../services/api.js';
 
-function HomePage({ session, onNavigate }) {
+function HomePage({ session, products, activities, onNavigate }) {
+  const featuredActivities = activities.items.slice(0, 3);
+  const featuredProducts = products.items.slice(0, 6);
+
   function handleNavigate(page) {
     return (event) => {
       event.preventDefault();
@@ -42,23 +45,31 @@ function HomePage({ session, onNavigate }) {
             <span className="chip">After-work</span>
             <span className="chip">Fin de semana</span>
           </div>
+          {activities.isDemo ? (
+            <div className="alert alert-warning" role="alert">
+              {activities.message || 'API PHP no disponible. Mostrando JSON temporal.'}
+            </div>
+          ) : null}
+          {activities.status === 'error' ? <p className="mensaje-error">{activities.message}</p> : null}
           <div className="rejilla rejilla--actividades">
-            {[
-              ['Casa de Campo', 'Running suave · nivel principiante', 'Sábado · 10:00', '12 plazas disponibles'],
-              ['Retiro', 'Walking relajado · nivel básico', 'Domingo · 9:30', '8 plazas disponibles'],
-              ['Madrid Río', 'Running moderado · nivel intermedio', 'Sábado · 18:00', '15 plazas disponibles'],
-            ].map((activity) => (
-              <article className="tarjeta tarjeta-actividad" key={activity[0]}>
-                <h3><i className="bi bi-geo-alt-fill" aria-hidden="true"></i> {activity[0]}</h3>
-                <p className="linea">{activity[1]}</p>
-                <p><i className="bi bi-calendar3" aria-hidden="true"></i> {activity[2]}</p>
-                <p><i className="bi bi-people-fill" aria-hidden="true"></i> {activity[3]}</p>
-                <a href="#actividades-page" className="boton boton--primario" onClick={handleNavigate('actividades')}>
-                  Ver actividad
-                </a>
-              </article>
-            ))}
+            {featuredActivities.map((activity) => {
+              const title = activity.ruta_nombre || activity.nombre || activity.descripcion || 'Actividad';
+              const location = activity.ruta_ubicacion || activity.ubicacion || 'Ubicacion no disponible';
+
+              return (
+                <article className="tarjeta tarjeta-actividad" key={activity.id_actividad}>
+                  <h3><i className="bi bi-geo-alt-fill" aria-hidden="true"></i> {title}</h3>
+                  <p className="linea">{location} · nivel {activity.nivel || 'General'}</p>
+                  <p><i className="bi bi-calendar3" aria-hidden="true"></i> {activity.fecha || 'Sin fecha'}{activity.hora ? ` · ${activity.hora}` : ''}</p>
+                  <p><i className="bi bi-people-fill" aria-hidden="true"></i> {activity.plazas_max ? `${activity.num_participantes || 0} / ${activity.plazas_max} plazas` : 'Plazas no disponibles'}</p>
+                  <a href="#actividades-page" className="boton boton--primario" onClick={handleNavigate('actividades')}>
+                    Ver actividad
+                  </a>
+                </article>
+              );
+            })}
           </div>
+          {activities.status === 'ok' && featuredActivities.length === 0 ? <p>No hay actividades disponibles.</p> : null}
         </div>
       </section>
 
@@ -66,17 +77,19 @@ function HomePage({ session, onNavigate }) {
         <div className="contenedor">
           <h2>Tienda sostenible</h2>
           <p className="subtitulo">Equipamiento deportivo fabricado con materiales reciclados.</p>
+          {products.isDemo ? (
+            <div className="alert alert-warning" role="alert">
+              {products.message || 'API PHP no disponible. Mostrando JSON temporal.'}
+            </div>
+          ) : null}
+          {products.status === 'error' ? <p className="mensaje-error">{products.message}</p> : null}
           <div className="rejilla rejilla--productos">
-            {[
-              ['Zapatillas running recicladas', 'img/productos/zapatillaPacepal1.webp'],
-              ['Botella deportiva sostenible', 'img/productos/botellaPacepal1.webp'],
-              ['Mochila eco-friendly', 'img/productos/chalecoHidratacionPacepal1.webp'],
-            ].map((product) => (
-              <article className="tarjeta tarjeta-producto" key={product[0]}>
-                <img src={buildPublicAssetUrl(product[1])} alt={product[0]} loading="lazy" />
+            {featuredProducts.map((product) => (
+              <article className="tarjeta tarjeta-producto" key={product.id_articulo}>
+                <img src={buildPublicAssetUrl(product.imagen1 || 'img/productos/zapatillaPacepal1.webp')} alt={product.nombre || 'Producto PacePal'} loading="lazy" />
                 <div className="tarjeta-producto__cuerpo">
-                  <h3>{product[0]}</h3>
-                  <p><i className="bi bi-leaf-fill" aria-hidden="true"></i> Material reutilizado</p>
+                  <h3>{product.nombre || 'Producto PacePal'}</h3>
+                  <p><i className="bi bi-leaf-fill" aria-hidden="true"></i> {product.precio ? `${Number(product.precio).toFixed(2)} EUR` : 'Precio no disponible'}</p>
                   <p><i className="bi bi-leaf-fill" aria-hidden="true"></i> Producción responsable</p>
                   <a href="#tienda" className="boton boton--primario" onClick={handleNavigate('tienda')}>
                     Ver producto
@@ -85,6 +98,7 @@ function HomePage({ session, onNavigate }) {
               </article>
             ))}
           </div>
+          {products.status === 'ok' && featuredProducts.length === 0 ? <p>No hay productos disponibles.</p> : null}
         </div>
       </section>
 

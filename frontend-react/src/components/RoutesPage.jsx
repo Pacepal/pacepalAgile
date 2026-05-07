@@ -11,6 +11,11 @@ function RoutesPage({ routes, onNavigate }) {
       <section className="seccion-pagina">
         <div className="contenedor">
           <h2>Rutas disponibles</h2>
+          {routes.isDemo ? (
+            <div className="alert alert-warning" role="alert">
+              {routes.message || 'API PHP no disponible. Mostrando JSON temporal.'}
+            </div>
+          ) : null}
           {routes.status === 'error' ? <p className="mensaje-error">{routes.message}</p> : null}
           <div id="lista-rutas" className="rejilla rejilla--productos" aria-live="polite">
             {routes.items.map((route) => (

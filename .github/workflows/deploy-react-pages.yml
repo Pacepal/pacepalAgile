@@ -39,20 +39,6 @@ jobs:
         working-directory: frontend-react
         run: npm run build
 
-      - name: Ensure GitHub Pages entry point
-        working-directory: frontend-react
-        shell: bash
-        run: |
-          if [ ! -f dist/index.html ] && [ -f dist/pacepal-react.html ]; then
-            cp dist/pacepal-react.html dist/index.html
-          fi
-
-      - name: Copy public images
-        shell: bash
-        run: |
-          mkdir -p frontend-react/dist/img
-          cp -r img/* frontend-react/dist/img/
-
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -241,6 +241,14 @@ class RutaController
 
     private function jsonResponse(array $payload, int $statusCode = 200): void
     {
+        if (!array_key_exists('ok', $payload)) {
+            $payload['ok'] = ($payload['status'] ?? '') !== 'error';
+        }
+
+        if (($payload['status'] ?? '') === 'error' && !array_key_exists('error', $payload)) {
+            $payload['error'] = $payload['message'] ?? 'Error de API.';
+        }
+
         http_response_code($statusCode);
         echo json_encode($payload, JSON_UNESCAPED_UNICODE);
     }
