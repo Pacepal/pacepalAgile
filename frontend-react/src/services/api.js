@@ -1,4 +1,17 @@
-const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL || '../../src/api/index.php/api').trim();
+function detectApiBaseUrl() {
+    const explicit = (import.meta.env.VITE_API_BASE_URL || '').trim();
+    if (explicit) {
+        return explicit;
+    }
+
+    if (typeof window !== 'undefined' && (window.location.port === '5173' || window.location.port === '4173')) {
+        return '/src/api/index.php/api';
+    }
+
+    return '../../src/api/index.php/api';
+}
+
+const configuredBaseUrl = detectApiBaseUrl();
 
 export const apiConfig = {
     baseUrl: configuredBaseUrl,
@@ -33,7 +46,7 @@ export async function requestJson(path, options = {}) {
     const payload = await response.json().catch(() => ({}));
 
     if (!response.ok || payload.status === 'error') {
-        throw new Error(payload.message || 'No se pudo completar la peticion.');
+        throw new Error(payload.message || 'No se pudo completar la petición.');
     }
 
     return payload;
@@ -61,6 +74,10 @@ export async function loadStaticData(type) {
 export function buildPublicAssetUrl(path) {
     if (!path) {
         return '';
+    }
+
+    if (import.meta.env.DEV) {
+        return `/${String(path).replace(/^\/+/, '')}`;
     }
 
     return `${import.meta.env.BASE_URL}${String(path).replace(/^\/+/, '')}`;

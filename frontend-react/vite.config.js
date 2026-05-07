@@ -1,12 +1,26 @@
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { cpSync, existsSync } from 'node:fs';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const legacyImageDir = resolve(__dirname, '../img');
+const buildImageDir = resolve(__dirname, 'dist/img');
+
+function copyLegacyImages() {
+  return {
+    name: 'copy-legacy-images',
+    closeBundle() {
+      if (existsSync(legacyImageDir)) {
+        cpSync(legacyImageDir, buildImageDir, { recursive: true });
+      }
+    },
+  };
+}
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), copyLegacyImages()],
   base: '/pacepalAgile/',
   build: {
     rollupOptions: {
@@ -16,6 +30,24 @@ export default defineConfig({
   server: {
     host: '127.0.0.1',
     port: 5173,
+    proxy: {
+      '/src/api': {
+        target: 'http://localhost/treecore%20Trabajos/pacepal',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/img': {
+        target: 'http://localhost/treecore%20Trabajos/pacepal',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/pacepalAgile/img': {
+        target: 'http://localhost/treecore%20Trabajos/pacepal',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/pacepalAgile/, ''),
+      },
+    },
   },
   preview: {
     host: '127.0.0.1',

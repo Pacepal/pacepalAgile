@@ -10,10 +10,7 @@ function CartPage({ cart, onNavigate }) {
 
       <section className="seccion-pagina">
         <div className="contenedor">
-          <Cart cart={cart} />
-          <button type="button" className="boton carrito-volver" onClick={() => onNavigate('tienda')}>
-            Seguir comprando
-          </button>
+          <Cart cart={cart} onNavigate={onNavigate} />
         </div>
       </section>
     </main>

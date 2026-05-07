@@ -1,30 +1,26 @@
 import { useEffect, useState } from 'react';
 import { requestJson } from '../services/api.js';
 
-function AdminTable({ title, rows, columns }) {
+function DataTable({ rows, columns, emptyText = 'No hay datos disponibles.' }) {
+  if (!rows.length) {
+    return <p>{emptyText}</p>;
+  }
+
   return (
-    <section className="seccion-pagina">
-      <div className="contenedor">
-        <h2>{title}</h2>
-        {rows.length === 0 ? <p>No hay datos disponibles.</p> : null}
-        {rows.length > 0 ? (
-          <div className="tabla-responsive">
-            <table>
-              <thead>
-                <tr>{columns.map((column) => <th key={column.key}>{column.label}</th>)}</tr>
-              </thead>
-              <tbody>
-                {rows.map((row, index) => (
-                  <tr key={row.id_usuario || row.id_actividad || row.id_ruta || row.id_pedido || row.id_reporte || index}>
-                    {columns.map((column) => <td key={column.key}>{String(row[column.key] ?? '')}</td>)}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : null}
-      </div>
-    </section>
+    <div className="tabla-responsive">
+      <table className="table table-bordered">
+        <thead>
+          <tr>{columns.map((column) => <th key={column.key}>{column.label}</th>)}</tr>
+        </thead>
+        <tbody>
+          {rows.map((row, index) => (
+            <tr key={row.id_usuario || row.id_actividad || row.id_ruta || row.id_pedido || row.id_reporte || index}>
+              {columns.map((column) => <td key={column.key}>{String(row[column.key] ?? '')}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -36,14 +32,14 @@ function AdminPage({ session, activities, routes }) {
   const isAdmin = session.user?.rol === 'admin';
 
   useEffect(() => {
-    if (!isAdmin) {
-      setUsuarios([]);
-      setReportes([]);
-      setPedidos([]);
-      return;
-    }
-
     async function loadAdminData() {
+      if (!isAdmin) {
+        setUsuarios([]);
+        setReportes([]);
+        setPedidos([]);
+        return;
+      }
+
       try {
         const [usersPayload, reportsPayload, ordersPayload] = await Promise.all([
           requestJson('/usuarios'),
@@ -55,7 +51,7 @@ function AdminPage({ session, activities, routes }) {
         setPedidos(Array.isArray(ordersPayload.data) ? ordersPayload.data : []);
         setMessage('');
       } catch (error) {
-        setMessage('No se pudieron cargar los datos de administracion.');
+        setMessage(error.message || 'No se pudieron cargar los datos de administracion.');
       }
     }
 
@@ -69,70 +65,105 @@ function AdminPage({ session, activities, routes }) {
         <p>Control operativo del sistema para administradores.</p>
       </section>
 
-      {!isAdmin ? (
-        <section className="seccion-pagina">
-          <div className="contenedor">
-            <article className="tarjeta-pagina">
-              <p>Acceso restringido a administradores.</p>
-            </article>
+      {message ? <p className="contenedor text-danger fw-bold">{message}</p> : null}
+
+      <section className="seccion-pagina">
+        <div className="contenedor">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h2 className="mb-0">Usuarios registrados</h2>
+            <button type="button" id="btn-admin-crear-usuario" className="boton boton--primario">Crear usuario</button>
           </div>
-        </section>
-      ) : (
-        <>
-          {message ? <p className="contenedor mensaje-error">{message}</p> : null}
-          <AdminTable
-            title="Usuarios registrados"
-            rows={usuarios}
-            columns={[
-              { key: 'id_usuario', label: 'ID' },
-              { key: 'nombre', label: 'Nombre' },
-              { key: 'dni', label: 'DNI' },
-              { key: 'email', label: 'Email' },
-              { key: 'rol', label: 'Rol' },
-            ]}
-          />
-          <AdminTable
-            title="Reportes"
-            rows={reportes}
-            columns={[
-              { key: 'id_reporte', label: 'ID' },
-              { key: 'motivo', label: 'Motivo' },
-              { key: 'estado', label: 'Estado' },
-              { key: 'fecha', label: 'Fecha' },
-            ]}
-          />
-          <AdminTable
-            title="Actividades"
-            rows={activities.items}
-            columns={[
-              { key: 'id_actividad', label: 'ID' },
-              { key: 'nombre', label: 'Actividad' },
-              { key: 'fecha', label: 'Fecha' },
-              { key: 'nivel', label: 'Nivel' },
-            ]}
-          />
-          <AdminTable
-            title="Rutas"
-            rows={routes.items}
-            columns={[
-              { key: 'id_ruta', label: 'ID' },
-              { key: 'nombre', label: 'Ruta' },
-              { key: 'ubicacion', label: 'Ubicacion' },
-              { key: 'dificultad', label: 'Dificultad' },
-            ]}
-          />
-          <AdminTable
-            title="Pedidos"
-            rows={pedidos}
-            columns={[
-              { key: 'id_pedido', label: 'ID' },
-              { key: 'fecha', label: 'Fecha' },
-              { key: 'total', label: 'Total' },
-              { key: 'estado', label: 'Estado' },
-            ]}
-          />
-        </>
-      )}
+          <div id="admin-form-usuario" style={{ display: 'none' }} className="mb-4"></div>
+          <div id="admin-usuarios" aria-live="polite">
+            <DataTable
+              rows={usuarios}
+              columns={[
+                { key: 'id_usuario', label: 'ID' },
+                { key: 'nombre', label: 'Nombre' },
+                { key: 'dni', label: 'DNI' },
+                { key: 'email', label: 'Email' },
+                { key: 'rol', label: 'Rol' },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="seccion-pagina">
+        <div className="contenedor">
+          <h2>Reportes</h2>
+          <div id="admin-reportes" aria-live="polite">
+            <DataTable
+              rows={reportes}
+              columns={[
+                { key: 'id_reporte', label: 'ID' },
+                { key: 'motivo', label: 'Motivo' },
+                { key: 'estado', label: 'Estado' },
+                { key: 'fecha', label: 'Fecha' },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="seccion-pagina">
+        <div className="contenedor">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h2 className="mb-0">Actividades</h2>
+            <button type="button" id="btn-admin-crear-actividad" className="boton boton--primario">Crear actividad</button>
+          </div>
+          <div id="admin-form-actividad" style={{ display: 'none' }} className="mb-4"></div>
+          <div id="admin-actividades" aria-live="polite">
+            <DataTable
+              rows={activities.items}
+              columns={[
+                { key: 'id_actividad', label: 'ID' },
+                { key: 'nombre', label: 'Actividad' },
+                { key: 'fecha', label: 'Fecha' },
+                { key: 'nivel', label: 'Nivel' },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="seccion-pagina">
+        <div className="contenedor">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h2 className="mb-0">Rutas</h2>
+            <button type="button" id="btn-admin-crear-ruta" className="boton boton--primario">Crear ruta</button>
+          </div>
+          <div id="admin-form-ruta" style={{ display: 'none' }} className="mb-4"></div>
+          <div id="admin-rutas" aria-live="polite">
+            <DataTable
+              rows={routes.items}
+              columns={[
+                { key: 'id_ruta', label: 'ID' },
+                { key: 'nombre', label: 'Ruta' },
+                { key: 'ubicacion', label: 'Ubicacion' },
+                { key: 'dificultad', label: 'Dificultad' },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="seccion-pagina">
+        <div className="contenedor">
+          <h2>Pedidos</h2>
+          <div id="admin-pedidos" aria-live="polite">
+            <DataTable
+              rows={pedidos}
+              columns={[
+                { key: 'id_pedido', label: 'ID' },
+                { key: 'fecha', label: 'Fecha' },
+                { key: 'total', label: 'Total' },
+                { key: 'estado', label: 'Estado' },
+              ]}
+            />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

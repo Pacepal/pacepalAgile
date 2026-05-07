@@ -12,7 +12,7 @@ function RoutesPage({ routes, onNavigate }) {
         <div className="contenedor">
           <h2>Rutas disponibles</h2>
           {routes.status === 'error' ? <p className="mensaje-error">{routes.message}</p> : null}
-          <div className="rejilla rejilla--productos" aria-live="polite">
+          <div id="lista-rutas" className="rejilla rejilla--productos" aria-live="polite">
             {routes.items.map((route) => (
               <article className="tarjeta tarjeta-producto" key={route.id_ruta}>
                 <img src={buildPublicAssetUrl(route.imagen || 'img/rutas/jarosa.webp')} alt={route.nombre || 'Ruta PacePal'} loading="lazy" />
@@ -22,9 +22,6 @@ function RoutesPage({ routes, onNavigate }) {
                   <p><i className="bi bi-signpost-2-fill" aria-hidden="true"></i> {route.distancia ? `${route.distancia} km` : 'No disponible'}</p>
                   <button type="button" className="boton boton--primario" onClick={() => onNavigate('ruta', route.id_ruta)}>
                     Ver detalle
-                  </button>
-                  <button type="button" className="boton" onClick={() => onNavigate('crear-actividad')}>
-                    Crear actividad
                   </button>
                 </div>
               </article>

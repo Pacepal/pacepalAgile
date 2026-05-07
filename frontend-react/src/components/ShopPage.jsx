@@ -6,8 +6,8 @@ function ShopPage({ products, cart, onNavigate }) {
     <main>
       <section className="seccion-pagina">
         <div className="contenedor">
-          <div className="tienda-toolbar">
-            <h2>Productos disponibles</h2>
+          <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <h2 className="mb-0">Productos disponibles</h2>
             <SearchBar query={products.query} onQueryChange={products.setQuery} />
           </div>
           <ProductGallery

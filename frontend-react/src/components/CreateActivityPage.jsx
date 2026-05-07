@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { requestJson } from '../services/api.js';
 
 const initialValues = {
@@ -10,9 +10,15 @@ const initialValues = {
   descripcion: '',
 };
 
-function CreateActivityPage({ routes, session, onNavigate }) {
-  const [values, setValues] = useState(initialValues);
+function CreateActivityPage({ selectedRouteId, routes, session, onNavigate }) {
+  const [values, setValues] = useState({ ...initialValues, id_ruta: selectedRouteId || '' });
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (selectedRouteId) {
+      setValues((current) => ({ ...current, id_ruta: selectedRouteId }));
+    }
+  }, [selectedRouteId]);
 
   function updateField(field, value) {
     setValues((current) => ({ ...current, [field]: value }));
@@ -27,13 +33,13 @@ function CreateActivityPage({ routes, session, onNavigate }) {
       return;
     }
 
-    if (!session.user || routes.isDemo) {
-      setMessage('Actividad preparada. Accede con una cuenta activa para guardarla.');
+    if (!session.user) {
+      onNavigate('login');
       return;
     }
 
     try {
-      await requestJson('/actividad', {
+      const payload = await requestJson('/actividad', {
         method: 'POST',
         body: JSON.stringify({
           id_ruta: Number(values.id_ruta),
@@ -45,8 +51,12 @@ function CreateActivityPage({ routes, session, onNavigate }) {
         }),
       });
       setValues(initialValues);
-      setMessage('Actividad creada correctamente.');
       routes.reload();
+      if (payload.data?.id_actividad) {
+        onNavigate('actividad', payload.data.id_actividad);
+      } else {
+        onNavigate('actividades');
+      }
     } catch (error) {
       setMessage(error.message || 'No se pudo crear la actividad.');
     }
@@ -61,10 +71,10 @@ function CreateActivityPage({ routes, session, onNavigate }) {
 
       <section className="seccion-pagina">
         <div className="contenedor">
-          <form className="formulario tarjeta-pagina" onSubmit={handleSubmit} noValidate>
+          <form id="form-crear-actividad" className="formulario" onSubmit={handleSubmit} noValidate>
             <div className="formulario__grupo">
               <label htmlFor="crear-id-ruta" className="formulario__label">Ruta</label>
-              <select id="crear-id-ruta" className="formulario__input" value={values.id_ruta} onChange={(event) => updateField('id_ruta', event.target.value)} required>
+              <select id="crear-id-ruta" name="id_ruta" className="formulario__input" value={values.id_ruta} onChange={(event) => updateField('id_ruta', event.target.value)} required>
                 <option value="">Selecciona una ruta</option>
                 {routes.items.map((route) => (
                   <option key={route.id_ruta} value={route.id_ruta}>{route.nombre || `Ruta #${route.id_ruta}`}</option>
@@ -73,15 +83,15 @@ function CreateActivityPage({ routes, session, onNavigate }) {
             </div>
             <div className="formulario__grupo">
               <label htmlFor="crear-fecha" className="formulario__label">Fecha</label>
-              <input id="crear-fecha" type="date" className="formulario__input" value={values.fecha} onChange={(event) => updateField('fecha', event.target.value)} required />
+              <input id="crear-fecha" name="fecha" type="date" className="formulario__input" value={values.fecha} onChange={(event) => updateField('fecha', event.target.value)} required />
             </div>
             <div className="formulario__grupo">
               <label htmlFor="crear-hora" className="formulario__label">Hora</label>
-              <input id="crear-hora" type="time" className="formulario__input" value={values.hora} onChange={(event) => updateField('hora', event.target.value)} required />
+              <input id="crear-hora" name="hora" type="time" className="formulario__input" value={values.hora} onChange={(event) => updateField('hora', event.target.value)} required />
             </div>
             <div className="formulario__grupo">
               <label htmlFor="crear-nivel" className="formulario__label">Nivel</label>
-              <select id="crear-nivel" className="formulario__input" value={values.nivel} onChange={(event) => updateField('nivel', event.target.value)} required>
+              <select id="crear-nivel" name="nivel" className="formulario__input" value={values.nivel} onChange={(event) => updateField('nivel', event.target.value)} required>
                 <option value="">Selecciona nivel</option>
                 <option value="principiante">Principiante</option>
                 <option value="intermedio">Intermedio</option>
@@ -90,14 +100,14 @@ function CreateActivityPage({ routes, session, onNavigate }) {
             </div>
             <div className="formulario__grupo">
               <label htmlFor="crear-plazas" className="formulario__label">Plazas maximas</label>
-              <input id="crear-plazas" type="number" min="1" className="formulario__input" value={values.plazas_max} onChange={(event) => updateField('plazas_max', event.target.value)} />
+              <input id="crear-plazas" name="plazas_max" type="number" min="1" className="formulario__input" value={values.plazas_max} onChange={(event) => updateField('plazas_max', event.target.value)} />
             </div>
             <div className="formulario__grupo">
               <label htmlFor="crear-descripcion" className="formulario__label">Descripcion</label>
-              <textarea id="crear-descripcion" className="formulario__input" rows="3" value={values.descripcion} onChange={(event) => updateField('descripcion', event.target.value)}></textarea>
+              <textarea id="crear-descripcion" name="descripcion" className="formulario__input" rows="3" value={values.descripcion} onChange={(event) => updateField('descripcion', event.target.value)}></textarea>
             </div>
-            {message ? <p className="mensaje-resultado">{message}</p> : null}
-            <div className="form-actions">
+            <div id="crear-actividad-msg">{message ? <p className="text-danger">{message}</p> : null}</div>
+            <div className="d-flex gap-2">
               <button type="submit" className="boton boton--primario">Crear actividad</button>
               <button type="button" className="boton" onClick={() => onNavigate('actividades')}>Volver a actividades</button>
             </div>

@@ -4,8 +4,7 @@ import { requestJson } from '../services/api.js';
 export function useSession() {
     const [user, setUser] = useState(null);
     const [status, setStatus] = useState('cargando');
-    const [message, setMessage] = useState('Comprobando sesion.');
-    const [isDemo, setIsDemo] = useState(false);
+    const [message, setMessage] = useState('');
 
     async function refreshSession() {
         setStatus('cargando');
@@ -18,30 +17,19 @@ export function useSession() {
                     rol: payload.rol,
                 });
                 setStatus('ok');
-                setIsDemo(false);
-                setMessage('Sesion activa.');
+                setMessage('');
                 return;
             }
-
-            setUser(null);
-            setStatus('anonimo');
-            setIsDemo(false);
-            setMessage('Sin sesion activa.');
-        } catch (error) {
-            setUser(null);
-            setStatus('demo');
-            setIsDemo(true);
-            setMessage('Puedes navegar por PacePal. El acceso completo no esta disponible en esta vista.');
+        } catch (_error) {
+            // Sin PHP disponible se mantiene la misma vista publica sin mensajes tecnicos.
         }
+
+        setUser(null);
+        setStatus('anonimo');
+        setMessage('');
     }
 
     async function login(credentials) {
-        if (isDemo) {
-            setStatus('demo');
-            setMessage('Formulario validado. El acceso completo no esta disponible en esta vista.');
-            return false;
-        }
-
         try {
             const payload = await requestJson('/login', {
                 method: 'POST',
@@ -49,56 +37,40 @@ export function useSession() {
             });
             setUser(payload.usuario || null);
             setStatus('ok');
-            setMessage('Login correcto.');
+            setMessage('Login correcto. Redirigiendo...');
             await refreshSession();
             return true;
         } catch (error) {
-            setStatus('demo');
-            setIsDemo(true);
-            setMessage('Formulario validado. El acceso completo no esta disponible en esta vista.');
+            setStatus('anonimo');
+            setMessage(error.message || 'No se pudo iniciar sesion.');
             return false;
         }
     }
 
     async function register(data) {
-        if (isDemo) {
-            setStatus('demo');
-            setMessage('Formulario validado. El registro completo no esta disponible en esta vista.');
-            return false;
-        }
-
         try {
             await requestJson('/register', {
                 method: 'POST',
                 body: JSON.stringify(data),
             });
-            setMessage('Registro correcto. Ya puedes iniciar sesion.');
+            setMessage('Registro correcto. Redirigiendo a login...');
             return true;
         } catch (error) {
-            setStatus('demo');
-            setIsDemo(true);
-            setMessage('Formulario validado. El registro completo no esta disponible en esta vista.');
+            setMessage(error.message || 'No se pudo completar el registro.');
             return false;
         }
     }
 
     async function logout() {
-        if (isDemo) {
-            setUser(null);
-            setStatus('demo');
-            setMessage('Sesion cerrada.');
-            return;
-        }
-
         try {
             await requestJson('/logout', { method: 'POST' });
-            setUser(null);
-            setStatus('anonimo');
-            setMessage('Sesion cerrada.');
-        } catch (error) {
-            setStatus('error');
-            setMessage(error.message || 'No se pudo cerrar la sesion.');
+        } catch (_error) {
+            // Si la sesion ya no existe, la interfaz debe quedar cerrada igualmente.
         }
+
+        setUser(null);
+        setStatus('anonimo');
+        setMessage('');
     }
 
     useEffect(() => {
@@ -109,7 +81,7 @@ export function useSession() {
         status,
         user,
         message,
-        isDemo,
+        isDemo: false,
         login,
         register,
         logout,

@@ -8,16 +8,18 @@ function ActivitiesPage({ activities, session, onNavigate }) {
 
       <section className="seccion-pagina">
         <div className="contenedor">
-          <div className="tienda-toolbar">
-            <h2>Actividades disponibles</h2>
-            {session.user ? (
-              <button type="button" className="boton boton--primario" onClick={() => onNavigate('crear-actividad')}>
-                Crear actividad
-              </button>
-            ) : null}
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <h2 className="mb-0">Actividades disponibles</h2>
+            <div id="boton-crear-actividad">
+              {session.user ? (
+                <button type="button" className="boton boton--primario" onClick={() => onNavigate('crear-actividad')}>
+                  Crear actividad
+                </button>
+              ) : null}
+            </div>
           </div>
           {activities.status === 'error' ? <p className="mensaje-error">{activities.message}</p> : null}
-          <div className="rejilla rejilla--actividades" aria-live="polite">
+          <div id="lista-actividades" className="rejilla rejilla--actividades" aria-live="polite">
             {activities.items.map((activity) => (
               <article className="tarjeta tarjeta-actividad" key={activity.id_actividad}>
                 <h3><i className="bi bi-geo-alt-fill" aria-hidden="true"></i> {activity.nombre || activity.descripcion || 'Actividad'}</h3>

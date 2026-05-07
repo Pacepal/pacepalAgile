@@ -44,11 +44,7 @@ export function useProducts() {
             return items;
         }
 
-        return items.filter((product) => {
-            const name = String(product.nombre || '').toLowerCase();
-            const description = String(product.descripcion || '').toLowerCase();
-            return name.includes(normalizedQuery) || description.includes(normalizedQuery);
-        });
+        return items.filter((product) => String(product.nombre || '').toLowerCase().includes(normalizedQuery));
     }, [items, query]);
 
     return {

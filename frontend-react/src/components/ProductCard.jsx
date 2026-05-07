@@ -7,40 +7,39 @@ function formatPrice(value) {
 }
 
 function ProductCard({ product, onAddToCart, onViewProduct }) {
-  const [quantity, setQuantity] = useState(1);
+  const [buttonText, setButtonText] = useState('Anadir al carrito');
+  const [disabled, setDisabled] = useState(false);
   const image = buildPublicAssetUrl(product.imagen1 || 'img/productos/zapatillaPacepal1.webp');
 
+  async function handleAdd() {
+    setDisabled(true);
+    setButtonText('Anadiendo...');
+    const ok = await onAddToCart(product, 1);
+    setButtonText(ok ? 'Anadido!' : 'Error');
+    setTimeout(() => {
+      setButtonText('Anadir al carrito');
+      setDisabled(false);
+    }, 1500);
+  }
+
+  function handleView(event) {
+    event.preventDefault();
+    onViewProduct(product.id_articulo);
+  }
+
   return (
-    <article className="tarjeta tarjeta-producto product-card">
+    <article className="tarjeta tarjeta-producto">
       <img src={image} alt={product.nombre || 'Producto PacePal'} loading="lazy" />
-      <div className="tarjeta-producto__cuerpo product-card__body">
+      <div className="tarjeta-producto__cuerpo">
         <h3>{product.nombre || 'Producto sin nombre'}</h3>
-        <p><span aria-hidden="true">●</span>{formatPrice(product.precio)}</p>
-        <p><span aria-hidden="true">●</span>{product.descripcion || 'Producto del catalogo PacePal.'}</p>
-        <label className="quantity-field">
-          Cantidad
-          <input
-            type="number"
-            min="1"
-            max={product.stock || 99}
-            value={quantity}
-            onChange={(event) => setQuantity(Math.max(1, Number(event.target.value) || 1))}
-          />
-        </label>
-        <button
-          type="button"
-          className="boton boton--primario"
-          onClick={() => onAddToCart(product, quantity)}
-        >
-          Anadir al carrito
+        <p><i className="bi bi-leaf-fill" aria-hidden="true"></i> {formatPrice(product.precio)}</p>
+        <p><i className="bi bi-leaf-fill" aria-hidden="true"></i> Producción responsable</p>
+        <button type="button" className="boton boton--primario" disabled={disabled} onClick={handleAdd}>
+          {buttonText}
         </button>
-        <button
-          type="button"
-          className="boton"
-          onClick={() => onViewProduct(product.id_articulo)}
-        >
+        <a className="boton boton--primario" href={`#producto-${product.id_articulo || ''}`} onClick={handleView}>
           Ver producto
-        </button>
+        </a>
       </div>
     </article>
   );
