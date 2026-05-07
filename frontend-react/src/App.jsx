@@ -119,6 +119,14 @@ function App() {
     return 'pagina-interna pagina-tienda';
   }, [currentPage]);
 
+  useEffect(() => {
+    document.body.className = bodyClass;
+
+    return () => {
+      document.body.className = '';
+    };
+  }, [bodyClass]);
+
   return (
     <div className={`${bodyClass} app-shell`}>
       <Header cartCount={cart.count} session={session} currentPage={currentPage} onNavigate={navigate} />
