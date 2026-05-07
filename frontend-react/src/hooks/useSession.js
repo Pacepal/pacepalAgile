@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { requestJson } from '../services/api.js';
-import { clearDemoSession, createDemoSession, findDemoUser, readDemoSessionUser, saveDemoUser } from '../services/demo.js';
+import { clearDemoSession, findDemoUser, restoreDemoSession, saveDemoSession, saveDemoUser } from '../services/demo.js';
 
 const apiTimeoutMs = 2000;
 
@@ -62,7 +62,7 @@ export function useSession() {
     }
 
     function applyDemoSession() {
-        const demoUser = readDemoSessionUser();
+        const demoUser = restoreDemoSession();
 
         setUser(demoUser);
         setStatus(demoUser ? 'ok' : 'anonimo');
@@ -110,8 +110,8 @@ export function useSession() {
                 return false;
             }
 
-            createDemoSession(demoUser);
-            setUser(demoUser);
+            const restoredUser = saveDemoSession(demoUser);
+            setUser(restoredUser);
             setStatus('ok');
             setIsDemo(true);
             setMessage('Login correcto. Redirigiendo...');
@@ -148,8 +148,8 @@ export function useSession() {
                 return { ok: false, autoLogged: false };
             }
 
-            createDemoSession(savedUser);
-            setUser(savedUser);
+            const restoredUser = saveDemoSession(savedUser);
+            setUser(restoredUser);
             setStatus('ok');
             setIsDemo(true);
             setMessage('Registro correcto. Sesion iniciada.');

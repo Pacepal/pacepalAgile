@@ -20,7 +20,7 @@ Entrada Vite:
 Configuracion publica:
 
 ```js
-base: '/pacepalAgile/'
+base: "/pacepalAgile/";
 ```
 
 El workflow de GitHub Pages construye `frontend-react/` y copia los assets compartidos de `img/` al `dist/` publicado.
@@ -96,11 +96,23 @@ GitHub Pages no ejecuta PHP ni MySQL. El cliente intenta primero la API real y, 
 El fallback demo usa:
 
 - JSON estaticos en `public/data/`;
-- `localStorage` para `pacepal_demo_user`, `pacepal_demo_users` y `pacepal_demo_cart`;
-- `sessionStorage` para `pacepal_demo_session`;
-- cookies para `pacepal_cookie_consent` y `pacepal_session_demo`.
+- `localStorage` como fuente principal para `pacepal_cookie_consent`, `pacepal_demo_user`, `pacepal_demo_users` y `pacepal_demo_cart`;
+- `sessionStorage` para simular la sesion de pestana mediante `pacepal_demo_session`;
+- cookies como apoyo visible para `pacepal_cookie_consent` y `pacepal_session_demo` cuando el navegador las permite.
 
-Las cookies demo se escriben con `path=/pacepalAgile`, de modo que son visibles correctamente en la publicacion del repositorio.
+Las cookies demo se intentan escribir en `path=/` y `path=/pacepalAgile` con `SameSite=Lax` y `Secure` en HTTPS. Si el navegador las bloquea, la app sigue funcionando porque la persistencia principal esta en `localStorage` y `sessionStorage`.
+
+## Compatibilidad entre navegadores y cookies
+
+Chrome, Edge y Firefox suelen mostrar las cookies demo en DevTools sin configuracion adicional.
+
+Brave puede bloquearlas segun Shields, politica de cookies o modo privado. Por eso el cliente no depende exclusivamente de `document.cookie`:
+
+- el consentimiento sigue visible en `localStorage`;
+- la sesion demo sigue restaurandose desde `localStorage` y `sessionStorage`;
+- el carrito demo sigue persistiendo en `localStorage`.
+
+En otras palabras, si el navegador no acepta la cookie, la demo sigue funcionando y solo se pierde esa evidencia adicional en `Application > Cookies`.
 
 ## Comandos
 
@@ -118,6 +130,7 @@ npm run build
 - Cookies validadas con `Aceptar todas` y `Solo tecnicas`.
 - Login demo, logout, registro demo, duplicado y carrito demo validados en Pages.
 - Sesion real local validada contra PHP con `GET /src/api/index.php/api/session` devolviendo `200`.
+- Simulacion local de navegador con cookies bloqueadas validada: consentimiento, registro demo, login demo, recarga, logout y carrito siguen funcionando con `document.cookie` vacio.
 
 ## Limitacion tecnica conocida
 

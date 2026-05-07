@@ -7,8 +7,7 @@ export const COOKIE_CONSENT_STORAGE_KEY = 'pacepal_cookie_consent';
 export const COOKIE_CONSENT_COOKIE = 'pacepal_cookie_consent';
 export const LEGACY_COOKIE_CONSENT_STORAGE_KEY = 'pacepal_cookies';
 
-const demoCookiePath = (import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '/';
-const cookieSecureSuffix = typeof window !== 'undefined' && window.location.protocol === 'https:' ? '; Secure' : '';
+const demoCookiePath = normalizeCookiePath((import.meta.env.BASE_URL || '/').replace(/\/$/, '') || '/');
 const defaultAdminUser = {
     id: 1,
     nombre: 'Administrador PacePal',
@@ -17,6 +16,67 @@ const defaultAdminUser = {
     rol: 'admin',
     demo: true,
 };
+let cookieSupportCache = null;
+
+function normalizeCookiePath(path) {
+    const rawPath = String(path || '/').trim();
+
+    if (!rawPath || rawPath === '/') {
+        return '/';
+    }
+
+    return `/${rawPath.replace(/^\/+|\/+$/g, '')}`;
+}
+
+function buildCookiePaths(path) {
+    const paths = new Set(['/']);
+
+    if (demoCookiePath !== '/') {
+        paths.add(demoCookiePath);
+    }
+
+    if (path) {
+        paths.add(normalizeCookiePath(path));
+    }
+
+    return [...paths];
+}
+
+function buildCookieAttributes(options = {}) {
+    const sameSite = options.sameSite || 'Lax';
+    const secure = options.secure ?? (typeof window !== 'undefined' && window.location.protocol === 'https:');
+    const attributes = [`SameSite=${sameSite}`];
+
+    if (Number.isFinite(options.maxAge)) {
+        attributes.push(`max-age=${Math.max(0, Math.trunc(options.maxAge))}`);
+    }
+
+    if (options.expires instanceof Date) {
+        attributes.push(`expires=${options.expires.toUTCString()}`);
+    }
+
+    if (secure) {
+        attributes.push('Secure');
+    }
+
+    return attributes.length ? `; ${attributes.join('; ')}` : '';
+}
+
+function writeCookieVariants(name, value, options = {}) {
+    if (typeof document === 'undefined') {
+        return [];
+    }
+
+    const serializedValue = encodeURIComponent(String(value ?? ''));
+    const suffix = buildCookieAttributes(options);
+    const cookiePaths = buildCookiePaths(options.path);
+
+    cookiePaths.forEach((path) => {
+        document.cookie = `${name}=${serializedValue}; path=${path}${suffix}`;
+    });
+
+    return cookiePaths;
+}
 
 function getStorage(storage) {
     try {
@@ -101,6 +161,10 @@ function normalizeDemoCartItem(item) {
 }
 
 export function readCookie(name) {
+    return getCookie(name);
+}
+
+export function getCookie(name) {
     if (typeof document === 'undefined') {
         return '';
     }
@@ -115,19 +179,57 @@ export function readCookie(name) {
 }
 
 export function writeCookie(name, value, maxAge) {
-    if (typeof document === 'undefined') {
-        return;
-    }
-
-    document.cookie = `${name}=${encodeURIComponent(value)}; path=${demoCookiePath}; max-age=${maxAge}; SameSite=Lax${cookieSecureSuffix}`;
+    return setSafeCookie(name, value, { maxAge });
 }
 
-export function deleteCookie(name) {
+export function setSafeCookie(name, value, options = {}) {
+    if (typeof document === 'undefined') {
+        return false;
+    }
+
+    writeCookieVariants(name, value, options);
+    const accepted = getCookie(name) === String(value ?? '');
+
+    if (accepted) {
+        cookieSupportCache = true;
+    }
+
+    return accepted;
+}
+
+export function canUseCookies() {
+    if (cookieSupportCache !== null) {
+        return cookieSupportCache;
+    }
+
+    if (typeof document === 'undefined') {
+        cookieSupportCache = false;
+        return cookieSupportCache;
+    }
+
+    if (typeof navigator !== 'undefined' && navigator.cookieEnabled === false) {
+        cookieSupportCache = false;
+        return cookieSupportCache;
+    }
+
+    const probeName = `__pacepal_cookie_probe_${Date.now()}`;
+    const probeValue = 'ok';
+    writeCookieVariants(probeName, probeValue, { maxAge: 60 });
+    cookieSupportCache = getCookie(probeName) === probeValue;
+    deleteCookie(probeName);
+    return cookieSupportCache;
+}
+
+export function deleteCookie(name, options = {}) {
     if (typeof document === 'undefined') {
         return;
     }
 
-    document.cookie = `${name}=; path=${demoCookiePath}; max-age=0; SameSite=Lax${cookieSecureSuffix}`;
+    writeCookieVariants(name, '', {
+        ...options,
+        expires: new Date(0),
+        maxAge: 0,
+    });
 }
 
 export function createDemoUser(credentials = {}) {
@@ -202,11 +304,11 @@ export function findDemoUser(email, password) {
 }
 
 export function createDemoSession(user) {
-    persistDemoSession({ ...user, demo: true });
+    saveDemoSession(user);
 }
 
 export function setDemoCookie() {
-    writeCookie(DEMO_SESSION_COOKIE, 'active', 86400);
+    return setSafeCookie(DEMO_SESSION_COOKIE, 'active', { maxAge: 86400 });
 }
 
 export function clearDemoCookie() {
@@ -214,42 +316,58 @@ export function clearDemoCookie() {
 }
 
 export function persistDemoSession(user) {
+    saveDemoSession(user);
+}
+
+export function saveDemoSession(user) {
     const localStorageRef = getStorage(globalThis.localStorage);
     const sessionStorageRef = getStorage(globalThis.sessionStorage);
+    const normalizedUser = user ? { ...user, demo: true } : null;
 
-    writeStorageValue(localStorageRef, DEMO_USER_STORAGE_KEY, JSON.stringify(user));
+    if (!normalizedUser) {
+        clearDemoSession();
+        return null;
+    }
+
+    writeStorageValue(localStorageRef, DEMO_USER_STORAGE_KEY, JSON.stringify(normalizedUser));
     writeStorageValue(
         sessionStorageRef,
         DEMO_SESSION_STORAGE_KEY,
-        JSON.stringify({ active: true, email: user?.email || '', startedAt: Date.now() })
+        JSON.stringify({ active: true, email: normalizedUser.email || '', startedAt: Date.now() })
     );
     setDemoCookie();
+
+    return normalizedUser;
 }
 
 export function readDemoSessionUser() {
+    return restoreDemoSession();
+}
+
+export function restoreDemoSession() {
     const localStorageRef = getStorage(globalThis.localStorage);
     const sessionStorageRef = getStorage(globalThis.sessionStorage);
     const storedUser = parseJson(readStorageValue(localStorageRef, DEMO_USER_STORAGE_KEY), null);
     const storedSession = parseJson(readStorageValue(sessionStorageRef, DEMO_SESSION_STORAGE_KEY), null);
-    const hasCookie = readCookie(DEMO_SESSION_COOKIE) === 'active';
+    const hasCookie = getCookie(DEMO_SESSION_COOKIE) === 'active';
 
     if (!storedUser || typeof storedUser !== 'object') {
         return null;
     }
 
-    if (storedSession?.active || hasCookie) {
-        if (!storedSession?.active) {
-            writeStorageValue(
-                sessionStorageRef,
-                DEMO_SESSION_STORAGE_KEY,
-                JSON.stringify({ active: true, email: storedUser.email || '', startedAt: Date.now() })
-            );
-        }
-
-        return storedUser;
+    if (!storedSession?.active) {
+        writeStorageValue(
+            sessionStorageRef,
+            DEMO_SESSION_STORAGE_KEY,
+            JSON.stringify({ active: true, email: storedUser.email || '', startedAt: Date.now() })
+        );
     }
 
-    return null;
+    if (!hasCookie) {
+        setDemoCookie();
+    }
+
+    return storedUser;
 }
 
 export function clearDemoSession() {
@@ -305,7 +423,7 @@ export function hasAcceptedCookieConsent() {
     const storedConsent = readStorageValue(localStorageRef, COOKIE_CONSENT_STORAGE_KEY);
     const legacyConsent = parseJson(readStorageValue(localStorageRef, LEGACY_COOKIE_CONSENT_STORAGE_KEY), null);
 
-    if (storedConsent === 'accepted' || readCookie(COOKIE_CONSENT_COOKIE) === 'accepted') {
+    if (storedConsent === 'accepted' || getCookie(COOKIE_CONSENT_COOKIE) === 'accepted') {
         return true;
     }
 
@@ -316,7 +434,7 @@ export function persistCookieConsent() {
     const localStorageRef = getStorage(globalThis.localStorage);
 
     writeStorageValue(localStorageRef, COOKIE_CONSENT_STORAGE_KEY, 'accepted');
-    writeCookie(COOKIE_CONSENT_COOKIE, 'accepted', 31536000);
+    setSafeCookie(COOKIE_CONSENT_COOKIE, 'accepted', { maxAge: 31536000 });
 }
 
 export function clearCookieConsent() {

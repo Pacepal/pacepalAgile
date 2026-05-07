@@ -13,7 +13,7 @@ frontend-react/pacepal-react.html
 La base publica esta configurada como:
 
 ```js
-base: '/pacepalAgile/'
+base: "/pacepalAgile/";
 ```
 
 El cliente React mantiene el look and feel legacy porque importa `../../../css/estilos.css` desde `frontend-react/src/styles/global.css` y reutiliza las imagenes compartidas de `img/`.
@@ -52,7 +52,7 @@ Con ese modo activo, React delega en PHP y MySQL:
 - pedidos;
 - perfil.
 
-En la verificacion final de 2026-05-07 se comprobo que `GET /src/api/index.php/api/session` devolvia `200` con JSON valido y que la home local cargaba sin pantalla blanca, sin rutas duplicadas ` /pacepalAgile/pacepalAgile/ ` y sin imagenes rotas en la vista validada.
+En la verificacion final de 2026-05-07 se comprobo que `GET /src/api/index.php/api/session` devolvia `200` con JSON valido y que la home local cargaba sin pantalla blanca, sin rutas duplicadas `/pacepalAgile/pacepalAgile/` y sin imagenes rotas en la vista validada.
 
 ## Modo GitHub Pages con fallback demo
 
@@ -73,27 +73,41 @@ El cliente React intenta primero la API real y, cuando falla o no existe, activa
 ### Que hace el fallback demo
 
 - carga datos estaticos desde `frontend-react/public/data/*.json`;
-- guarda consentimiento de cookies;
+- guarda consentimiento de cookies en `localStorage` y lo intenta reflejar en cookies cuando el navegador lo permite;
 - permite login demo;
 - permite registro demo;
-- mantiene sesion demo visible en `Application`;
+- mantiene sesion demo visible en `Application` usando `localStorage` y `sessionStorage` como base;
 - mantiene carrito demo visible en `Application`.
 
 ## Cookies y almacenamiento visibles
 
 Las claves comprobadas en la verificacion final son estas:
 
-| Clave | Ubicacion | Funcion |
-| --- | --- | --- |
-| `pacepal_cookie_consent` | `localStorage` | Consentimiento de cookies aceptado |
-| `pacepal_cookie_consent` | `Cookies` | Consentimiento visible en el dominio publicado |
-| `pacepal_demo_user` | `localStorage` | Usuario autenticado en modo demo |
-| `pacepal_demo_users` | `localStorage` | Usuarios registrados en modo demo |
-| `pacepal_demo_session` | `sessionStorage` | Estado de la sesion demo |
-| `pacepal_session_demo` | `Cookies` | Marca visible de sesion demo |
-| `pacepal_demo_cart` | `localStorage` | Carrito persistente del modo demo |
+| Clave                    | Ubicacion        | Funcion                                                |
+| ------------------------ | ---------------- | ------------------------------------------------------ |
+| `pacepal_cookie_consent` | `localStorage`   | Consentimiento de cookies aceptado                     |
+| `pacepal_cookie_consent` | `Cookies`        | Consentimiento visible en el dominio publicado         |
+| `pacepal_demo_user`      | `localStorage`   | Usuario autenticado en modo demo                       |
+| `pacepal_demo_users`     | `localStorage`   | Usuarios registrados en modo demo                      |
+| `pacepal_demo_session`   | `sessionStorage` | Estado de la sesion demo                               |
+| `pacepal_session_demo`   | `Cookies`        | Marca visible de sesion demo si el navegador la acepta |
+| `pacepal_demo_cart`      | `localStorage`   | Carrito persistente del modo demo                      |
 
-Las cookies demo se escriben con `path=/pacepalAgile`, lo que permite verlas correctamente en GitHub Pages dentro del repositorio publicado.
+`localStorage` es la fuente principal del fallback. `sessionStorage` simula el estado de sesion de la pestana. `document.cookie` se usa como apoyo visible adicional.
+
+Las cookies demo se intentan escribir en `path=/` y `path=/pacepalAgile` con `SameSite=Lax` y `Secure` en HTTPS. Si el navegador las bloquea, la aplicacion sigue funcionando igualmente.
+
+## Compatibilidad entre navegadores y cookies
+
+Chrome, Edge y Firefox suelen mostrar estas cookies de primer nivel de forma directa en DevTools.
+
+Brave puede bloquearlas segun Shields, politica de cookies o modo privado. Por eso la app no depende exclusivamente de cookies:
+
+- el consentimiento sigue en `localStorage`;
+- la sesion demo sigue viva con `pacepal_demo_user` y `pacepal_demo_session`;
+- el carrito demo sigue vivo en `pacepal_demo_cart`.
+
+Si el navegador no acepta la cookie, la app sigue funcionando y solo desaparece esa evidencia extra en `Application > Cookies`.
 
 ## Validacion funcional cerrada el 2026-05-07
 
@@ -119,6 +133,9 @@ Las cookies demo se escriben con `path=/pacepalAgile`, lo que permite verlas cor
 - `npm run build` -> correcto;
 - `npm run dev -- --host 127.0.0.1` -> correcto;
 - URL usada en la sesion de validacion: `http://127.0.0.1:5176/pacepalAgile/pacepal-react.html`.
+- Simulacion local con cookies bloqueadas -> correcta usando `document.cookie = ''` y fallback sostenido por `localStorage` y `sessionStorage`.
+
+Para el detalle tecnico de esta decision, ver `docs/04-dwec/sprint-3/decision-fallback-github-pages.md`.
 
 ## Comparacion con la app legacy
 

@@ -52,9 +52,30 @@ Resumen de la verificacion final del cliente React Sprint 3 realizada el 2026-05
 - `npm run dev -- --host 127.0.0.1` arrancado correctamente.
 - En esta sesion Vite asigno `http://127.0.0.1:5176/pacepalAgile/` porque `5173`, `5174` y `5175` estaban ocupados.
 - La pagina local carga sin pantalla blanca.
-- No se detecta ` /pacepalAgile/pacepalAgile/ ` en el DOM generado.
+- No se detecta `/pacepalAgile/pacepalAgile/` en el DOM generado.
 - No se detectan imagenes rotas en la home validada.
 - La comprobacion de `GET /src/api/index.php/api/session` respondio `200` con JSON valido.
+- Simulacion local de navegador con cookies bloqueadas:
+  - `document.cookie` vacio durante toda la prueba;
+  - `pacepal_cookie_consent` guardado en `localStorage`;
+  - registro demo guardado en `pacepal_demo_users`;
+  - login demo funcional;
+  - recarga con sesion y carrito recompuestos desde almacenamiento;
+  - logout limpiando `pacepal_demo_user` y `pacepal_demo_session` aunque no exista cookie visible.
+
+## Compatibilidad entre navegadores y cookies
+
+- Chrome, Edge y Firefox suelen reflejar mejor las cookies demo en DevTools.
+- Brave puede ocultarlas o bloquearlas segun Shields.
+- El cliente React ya no depende exclusivamente de cookies: usa `localStorage` como fuente principal y `sessionStorage` para la sesion de pestana.
+- En esta sesion no se ha podido abrir un navegador Brave real desde las herramientas disponibles, asi que la evidencia automatizada equivalente se ha hecho simulando cookies bloqueadas en el navegador integrado.
+- La validacion manual real que queda para defensa es:
+  - Chrome;
+  - Brave con Shields activado;
+  - Brave con Shields desactivado;
+  - Edge;
+  - Firefox;
+  - ventana de incognito o privada.
 
 ## Comparacion visual con legacy
 
@@ -108,8 +129,15 @@ No se adjuntan capturas en este commit porque desde esta sesion no se han export
 13. `13-local-vite-build-ok.png`: terminal con `npm run build` completado.
 14. `14-local-vite-home-ok.png`: home local en `http://127.0.0.1:5176/pacepalAgile/pacepal-react.html` sin pantalla blanca.
 15. `15-local-vite-sesion-php.png`: evidencia local de sesion real contra PHP si se quiere reforzar la defensa.
+16. `16-brave-shields-on-localstorage.png`: Brave con Shields activado mostrando `pacepal_cookie_consent` en `Local Storage` aunque la cookie no aparezca.
+17. `17-brave-shields-on-login-demo.png`: Brave con Shields activado mostrando login demo correcto sin cookie visible.
+18. `18-brave-shields-on-cart-demo.png`: Brave con Shields activado mostrando carrito demo persistente en `pacepal_demo_cart`.
+19. `19-brave-shields-off-cookies.png`: Brave con Shields desactivado mostrando `pacepal_cookie_consent` y `pacepal_session_demo` en `Cookies`.
+20. `20-edge-firefox-check.png`: al menos una captura por navegador mostrando la home y el banner sin pantalla blanca.
+21. `21-incognito-fallback-check.png`: ventana privada/incognito con almacenamiento limpio y fallback funcionando.
 
 ## Observaciones
 
 - En GitHub Pages, el cliente intenta primero la API y luego aplica el fallback demo. Por eso el navegador puede registrar `404` o `405` en rutas PHP antes de rehidratar sesion, carrito o registro demo.
 - Esa limitacion es tecnica de GitHub Pages y no impide la defensa funcional del cliente React publicado.
+- En navegadores que bloquean cookies, la evidencia minima defendible debe centrarse en `Local Storage` y `Session Storage`, dejando `Cookies` como evidencia adicional solo cuando el navegador la permita.

@@ -21,8 +21,8 @@ Para el modo local real tambien hay que arrancar Apache y MySQL en XAMPP e impor
 - Estado inicial de trabajo: limpio, sin cambios pendientes.
 - `HEAD` al iniciar la fase: `c201d6a`.
 - Workflow `Deploy React Sprint 3 to GitHub Pages`:
-	- run `#8` para `86f609d` -> `completed successfully`.
-	- run `#9` para `c201d6a` -> `completed successfully`.
+  - run `#8` para `86f609d` -> `completed successfully`.
+  - run `#9` para `c201d6a` -> `completed successfully`.
 
 ## Pruebas realizadas
 
@@ -41,20 +41,20 @@ Resultados comprobados:
 - `Aceptar todas` crea `pacepal_cookie_consent` en `localStorage` y en `Cookies`;
 - `Solo tecnicas` crea la misma evidencia visible en `Application`;
 - login demo con `admin@pacepal.com / Admin1234*`:
-	- header autenticado;
-	- `pacepal_demo_user` en `localStorage`;
-	- `pacepal_demo_session` en `sessionStorage`;
-	- `pacepal_session_demo` en cookies;
+  - header autenticado;
+  - `pacepal_demo_user` en `localStorage`;
+  - `pacepal_demo_session` en `sessionStorage`;
+  - `pacepal_session_demo` en cookies;
 - recarga con sesion demo recompuesta desde almacenamiento;
 - logout limpiando `pacepal_session_demo`, `pacepal_demo_session` y `pacepal_demo_user`;
 - registro demo de `usuario.pages@pacepal.com` guardado en `pacepal_demo_users` y con auto login;
 - email duplicado rechazado con el mensaje `Ya existe una cuenta con ese correo electronico.`;
 - carrito demo:
-	- producto anadido;
-	- cantidad actualizada a `2`;
-	- total `179.80 EUR`;
-	- persistencia tras recarga en `pacepal_demo_cart`;
-	- limpieza final del carrito con `pacepal_demo_cart = []`.
+  - producto anadido;
+  - cantidad actualizada a `2`;
+  - total `179.80 EUR`;
+  - persistencia tras recarga en `pacepal_demo_cart`;
+  - limpieza final del carrito con `pacepal_demo_cart = []`.
 
 ### Local con Vite
 
@@ -69,13 +69,34 @@ http://127.0.0.1:5176/pacepalAgile/pacepal-react.html
 ```
 
 - carga sin pantalla blanca;
-- sin ` /pacepalAgile/pacepalAgile/ ` en el DOM generado;
+- sin `/pacepalAgile/pacepalAgile/` en el DOM generado;
 - sin imagenes rotas en la home validada;
 - `GET /src/api/index.php/api/session` responde `200` con JSON valido.
+- simulacion local con cookies bloqueadas validada:
+  - consentimiento guardado en `localStorage` con `document.cookie` vacio;
+  - registro demo guardado en `pacepal_demo_users`;
+  - login demo funcional;
+  - recarga con sesion recompuesta sin cookie;
+  - carrito demo persistente en `pacepal_demo_cart`;
+  - logout limpiando `pacepal_demo_user` y `pacepal_demo_session`.
+
+## Compatibilidad entre navegadores y cookies
+
+- Chrome, Edge y Firefox suelen mostrar las cookies demo directamente.
+- Brave puede bloquearlas segun Shields o privacidad estricta.
+- El cliente ya no depende exclusivamente de cookies: usa `localStorage` como respaldo principal y `sessionStorage` para la sesion de la pestana.
+- En esta sesion no se ha podido automatizar un Brave real ni una ventana privada real con las herramientas disponibles, asi que queda pendiente la verificacion manual final en:
+  - Chrome;
+  - Brave con Shields activado;
+  - Brave con Shields desactivado;
+  - Edge;
+  - Firefox;
+  - incognito o privada.
 
 ## Pendiente
 
 - capturas manuales para memoria o defensa, detalladas en `docs/evidencias/dwec/sprint-3/README.md`;
+- matriz manual real de navegadores y modo privado;
 - si se quiere ampliar automatizacion, preparar Selenium sobre el cliente React ya estable.
 
 ## Limitaciones conocidas
