@@ -113,9 +113,7 @@ class ActividadController
 
     private function iniciarSesion(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        resumeSessionIfActive();
     }
 
     // Verificar si el usuario tiene rol usuario o admin

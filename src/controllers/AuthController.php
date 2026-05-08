@@ -104,7 +104,7 @@ class AuthController
                 return;
             }
 
-            $this->iniciarSesion();
+            startFreshSession();
 
             $_SESSION['usuario_id'] = (int) $usuario['id_usuario'];
             $_SESSION['rol'] = (string) $usuario['rol'];
@@ -127,7 +127,8 @@ class AuthController
     // ===== SESIÓN =====
     public function getSession(): void
     {
-        $this->iniciarSesion();
+        // Solo reanuda si ya existe la cookie — no crea sesiones en páginas públicas
+        resumeSessionIfActive();
 
         $usuarioId = isset($_SESSION['usuario_id']) ? (int) $_SESSION['usuario_id'] : 0;
         $rol = isset($_SESSION['rol']) ? (string) $_SESSION['rol'] : '';
@@ -149,25 +150,11 @@ class AuthController
     // ===== LOGOUT =====
     public function logout(): void
     {
-        $this->iniciarSesion();
+        // Reanuda solo si hay sesión activa; si no, no hace nada (no crea sesión)
+        resumeSessionIfActive();
 
-        $_SESSION = [];
-
-        // Eliminar cookie de sesión de PHP
-        if (ini_get('session.use_cookies')) {
-            $params = session_get_cookie_params();
-            setcookie(
-                session_name(),
-                '',
-                time() - 42000,
-                $params['path'],
-                $params['domain'],
-                (bool) $params['secure'],
-                (bool) $params['httponly']
-            );
-        }
-
-        session_destroy();
+        // Destruye y elimina la cookie PHPSESSID solo si la sesión estaba activa
+        destroySession();
 
         $this->jsonResponse([
             'status' => 'ok',
@@ -177,9 +164,7 @@ class AuthController
 
     private function iniciarSesion(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        resumeSessionIfActive();
     }
 
     private function getJsonInput(): array

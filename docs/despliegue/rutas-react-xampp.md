@@ -6,8 +6,8 @@ La version principal de PacePal es React. La version PHP/HTML/JS antigua queda s
 
 El arranque local debe funcionar desde cualquier carpeta dentro de la carpeta web de XAMPP, incluyendo rutas con espacios como:
 
-- `http://localhost/treecore%20Trabajos/pacepal/`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/index.html`
+- `http://localhost/pacepalAgile/`
+- `http://localhost/pacepalAgile/frontend-react/dist/index.html`
 
 Una URL del navegador nunca debe contener `C:/xampp`, `htdocs`, `localhost/C:/...` ni `file://`.
 
@@ -106,22 +106,22 @@ Validacion ejecutada contra Apache/XAMPP desde Windows con `cmd.exe /C curl`, po
 
 URLs comprobadas:
 
-- `http://localhost/treecore%20Trabajos/pacepal/` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/index.html` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/assets/index-BVMjg-po.js` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/assets/index-_1G2IZz5.css` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/img/logo/logo.webp` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/img/logo/logotipoTrecore.webp` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/img/productos/zapatillaPacepal1.webp` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/img/productos/botellaPacepal1.webp` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/img/rutas/retiro.webp` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/img/rutas/jarosa.webp` -> `200`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/data/actividades.json` -> `200`
+- `http://localhost/pacepalAgile/` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/index.html` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/assets/...js` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/assets/...css` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/img/logo/logo.webp` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/img/logo/logotipoTrecore.webp` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/img/productos/zapatillaPacepal1.webp` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/img/productos/botellaPacepal1.webp` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/img/rutas/retiro.webp` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/img/rutas/jarosa.webp` -> `200`
+- `http://localhost/pacepalAgile/frontend-react/dist/data/actividades.json` -> `200`
 
 Simulacion del destino generado por JavaScript:
 
 ```text
-http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/index.html
+http://localhost/pacepalAgile/frontend-react/dist/index.html
 ```
 
 No contiene `C:/xampp`, `htdocs`, `localhost/C:/...` ni `file://`.
@@ -133,13 +133,13 @@ Las URLs locales probadas respondieron `200`; no se reprodujo `403 Forbidden`.
 En este equipo `http://127.0.0.1/` no sirve el mismo DocumentRoot que
 `http://localhost/`: Apache responde con otra aplicacion llamada
 `El Juramento de Valtherion`. Por eso las pruebas con
-`http://127.0.0.1/treecore%20Trabajos/pacepal/...` no alcanzan los archivos de
-PacePal y devuelven HTML de ese otro proyecto.
+`http://127.0.0.1/<carpeta-del-proyecto>/...` no alcanzan los archivos de
+PacePal si Apache apunta ese host a otro DocumentRoot.
 
 Esto no se puede corregir desde el codigo de PacePal si la peticion no llega a
 la carpeta del repositorio. Para validar con `127.0.0.1`, Apache debe mapear
 ese host al mismo `DocumentRoot` que `localhost` o al directorio que contiene
-`treecore Trabajos/pacepal`.
+la carpeta real del proyecto.
 
 ## Forma correcta de abrir en local
 

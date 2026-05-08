@@ -2,6 +2,117 @@
 
 Plataforma web para conectar personas y promover actividades deportivas en comunidad.
 
+## Instalacion local recomendada con XAMPP
+
+Esta rama de trabajo es `sprint-3-react-jsx`. No trabajar sobre `main` para la revision final.
+
+### 1. Clonar y entrar en la rama correcta
+
+```bash
+cd "C:\xampp\htdocs"
+git clone "https://github.com/Pacepal/pacepalAgile.git" "pacepalAgile"
+cd "pacepalAgile"
+git checkout sprint-3-react-jsx
+```
+
+Ubicacion recomendada:
+
+```text
+C:\xampp\htdocs\pacepalAgile
+```
+
+### 2. Arrancar XAMPP
+
+En XAMPP Control Panel:
+
+- Arrancar `Apache`.
+- Arrancar `MySQL`.
+
+### 3. Importar la base de datos
+
+1. Abrir `http://localhost/phpmyadmin`.
+2. Importar el archivo `db/pacepal.sql`.
+3. Comprobar que se crea la base de datos `pacepal`.
+
+Tambien existen `db/schema.sql` y `db/seed.sql`, pero el archivo recomendado para instalar desde cero es `db/pacepal.sql`.
+
+### 4. Configurar PHP
+
+Por defecto la API usa:
+
+- host: `127.0.0.1`
+- base de datos: `pacepal`
+- usuario: `root`
+- password: vacio
+- puertos: `3306`, `3307`, `3308`
+
+Si tu XAMPP usa otros datos:
+
+```bash
+copy "src\config\config.example.php" "src\config\config.local.php"
+```
+
+Edita `src\config\config.local.php` con tus valores locales. No se deben subir credenciales privadas reales.
+
+### 5. Configurar React
+
+```bash
+npm install
+copy ".env.local.example" ".env.local"
+```
+
+Para la ruta recomendada, `.env.local` en la raiz debe contener:
+
+```env
+VITE_PACEPAL_API_BASE_URL=http://localhost/pacepalAgile/src/api/index.php/api
+VITE_PACEPAL_ENABLE_STATIC_FALLBACK=false
+```
+
+Si el proyecto esta en otra carpeta dentro de `htdocs`, sustituye `pacepalAgile` por la ruta web real. Si la carpeta tiene espacios, usa `%20` en la URL.
+
+### 6. Ejecutar React
+
+```bash
+npm run dev
+```
+
+Abrir la URL que muestre Vite, normalmente:
+
+```text
+http://localhost:5173/
+```
+
+### 7. URLs locales de validacion
+
+API PHP:
+
+```text
+http://localhost/pacepalAgile/src/api/index.php/api/productos
+http://localhost/pacepalAgile/src/api/index.php/api/rutas
+http://localhost/pacepalAgile/src/api/index.php/api/actividades
+```
+
+React:
+
+```text
+http://localhost:5173/#inicio
+http://localhost:5173/#actividades
+http://localhost:5173/#crear-actividad
+http://localhost:5173/#tienda
+http://localhost:5173/#producto-1
+http://localhost:5173/#carrito
+http://localhost:5173/#about
+http://localhost:5173/#contacto
+```
+
+### 8. Documentacion completa
+
+Ver guia detallada en:
+
+```text
+docs/despliegue/INSTALACION_LOCAL_XAMPP.md
+```
+
 ## Demo
 
 - GitHub Pages: https://pacepal.github.io/pacepalAgile/

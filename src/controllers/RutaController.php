@@ -216,9 +216,7 @@ class RutaController
 
     private function iniciarSesion(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        resumeSessionIfActive();
     }
 
     private function esAdmin(): bool

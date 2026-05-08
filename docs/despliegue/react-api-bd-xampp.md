@@ -18,20 +18,19 @@ XAMPP/Apache es quien ejecuta PHP y expone la API real.
 
 URLs validas de la app:
 
-- `http://localhost/treecore%20Trabajos/pacepal/`
-- `http://localhost/treecore%20Trabajos/pacepal/pacepal-react.html`
-- `http://localhost/treecore%20Trabajos/pacepal/frontend-react/dist/pacepal-react.html`
+- `http://localhost/pacepalAgile/`
+- `http://localhost/pacepalAgile/frontend-react/dist/index.html`
 
 URL real de la API:
 
-- `http://localhost/treecore%20Trabajos/pacepal/src/api/index.php/api`
+- `http://localhost/pacepalAgile/src/api/index.php/api`
 
 Endpoints base de comprobacion:
 
-- `http://localhost/treecore%20Trabajos/pacepal/src/api/index.php/api/health`
-- `http://localhost/treecore%20Trabajos/pacepal/src/api/index.php/api/productos`
-- `http://localhost/treecore%20Trabajos/pacepal/src/api/index.php/api/rutas`
-- `http://localhost/treecore%20Trabajos/pacepal/src/api/index.php/api/actividades`
+- `http://localhost/pacepalAgile/src/api/index.php/api/health`
+- `http://localhost/pacepalAgile/src/api/index.php/api/productos`
+- `http://localhost/pacepalAgile/src/api/index.php/api/rutas`
+- `http://localhost/pacepalAgile/src/api/index.php/api/actividades`
 
 Comportamiento esperado:
 
@@ -46,10 +45,10 @@ Vite no ejecuta PHP. Solo sirve el frontend.
 
 Por eso, cuando React se abre desde `127.0.0.1:4173`, `4174`, `4175`, `5173`, `5174` o `5175`, hay que definir la API real en `frontend-react/.env.local`.
 
-Ejemplo para esta maquina:
+Ejemplo para la instalacion recomendada en `C:\xampp\htdocs\pacepalAgile`:
 
 ```env
-VITE_PACEPAL_API_BASE_URL=http://localhost/treecore%20Trabajos/pacepal/src/api/index.php/api
+VITE_PACEPAL_API_BASE_URL=http://localhost/pacepalAgile/src/api/index.php/api
 VITE_PACEPAL_ENABLE_STATIC_FALLBACK=false
 ```
 
@@ -61,8 +60,8 @@ Reglas:
 
 Comprobacion en Network:
 
-- React debe llamar a `http://localhost/treecore%20Trabajos/pacepal/src/api/index.php/api/...`
-- React no debe llamar a `http://127.0.0.1/treecore%20Trabajos/pacepal/src/api/index.php/api/...`
+- React debe llamar a `http://localhost/pacepalAgile/src/api/index.php/api/...`
+- React no debe llamar a una ruta fisica de Windows ni a una carpeta concreta del equipo original.
 
 ## CORS local
 

@@ -149,9 +149,7 @@ class ReporteController
 
     private function iniciarSesion(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        resumeSessionIfActive();
     }
 
     private function estaLogado(): bool

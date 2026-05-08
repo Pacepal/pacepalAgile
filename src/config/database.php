@@ -2,12 +2,19 @@
 
 declare(strict_types=1);
 
-$host = '127.0.0.1';
-$dbname = 'pacepal';
-$username = 'root';
-$password = '';
-$charset = 'utf8mb4';
-$ports = [3306, 3307, 3308];
+$localConfigPath = __DIR__ . '/config.local.php';
+$localConfig = is_file($localConfigPath) ? require $localConfigPath : [];
+
+$host = $localConfig['host'] ?? '127.0.0.1';
+$dbname = $localConfig['dbname'] ?? 'pacepal';
+$username = $localConfig['username'] ?? 'root';
+$password = $localConfig['password'] ?? '';
+$charset = $localConfig['charset'] ?? 'utf8mb4';
+$ports = $localConfig['ports'] ?? [3306, 3307, 3308];
+if (!is_array($ports)) {
+    $ports = [(int) $ports];
+}
+$portsLabel = implode(', ', array_map('strval', $ports));
 
 $pdo = null;
 
@@ -31,8 +38,8 @@ if ($pdo === null) {
     echo json_encode([
         'status' => 'error',
         'ok' => false,
-        'error' => 'Error de conexión con la base de datos. Ningún puerto disponible (3306, 3307, 3308).',
-        'message' => 'Error de conexión con la base de datos. Ningún puerto disponible (3306, 3307, 3308).',
+        'error' => "Error de conexión con la base de datos. Ningún puerto disponible ({$portsLabel}).",
+        'message' => "Error de conexión con la base de datos. Ningún puerto disponible ({$portsLabel}).",
     ], JSON_UNESCAPED_UNICODE);
 
     exit;

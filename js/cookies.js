@@ -1,22 +1,6 @@
 'use strict';
 
-/**
- * Sistema de consentimiento de cookies — PacePal
- *
- * Cookies actuales:
- *   - PHPSESSID (técnica, necesaria): sesión PHP para login, carrito, perfil.
- *   - pacepal_cookies (técnica): almacena el consentimiento del usuario (PHP cookie).
- *
- * Cookies opcionales (preparado para futuro):
- *   - analiticas: no activas actualmente.
- *   - marketing: no activas actualmente.
- *
- * El consentimiento se gestiona mediante una cookie PHP a través de la API
- * del servidor (POST/GET /api/cookies). Todo el almacenamiento es server-side.
- */
-
 (function () {
-
     function getBasePath() {
         var mount = document.getElementById('footerCompartido') || document.getElementById('navbarCompartida');
         if (mount && mount.dataset.base !== undefined) {
@@ -25,52 +9,57 @@
         return '';
     }
 
-    function getApiUrl() {
-        return getBasePath() + 'src/api/index.php/api/cookies';
+    function buildCookieApiUrl(path) {
+        return getBasePath() + 'src/api/index.php/api/cookies/' + path;
     }
 
-    /**
-     * Consulta el consentimiento actual desde el servidor (GET /api/cookies).
-     * Devuelve null si no hay consentimiento guardado.
-     */
-    async function getConsentimiento() {
+    async function requestCookieApi(path, options) {
+        var response = await fetch(buildCookieApiUrl(path), {
+            credentials: 'include',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            ...(options || {}),
+        });
+
+        return response.json();
+    }
+
+    async function hasConsent() {
         try {
-            var resp = await fetch(getApiUrl(), {
-                method: 'GET',
-                credentials: 'include',
-                headers: { Accept: 'application/json' },
-            });
-            var json = await resp.json();
-            if (json && json.status === 'ok') {
-                return json.consentimiento; // null o { tecnicas, analiticas, marketing }
-            }
-            return null;
-        } catch (_e) {
-            return null;
+            var payload = await requestCookieApi('status');
+            return !!payload.hasConsent;
+        } catch (_error) {
+            return false;
         }
     }
 
-    /**
-     * Envía las preferencias de cookies al servidor (POST /api/cookies).
-     * El servidor establece la cookie HTTP pacepal_cookies.
-     */
-    async function guardarConsentimiento(opciones) {
-        try {
-            await fetch(getApiUrl(), {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                },
-                body: JSON.stringify(opciones),
-            });
-        } catch (_e) {
-            // error de red — silencioso
+    function crearBoton(texto, clase) {
+        var boton = document.createElement('button');
+        boton.type = 'button';
+        boton.className = clase;
+        boton.textContent = texto;
+        return boton;
+    }
+
+    function cerrarOverlay(overlay) {
+        if (overlay && overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
         }
     }
 
-    // --- Crear banner ---
+    async function guardarDecision(path, body, overlay) {
+        var payload = await requestCookieApi(path, {
+            method: 'POST',
+            body: body ? JSON.stringify(body) : undefined,
+        });
+
+        if (payload.success) {
+            cerrarOverlay(overlay);
+        }
+    }
+
     function crearBanner() {
         var overlay = document.createElement('div');
         overlay.id = 'cookie-overlay';
@@ -80,6 +69,7 @@
         banner.id = 'cookie-banner';
         banner.className = 'cookie-banner';
         banner.setAttribute('role', 'dialog');
+        banner.setAttribute('aria-modal', 'true');
         banner.setAttribute('aria-label', 'Aviso de cookies');
 
         var titulo = document.createElement('h3');
@@ -88,34 +78,19 @@
 
         var texto = document.createElement('p');
         texto.className = 'cookie-banner__texto';
-        texto.textContent = 'PacePal utiliza cookies técnicas necesarias para el funcionamiento del sitio (inicio de sesión, carrito de compra). '
-            + 'También podemos utilizar cookies opcionales para mejorar tu experiencia. '
-            + 'Puedes aceptarlas, rechazarlas o configurar tus preferencias.';
-
-        var base = getBasePath();
+        texto.textContent = 'PacePal utiliza cookies técnicas necesarias y permite configurar cookies opcionales de preferencias y analíticas.';
 
         var enlace = document.createElement('a');
-        enlace.href = base + 'pages/legal/cookies.php';
+        enlace.href = '#cookies';
         enlace.className = 'cookie-banner__enlace';
         enlace.textContent = 'Leer política de cookies';
 
         var botones = document.createElement('div');
         botones.className = 'cookie-banner__botones';
 
-        var btnAceptar = document.createElement('button');
-        btnAceptar.type = 'button';
-        btnAceptar.className = 'boton boton--primario cookie-btn';
-        btnAceptar.textContent = 'Aceptar todas';
-
-        var btnRechazar = document.createElement('button');
-        btnRechazar.type = 'button';
-        btnRechazar.className = 'boton cookie-btn cookie-btn--secundario';
-        btnRechazar.textContent = 'Solo técnicas';
-
-        var btnConfigurar = document.createElement('button');
-        btnConfigurar.type = 'button';
-        btnConfigurar.className = 'boton cookie-btn cookie-btn--secundario';
-        btnConfigurar.textContent = 'Configurar';
+        var btnAceptar = crearBoton('Aceptar todas', 'boton boton--primario cookie-btn');
+        var btnRechazar = crearBoton('Solo técnicas', 'boton cookie-btn cookie-btn--secundario');
+        var btnConfigurar = crearBoton('Configurar', 'boton cookie-btn cookie-btn--secundario');
 
         botones.appendChild(btnAceptar);
         botones.appendChild(btnRechazar);
@@ -125,36 +100,26 @@
         banner.appendChild(texto);
         banner.appendChild(enlace);
         banner.appendChild(botones);
-
         overlay.appendChild(banner);
         document.body.appendChild(overlay);
 
+        btnAceptar.focus();
+
         btnAceptar.addEventListener('click', function () {
-            guardarConsentimiento({ tecnicas: true, analiticas: true, marketing: true });
-            cerrarBanner(overlay);
+            guardarDecision('accept-all', null, overlay);
         });
 
         btnRechazar.addEventListener('click', function () {
-            guardarConsentimiento({ tecnicas: true, analiticas: false, marketing: false });
-            cerrarBanner(overlay);
+            guardarDecision('reject', null, overlay);
         });
 
         btnConfigurar.addEventListener('click', function () {
-            cerrarBanner(overlay);
-            crearPanelPreferencias(null);
+            cerrarOverlay(overlay);
+            crearPanelPreferencias();
         });
     }
 
-    function cerrarBanner(overlay) {
-        if (overlay && overlay.parentNode) {
-            overlay.parentNode.removeChild(overlay);
-        }
-    }
-
-    // --- Panel de preferencias ---
-    function crearPanelPreferencias(consentimientoActual) {
-        var consentimiento = consentimientoActual || { tecnicas: true, analiticas: false, marketing: false };
-
+    function crearPanelPreferencias() {
         var overlay = document.createElement('div');
         overlay.id = 'cookie-overlay';
         overlay.className = 'cookie-overlay';
@@ -162,6 +127,7 @@
         var panel = document.createElement('div');
         panel.className = 'cookie-panel';
         panel.setAttribute('role', 'dialog');
+        panel.setAttribute('aria-modal', 'true');
         panel.setAttribute('aria-label', 'Preferencias de cookies');
 
         var titulo = document.createElement('h3');
@@ -170,75 +136,43 @@
 
         var descripcion = document.createElement('p');
         descripcion.className = 'cookie-panel__texto';
-        descripcion.textContent = 'Configura qué tipos de cookies deseas permitir. Las cookies técnicas son necesarias y no se pueden desactivar.';
+        descripcion.textContent = 'Las cookies técnicas son necesarias. Puedes activar o desactivar las cookies opcionales.';
 
-        // --- Categoría técnicas (siempre activa) ---
-        var grupTecnicas = crearGrupoPreferencia(
-            'Cookies técnicas (necesarias)',
-            'Necesarias para el funcionamiento del sitio: sesión de usuario, carrito de compra. No se pueden desactivar.',
-            true,
-            true
-        );
+        var preferencias = crearGrupoPreferencia('Cookies de preferencias', 'Guardan preferencias opcionales de experiencia.', false);
+        var analiticas = crearGrupoPreferencia('Cookies analíticas', 'Ayudan a mejorar el sitio.', false);
 
-        // --- Categoría analíticas ---
-        var grupAnaliticas = crearGrupoPreferencia(
-            'Cookies analíticas',
-            'Permiten analizar el uso del sitio para mejorarlo. Actualmente PacePal no utiliza cookies analíticas.',
-            consentimiento.analiticas,
-            false
-        );
-
-        // --- Categoría marketing ---
-        var grupMarketing = crearGrupoPreferencia(
-            'Cookies de marketing',
-            'Permiten mostrar publicidad personalizada. Actualmente PacePal no utiliza cookies de marketing.',
-            consentimiento.marketing,
-            false
-        );
-
-        // --- Botones ---
         var botones = document.createElement('div');
         botones.className = 'cookie-banner__botones';
 
-        var btnGuardar = document.createElement('button');
-        btnGuardar.type = 'button';
-        btnGuardar.className = 'boton boton--primario cookie-btn';
-        btnGuardar.textContent = 'Guardar preferencias';
-
-        var btnAceptarTodas = document.createElement('button');
-        btnAceptarTodas.type = 'button';
-        btnAceptarTodas.className = 'boton cookie-btn cookie-btn--secundario';
-        btnAceptarTodas.textContent = 'Aceptar todas';
+        var btnGuardar = crearBoton('Guardar preferencias', 'boton boton--primario cookie-btn');
+        var btnAceptarTodas = crearBoton('Aceptar todas', 'boton cookie-btn cookie-btn--secundario');
 
         botones.appendChild(btnGuardar);
         botones.appendChild(btnAceptarTodas);
 
         panel.appendChild(titulo);
         panel.appendChild(descripcion);
-        panel.appendChild(grupTecnicas.contenedor);
-        panel.appendChild(grupAnaliticas.contenedor);
-        panel.appendChild(grupMarketing.contenedor);
+        panel.appendChild(preferencias.contenedor);
+        panel.appendChild(analiticas.contenedor);
         panel.appendChild(botones);
-
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
 
+        btnGuardar.focus();
+
         btnGuardar.addEventListener('click', function () {
-            guardarConsentimiento({
-                tecnicas: true,
-                analiticas: grupAnaliticas.checkbox.checked,
-                marketing: grupMarketing.checkbox.checked,
-            });
-            cerrarBanner(overlay);
+            guardarDecision('preferences', {
+                preferences: preferencias.checkbox.checked,
+                analytics: analiticas.checkbox.checked,
+            }, overlay);
         });
 
         btnAceptarTodas.addEventListener('click', function () {
-            guardarConsentimiento({ tecnicas: true, analiticas: true, marketing: true });
-            cerrarBanner(overlay);
+            guardarDecision('accept-all', null, overlay);
         });
     }
 
-    function crearGrupoPreferencia(titulo, descripcion, checked, deshabilitado) {
+    function crearGrupoPreferencia(titulo, descripcion, checked) {
         var contenedor = document.createElement('div');
         contenedor.className = 'cookie-pref';
 
@@ -251,55 +185,37 @@
         var checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.checked = checked;
-        if (deshabilitado) {
-            checkbox.disabled = true;
-        }
 
-        var span = document.createElement('span');
-        span.textContent = titulo;
-
-        label.appendChild(checkbox);
-        label.appendChild(span);
-
-        fila.appendChild(label);
+        var texto = document.createElement('span');
+        texto.textContent = titulo;
 
         var desc = document.createElement('p');
         desc.className = 'cookie-pref__desc';
         desc.textContent = descripcion;
 
+        label.appendChild(checkbox);
+        label.appendChild(texto);
+        fila.appendChild(label);
         contenedor.appendChild(fila);
         contenedor.appendChild(desc);
 
         return { contenedor: contenedor, checkbox: checkbox };
     }
 
-    // Exponer función para abrir preferencias desde el footer
-    window.abrirPreferenciasCookies = async function () {
-        var consentimiento = await getConsentimiento();
-        crearPanelPreferencias(consentimiento);
+    window.abrirPreferenciasCookies = function () {
+        var existente = document.getElementById('cookie-overlay');
+        cerrarOverlay(existente);
+        crearPanelPreferencias();
     };
 
-    // --- Inicializar ---
-    async function init() {
-        var consentimiento = await getConsentimiento();
-        if (!consentimiento) {
-            crearBanner();
-        }
-
-        // Botón "Configurar cookies" en el footer
+    document.addEventListener('DOMContentLoaded', async function () {
         var btnFooter = document.getElementById('btnConfigurarCookies');
         if (btnFooter) {
-            btnFooter.addEventListener('click', async function () {
-                var actual = await getConsentimiento();
-                crearPanelPreferencias(actual);
-            });
+            btnFooter.addEventListener('click', window.abrirPreferenciasCookies);
         }
-    }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-
+        if (!(await hasConsent())) {
+            crearBanner();
+        }
+    });
 })();

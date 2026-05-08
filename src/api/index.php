@@ -44,6 +44,7 @@ if ($method === 'OPTIONS') {
     exit;
 }
 
+require_once __DIR__ . '/../config/session.php';
 require_once __DIR__ . '/../controllers/ProductoController.php';
 require_once __DIR__ . '/../controllers/RutaController.php';
 require_once __DIR__ . '/../controllers/ActividadController.php';
@@ -127,6 +128,9 @@ $routes = [
         '/api/cookies' => function () use ($cookieController): void {
             $cookieController->getConsentimiento();
         },
+        '/api/cookies/status' => function () use ($cookieController): void {
+            $cookieController->getStatus();
+        },
         '/api/pedidos/admin' => function () use ($pedidoController): void {
             $pedidoController->getAllPedidos();
         },
@@ -165,6 +169,15 @@ $routes = [
         },
         '/api/cookies' => function () use ($cookieController): void {
             $cookieController->setConsentimiento();
+        },
+        '/api/cookies/accept-all' => function () use ($cookieController): void {
+            $cookieController->acceptAll();
+        },
+        '/api/cookies/reject' => function () use ($cookieController): void {
+            $cookieController->reject();
+        },
+        '/api/cookies/preferences' => function () use ($cookieController): void {
+            $cookieController->savePreferences();
         },
     ],
 
@@ -300,4 +313,3 @@ function jsonResponse(array $payload, int $statusCode = 200): void
     echo json_encode($payload, JSON_UNESCAPED_UNICODE);
     exit;
 }
-

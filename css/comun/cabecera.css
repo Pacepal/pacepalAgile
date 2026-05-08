@@ -128,3 +128,35 @@
 .cabecera__registro:hover {
   background: #edf0e8;
 }
+
+/* ======== AUTH ITEMS EN MENÚ MÓVIL ======== */
+
+/*
+  .menu a ya cubre los <a> dentro del bloque móvil.
+  Solo se necesita igualar el estilo para el <button> de logout.
+*/
+.menu__login-btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 0.3rem;
+  color: #2f382b;
+  text-decoration: none;
+  border: none;
+  border-bottom: 1px solid #eef1eb;
+  background: transparent;
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.menu__login-btn:hover {
+  background: #edf0e8;
+}
+
+@media (min-width: 992px) {
+  .menu__login {
+    display: none;
+  }
+}

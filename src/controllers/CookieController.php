@@ -2,85 +2,171 @@
 
 declare(strict_types=1);
 
-// Controlador de cookies — gestiona el consentimiento RGPD
-// La cookie pacepal_cookies almacena las preferencias del usuario
-
 class CookieController
 {
-    private const COOKIE_NAME = 'pacepal_cookies';
-    private const COOKIE_DURATION = 365 * 24 * 60 * 60; // 1 año
+    private const COOKIE_CONSENT    = 'pacepal_cookie_consent';
+    private const COOKIE_DURATION   = 15552000; // 6 meses
+    private const CONSENT_VERSION   = '1.0';
 
-    // Devuelve el consentimiento actual o null si no ha aceptado todavía
-    public function getConsentimiento(): void
+    // Cookies del formato antiguo que deben eliminarse si existen
+    private const LEGACY_COOKIES = [
+        'pacepal_cookie_preferences',
+        'pacepal_cookie_analytics',
+    ];
+
+    public function getStatus(): void
     {
-        $consentimiento = $this->leerCookie();
+        $this->jsonResponse($this->buildStatusPayload());
+    }
 
-        if ($consentimiento === null) {
-            $this->jsonResponse([
-                'status' => 'ok',
-                'consentimiento' => null,
-            ]);
-            return;
-        }
-
-        $this->jsonResponse([
-            'status' => 'ok',
-            'consentimiento' => $consentimiento,
+    public function acceptAll(): void
+    {
+        $this->persistConsent([
+            'necessary'   => true,
+            'analytics'   => true,
+            'preferences' => true,
+            'marketing'   => true,
         ]);
     }
 
-    // Guarda las preferencias de cookies — las técnicas siempre van a true
-    public function setConsentimiento(): void
+    public function reject(): void
+    {
+        $this->persistConsent([
+            'necessary'   => true,
+            'analytics'   => false,
+            'preferences' => false,
+            'marketing'   => false,
+        ]);
+    }
+
+    public function savePreferences(): void
     {
         $input = $this->getJsonInput();
 
-        if (empty($input)) {
-            $this->jsonResponse([
-                'status' => 'error',
-                'message' => 'Datos de consentimiento no válidos.',
-            ], 400);
-            return;
-        }
-
-        $consentimiento = [
-            'tecnicas'   => true, // siempre true
-            'analiticas' => !empty($input['analiticas']),
-            'marketing'  => !empty($input['marketing']),
-        ];
-
-        $valor = json_encode($consentimiento, JSON_UNESCAPED_UNICODE);
-
-        setcookie(self::COOKIE_NAME, $valor, [
-            'expires'  => time() + self::COOKIE_DURATION,
-            'path'     => '/',
-            'httponly' => false, // tiene que ser accesible desde JS para leer el estado
-            'samesite' => 'Lax',
-            'secure'   => false, // en localhost no hay HTTPS
-        ]);
-
-        $this->jsonResponse([
-            'status' => 'ok',
-            'message' => 'Preferencias de cookies guardadas.',
-            'consentimiento' => $consentimiento,
+        $this->persistConsent([
+            'necessary'   => true,
+            'analytics'   => !empty($input['analytics']),
+            'preferences' => !empty($input['preferences']),
+            'marketing'   => !empty($input['marketing']),
         ]);
     }
 
-    private function leerCookie(): ?array
+    public function getConsentimiento(): void
     {
-        if (!isset($_COOKIE[self::COOKIE_NAME])) {
-            return null;
+        $this->getStatus();
+    }
+
+    public function setConsentimiento(): void
+    {
+        $this->savePreferences();
+    }
+
+    /**
+     * Escribe la cookie única de consentimiento como JSON y elimina cookies del
+     * formato antiguo si aún existen. Las cookies necesarias no dependen de este
+     * método: solo se registra la decisión del usuario sobre las opcionales.
+     */
+    private function persistConsent(array $categories): void
+    {
+        $this->removeLegacyCookies();
+
+        $data = [
+            'necessary'   => true,
+            'analytics'   => (bool) ($categories['analytics']   ?? false),
+            'preferences' => (bool) ($categories['preferences'] ?? false),
+            'marketing'   => (bool) ($categories['marketing']   ?? false),
+            'accepted_at' => (new \DateTime('now', new \DateTimeZone('UTC')))->format(\DATE_ATOM),
+            'version'     => self::CONSENT_VERSION,
+        ];
+
+        $json = (string) json_encode($data, JSON_UNESCAPED_UNICODE);
+
+        $this->setConsentCookie(self::COOKIE_CONSENT, $json);
+        $_COOKIE[self::COOKIE_CONSENT] = $json;
+
+        $this->jsonResponse($this->buildStatusPayload());
+    }
+
+    private function setConsentCookie(string $name, string $value): void
+    {
+        setcookie($name, $value, [
+            'expires'  => time() + self::COOKIE_DURATION,
+            'path'     => '/',
+            'secure'   => false,
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+    }
+
+    /**
+     * Elimina las cookies del formato antiguo (3 cookies separadas) para que no
+     * convivan con la nueva cookie JSON única.
+     */
+    private function removeLegacyCookies(): void
+    {
+        foreach (self::LEGACY_COOKIES as $name) {
+            if (isset($_COOKIE[$name])) {
+                setcookie($name, '', [
+                    'expires'  => 1,
+                    'path'     => '/',
+                    'secure'   => false,
+                    'httponly' => true,
+                    'samesite' => 'Lax',
+                ]);
+                unset($_COOKIE[$name]);
+            }
+        }
+    }
+
+    /**
+     * Lee la cookie única y devuelve el estado actual de consentimiento.
+     * Si la cookie no existe o tiene el formato antiguo incompatible, devuelve
+     * hasConsent=false para que el banner vuelva a mostrarse.
+     */
+    private function buildStatusPayload(): array
+    {
+        $noConsent = [
+            'success'    => true,
+            'hasConsent' => false,
+            'cookies'    => [
+                'necessary'   => true,
+                'analytics'   => false,
+                'preferences' => false,
+                'marketing'   => false,
+            ],
+        ];
+
+        $raw = $_COOKIE[self::COOKIE_CONSENT] ?? null;
+
+        if ($raw === null) {
+            return $noConsent;
         }
 
-        $decoded = json_decode($_COOKIE[self::COOKIE_NAME], true);
+        // Formato antiguo incompatible (valor plano "true"/"false") → limpiar y
+        // devolver sin consentimiento para que el banner vuelva a aparecer.
+        if ($raw === 'true' || $raw === 'false') {
+            $this->removeLegacyCookies();
+            setcookie(self::COOKIE_CONSENT, '', ['expires' => 1, 'path' => '/', 'secure' => false, 'httponly' => true, 'samesite' => 'Lax']);
+            unset($_COOKIE[self::COOKIE_CONSENT]);
+            return $noConsent;
+        }
 
-        if (!is_array($decoded)) {
-            return null;
+        $data = json_decode($raw, true);
+
+        // Si el JSON es inválido o no tiene versión no lo aceptamos.
+        if (!is_array($data) || !isset($data['version'])) {
+            return $noConsent;
         }
 
         return [
-            'tecnicas'   => true,
-            'analiticas' => !empty($decoded['analiticas']),
-            'marketing'  => !empty($decoded['marketing']),
+            'success'    => true,
+            'hasConsent' => true,
+            'cookies'    => [
+                'necessary'   => true,
+                'analytics'   => (bool) ($data['analytics']   ?? false),
+                'preferences' => (bool) ($data['preferences'] ?? false),
+                'marketing'   => (bool) ($data['marketing']   ?? false),
+            ],
         ];
     }
 

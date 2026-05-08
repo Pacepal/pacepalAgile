@@ -14,6 +14,8 @@ frontend-react/.vite/
 .env
 .env.*
 !.env.example
+!.env.local.example
+src/config/config.local.php
 *.pem
 *.key
 *.p12
