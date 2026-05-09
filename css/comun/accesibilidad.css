@@ -1,0 +1,63 @@
+/* ========================================
+   Botón flotante de accesibilidad — PacePal
+   Símbolo universal · ayuda por voz · teclado
+   ======================================== */
+
+.btn-accesibilidad {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  /* Por debajo del overlay de cookies (z-index: 9999) */
+  z-index: 1000;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-verde-oscuro);
+  background: var(--color-blanco);
+  color: var(--color-verde-oscuro);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--sombra);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.1s ease;
+  /* Asegurar que el foco sea visible */
+  outline: none;
+}
+
+.btn-accesibilidad:hover {
+  background: var(--color-lima-hover);
+  color: var(--color-verde-oscuro);
+  transform: scale(1.08);
+}
+
+/* Foco visible (WCAG 2.4.7) */
+.btn-accesibilidad:focus-visible {
+  outline: 3px solid var(--color-lima);
+  outline-offset: 3px;
+}
+
+/* Estado: ayuda por voz activada */
+.btn-accesibilidad--activo {
+  background: var(--color-lima);
+  color: var(--color-verde-oscuro);
+}
+
+.btn-accesibilidad--activo:hover {
+  background: var(--color-lima-hover);
+}
+
+/* Responsive: pantallas pequeñas */
+@media (max-width: 576px) {
+  .btn-accesibilidad {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    font-size: 1.2rem;
+  }
+}

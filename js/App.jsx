@@ -22,6 +22,7 @@ import { useCart } from './hooks/useCart.js';
 import { useSession } from './hooks/useSession.js';
 import { useRoutes } from './hooks/useRoutes.js';
 import { useActivities } from './hooks/useActivities.js';
+import AccessibilityButton from './components/AccessibilityButton.jsx';
 
 const validPages = new Set([
   'inicio',
@@ -155,6 +156,7 @@ function App() {
 
       <Footer onNavigate={navigate} />
       <PrivacyNotice onNavigate={navigate} />
+      <AccessibilityButton />
     </div>
   );
 }

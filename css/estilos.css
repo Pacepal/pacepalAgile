@@ -49,3 +49,6 @@
 
 /* ---------- COOKIES ---------- */
 @import url("./comun/cookies.css");
+
+/* ---------- ACCESIBILIDAD ---------- */
+@import url("./comun/accesibilidad.css");
