@@ -136,3 +136,22 @@ En la app React:
 - Si la API PHP devuelve error de base de datos, revisar que MySQL este arrancado y que `pacepal` se haya importado.
 - Si Apache usa otro nombre de carpeta, actualizar la URL de `VITE_PACEPAL_API_BASE_URL`.
 - No usar rutas absolutas del equipo original; la app debe funcionar desde `C:\xampp\htdocs\pacepalAgile` o desde cualquier carpeta equivalente bajo `htdocs`.
+
+## Evidencias de rubricas y validacion
+
+Evidencias tecnicas generadas para la revision final:
+
+- `docs/evidencias/despliegue/sprint-3/README.md`
+- `docs/evidencias/despliegue/sprint-3/01-xampp-dashboard-localhost.png`
+- `docs/evidencias/despliegue/sprint-3/02-phpmyadmin-home.png`
+- `docs/evidencias/despliegue/sprint-3/03-phpmyadmin-bd-pacepal.png`
+- `docs/evidencias/despliegue/sprint-3/04-app-localhost-home.png`
+- `docs/evidencias/despliegue/sprint-3/05-api-session-localhost.png`
+- `docs/evidencias/despliegue/sprint-3/06-netstat-puertos.txt`
+- `docs/evidencias/despliegue/sprint-3/07-procesos-servicios.txt`
+- `docs/evidencias/despliegue/sprint-3/08-github-pages-publicacion-https.png`
+- `docs/evidencias/despliegue/sprint-3/09-https-headers-github-pages.txt`
+
+Informe de cumplimiento de la rubrica final:
+
+- `docs/despliegue/RUBRICA_FINAL_CUMPLIMIENTO.md`

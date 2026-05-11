@@ -1,0 +1,9 @@
+Evidencia de sesión activa como admin:
+
+- Endpoint: /api/session
+- Resultado: {"logged":true, "usuario_id":1, "rol":"admin"}
+- Usuario: admin@pacepal.com
+
+Captura guardada como 05-api-session-localhost-admin.png
+
+Esta evidencia demuestra que el login de administrador funciona y la API reconoce la sesión activa correctamente.

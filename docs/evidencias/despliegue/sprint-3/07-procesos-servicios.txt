@@ -1,0 +1,10 @@
+﻿
+=== procesos Apache/MySQL (tasklist) ===
+
+mysqld.exe                    7036 Services                   0    11.916 KB
+mysqld.exe                    9056 Services                   0   120.296 KB
+httpd.exe                    37764 Console                    1    24.848 KB
+httpd.exe                     8848 Console                    1    68.644 KB
+mysqld.exe                   45304 Console                    1    57.992 KB
+
+
