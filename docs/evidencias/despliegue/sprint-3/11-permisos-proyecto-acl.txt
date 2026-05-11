@@ -1,0 +1,13 @@
+﻿=== permisos ACL del proyecto ===
+
+IdentityReference                               FileSystemRights AccessControlT
+                                                                            ype
+-----------------                               ---------------- --------------
+BUILTIN\Administradores                              FullControl          Allow
+NT AUTHORITY\SYSTEM                                  FullControl          Allow
+BUILTIN\Usuarios                     ReadAndExecute, Synchronize          Allow
+NT AUTHORITY\Usuarios autentificados         Modify, Synchronize          Allow
+NT AUTHORITY\Usuarios autentificados                  -536805376          Allow
+
+
+

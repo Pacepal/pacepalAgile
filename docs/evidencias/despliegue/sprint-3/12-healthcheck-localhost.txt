@@ -1,0 +1,8 @@
+﻿=== monitorizacion basica (health endpoint) ===
+{"status":"ok","ok":true,"database":"pacepal","connection":"ok"}
+
+=== fecha chequeo ===
+
+lunes, 11 de mayo de 2026 13:03:54
+
+

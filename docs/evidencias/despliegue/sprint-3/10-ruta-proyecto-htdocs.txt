@@ -1,0 +1,33 @@
+﻿=== ruta del proyecto en htdocs ===
+
+Path                        
+----                        
+C:\xampp\htdocs\pacepalAgile
+
+
+
+=== existencia en htdocs ===
+True
+
+=== contenido raiz (primer nivel) ===
+.github
+.vscode
+assets
+css
+db
+docs
+img
+js
+pages
+scripts
+src
+tests
+.env.local.example
+.gitattributes
+.gitignore
+.htaccess
+index.html
+package-lock.json
+package.json
+README.md
+vite.config.js
