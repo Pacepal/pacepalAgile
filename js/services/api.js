@@ -193,7 +193,7 @@ export function warnAboutFallback(scope, error) {
 
 export async function requestJson(path, options = {}) {
     if (!configuredBaseUrl) {
-        throw new ApiError(getApiUnavailableMessage('La API PHP real no esta disponible en este entorno.'), {
+        throw new ApiError(getApiUnavailableMessage('La API PHP real no está disponible en este entorno.'), {
             isNetworkError: true,
         });
     }

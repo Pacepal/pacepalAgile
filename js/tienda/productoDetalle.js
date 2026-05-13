@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         tarjeta.appendChild(imagenes);
 
-        tarjeta.appendChild(crearElemento('p', 'Descripcion: ' + (producto.descripcion || 'Sin descripcion')));
+        tarjeta.appendChild(crearElemento('p', 'Descripción: ' + (producto.descripcion || 'Sin descripción')));
 
         var precioNumero = Number(producto.precio);
         var precioTexto = Number.isFinite(precioNumero) ? precioNumero.toFixed(2) + ' EUR' : 'No disponible';
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
         inputCant.value = '1';
         formCarrito.appendChild(inputCant);
 
-        var btnCarrito = crearElemento('button', 'Anadir al carrito', 'boton boton--primario me-2');
+        var btnCarrito = crearElemento('button', 'Añadir al carrito', 'boton boton--primario me-2');
         btnCarrito.type = 'button';
         btnCarrito.addEventListener('click', function () {
             anadirAlCarrito(producto.id_articulo, parseInt(inputCant.value, 10) || 1);
@@ -134,19 +134,19 @@ document.addEventListener('DOMContentLoaded', function () {
             var data = await response.json();
             if (data.status === 'ok') {
                 if (msgEl) {
-                    msgEl.textContent = 'Anadido al carrito.';
+                    msgEl.textContent = '¡Añadido al carrito!';
                 }
                 if (typeof actualizarContadorCarrito === 'function') {
                     actualizarContadorCarrito();
                 }
             } else {
                 if (msgEl) {
-                    msgEl.textContent = data.message || 'No se pudo anadir.';
+                    msgEl.textContent = data.message || 'No se pudo añadir.';
                 }
             }
         } catch (_error) {
             if (msgEl) {
-                msgEl.textContent = 'Error de conexion.';
+                msgEl.textContent = 'Error de conexión.';
             }
         }
     }

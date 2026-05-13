@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (items.length === 0) {
             var vacio = document.createElement('p');
-            vacio.textContent = 'Tu carrito esta vacio.';
+            vacio.textContent = 'Tu carrito está vacío.';
             contenedor.appendChild(vacio);
 
             var enlaceTienda = document.createElement('a');
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             renderCarrito(json.data);
         } catch (_e) {
-            mostrarMensaje('Error de conexion con el servidor.', 'error');
+            mostrarMensaje('Error de conexión con el servidor.', 'error');
         }
     }
 
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 actualizarContadorCarrito();
             }
         } catch (_e) {
-            mostrarMensaje('Error de conexion con el servidor.', 'error');
+            mostrarMensaje('Error de conexión con el servidor.', 'error');
         }
     }
 
@@ -245,7 +245,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 actualizarContadorCarrito();
             }
         } catch (_e) {
-            mostrarMensaje('Error de conexion con el servidor.', 'error');
+            mostrarMensaje('Error de conexión con el servidor.', 'error');
         }
     }
 
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
             enlaceTienda.textContent = 'Seguir comprando';
             contenedor.appendChild(enlaceTienda);
         } catch (_e) {
-            mostrarMensaje('Error de conexion con el servidor.', 'error');
+            mostrarMensaje('Error de conexión con el servidor.', 'error');
         }
     }
 

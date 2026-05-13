@@ -24,16 +24,16 @@ function ShopPage({ products, cart, onNavigate }) {
             <div className="tienda-video__contenido">
               <div className="tienda-video__texto">
                 <p className="kicker">Experiencia de compra</p>
-                <h3 id="tienda-video-titulo">Equipate para tu proxima ruta</h3>
+                <h3 id="tienda-video-titulo">Equípate para tu próxima ruta</h3>
                 <p id="tienda-video-descripcion">
-                  Encuentra en PacePal el material que necesitas para salir con mas comodidad, seguridad y confianza.
+                  Encuentra en PacePal el material que necesitas para salir con más comodidad, seguridad y confianza.
                 </p>
                 <p>
-                  Desde accesorios basicos hasta productos pensados para actividades al aire libre, nuestra tienda te
-                  ayuda a preparar cada plan sin complicarte. Elige lo que necesitas, anadelo a tu seleccion y tenlo
-                  todo listo antes de empezar tu proxima aventura.
+                  Desde accesorios básicos hasta productos pensados para actividades al aire libre, nuestra tienda te
+                  ayuda a preparar cada plan sin complicarte. Elige lo que necesitas, añádelo a tu selección y tenlo
+                  todo listo antes de empezar tu próxima aventura.
                 </p>
-                <p>Descubre, preparate y sal a moverte.</p>
+                <p>Descubre, prepárate y sal a moverte.</p>
               </div>
 
               <div className="tienda-video__media">

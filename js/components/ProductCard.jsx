@@ -9,7 +9,7 @@ function formatPrice(value) {
 function ProductCard({ product, onAddToCart, onViewProduct }) {
   const stock = Number(product.stock);
   const isOutOfStock = Number.isFinite(stock) && stock <= 0;
-  const [buttonText, setButtonText] = useState(isOutOfStock ? 'Sin stock' : 'Anadir al carrito');
+  const [buttonText, setButtonText] = useState(isOutOfStock ? 'Sin stock' : 'Añadir al carrito');
   const [disabled, setDisabled] = useState(false);
   const image = buildPublicAssetUrl(product.imagen1 || 'img/productos/zapatillaPacepal1.webp');
 
@@ -19,11 +19,11 @@ function ProductCard({ product, onAddToCart, onViewProduct }) {
     }
 
     setDisabled(true);
-    setButtonText('Anadiendo...');
+    setButtonText('Añadiendo...');
     const ok = await onAddToCart(product, 1);
-    setButtonText(ok ? 'Anadido!' : 'Error');
+    setButtonText(ok ? '¡Añadido!' : 'Error');
     setTimeout(() => {
-      setButtonText('Anadir al carrito');
+      setButtonText('Añadir al carrito');
       setDisabled(false);
     }, 1500);
   }

@@ -23,7 +23,7 @@ function Cart({ cart, onNavigate }) {
       <div id="contenido-carrito" aria-live="polite">
         {cart.items.length === 0 && !orderCompleted ? (
           <>
-            <p>Tu carrito esta vacio.</p>
+            <p>Tu carrito está vacío.</p>
             <a href="#tienda" className="boton boton--primario mt-2 d-inline-block" onClick={goToShop}>
               Ir a la tienda
             </a>

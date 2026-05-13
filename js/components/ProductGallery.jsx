@@ -11,7 +11,7 @@ function ProductGallery({ status, message, products, onAddToCart, onViewProduct,
 
   return (
     <section id="productos" aria-labelledby="product-gallery-title">
-      <h3 id="product-gallery-title" className="visually-hidden">Galeria de productos</h3>
+      <h3 id="product-gallery-title" className="visually-hidden">Galería de productos</h3>
       {isLoading ? <p aria-live="polite">{message || 'Cargando productos.'}</p> : null}
       {isError ? <p className="mensaje-formulario mensaje-formulario--error">{message}</p> : null}
       {hasProducts ? (

@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!esEdicion) {
             campos.push({ id: 'admin-usr-dni', label: 'DNI', type: 'text', val: '', required: true });
-            campos.push({ id: 'admin-usr-password', label: 'Password', type: 'password', val: '', required: true });
+            campos.push({ id: 'admin-usr-password', label: 'Contraseña', type: 'password', val: '', required: true });
         }
 
         for (var f = 0; f < campos.length; f++) {
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (msgDiv) msgDiv.appendChild(crearElemento('p', data.message || 'Error al crear.', 'text-danger'));
                 }
             } catch (_e) {
-                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexion.', 'text-danger'));
+                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexión.', 'text-danger'));
             }
         });
 
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (msgDiv) msgDiv.appendChild(crearElemento('p', data.message || 'Error al actualizar.', 'text-danger'));
                 }
             } catch (_e) {
-                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexion.', 'text-danger'));
+                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexión.', 'text-danger'));
             }
         });
 
@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(data.message || 'No se pudo eliminar el usuario.');
             }
         } catch (_error) {
-            alert('Error de conexion.');
+            alert('Error de conexión.');
         }
     }
 
@@ -502,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Plazas
         var grupoPlazas = crearElemento('div', null, 'formulario__grupo mb-2');
-        grupoPlazas.appendChild(crearElemento('label', 'Plazas maximas', 'formulario__label'));
+        grupoPlazas.appendChild(crearElemento('label', 'Plazas máximas', 'formulario__label'));
         var inpPlazas = document.createElement('input');
         inpPlazas.type = 'number';
         inpPlazas.id = 'admin-act-plazas';
@@ -512,9 +512,9 @@ document.addEventListener('DOMContentLoaded', function () {
         grupoPlazas.appendChild(inpPlazas);
         form.appendChild(grupoPlazas);
 
-        // Descripcion
+        // Descripción
         var grupoDesc = crearElemento('div', null, 'formulario__grupo mb-2');
-        grupoDesc.appendChild(crearElemento('label', 'Descripcion', 'formulario__label'));
+        grupoDesc.appendChild(crearElemento('label', 'Descripción', 'formulario__label'));
         var texDesc = document.createElement('textarea');
         texDesc.id = 'admin-act-descripcion';
         texDesc.className = 'formulario__input';
@@ -614,7 +614,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (msgDiv) msgDiv.appendChild(crearElemento('p', data.message || 'Error al crear.', 'text-danger'));
                 }
             } catch (_e) {
-                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexion.', 'text-danger'));
+                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexión.', 'text-danger'));
             }
         });
 
@@ -665,7 +665,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (msgDiv) msgDiv.appendChild(crearElemento('p', data.message || 'Error al actualizar.', 'text-danger'));
                 }
             } catch (_e) {
-                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexion.', 'text-danger'));
+                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexión.', 'text-danger'));
             }
         });
 
@@ -852,7 +852,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(data.message || 'No se pudo actualizar el reporte.');
             }
         } catch (_error) {
-            alert('Error de conexion.');
+            alert('Error de conexión.');
         }
     }
 
@@ -875,7 +875,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(data.message || 'No se pudo eliminar la actividad.');
             }
         } catch (_error) {
-            alert('Error de conexion.');
+            alert('Error de conexión.');
         }
     }
 
@@ -913,7 +913,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         var thead = document.createElement('thead');
         var trHead = document.createElement('tr');
-        var columnas = ['ID', 'Nombre', 'Distancia', 'Dificultad', 'Desnivel', 'Duracion', 'Ubicacion', 'Acciones'];
+        var columnas = ['ID', 'Nombre', 'Distancia', 'Dificultad', 'Desnivel', 'Duración', 'Ubicación', 'Acciones'];
         for (var c = 0; c < columnas.length; c++) {
             var th = document.createElement('th');
             th.textContent = columnas[c];
@@ -976,8 +976,8 @@ document.addEventListener('DOMContentLoaded', function () {
             { id: 'admin-ruta-nombre', label: 'Nombre', type: 'text', val: esEdicion ? (ruta.nombre || '') : '', required: true },
             { id: 'admin-ruta-distancia', label: 'Distancia (km)', type: 'number', val: esEdicion ? (ruta.distancia || '') : '', required: false },
             { id: 'admin-ruta-desnivel', label: 'Desnivel (m)', type: 'number', val: esEdicion ? (ruta.desnivel || '') : '', required: false },
-            { id: 'admin-ruta-duracion', label: 'Duracion', type: 'text', val: esEdicion ? (ruta.duracion || '') : '', required: false },
-            { id: 'admin-ruta-ubicacion', label: 'Ubicacion', type: 'text', val: esEdicion ? (ruta.ubicacion || '') : '', required: false },
+            { id: 'admin-ruta-duracion', label: 'Duración', type: 'text', val: esEdicion ? (ruta.duracion || '') : '', required: false },
+            { id: 'admin-ruta-ubicacion', label: 'Ubicación', type: 'text', val: esEdicion ? (ruta.ubicacion || '') : '', required: false },
             { id: 'admin-ruta-imagen', label: 'Imagen (ruta relativa)', type: 'text', val: esEdicion ? (ruta.imagen || '') : '', required: false },
         ];
 
@@ -1007,7 +1007,7 @@ document.addEventListener('DOMContentLoaded', function () {
         selectDif.id = 'admin-ruta-dificultad';
         selectDif.className = 'formulario__input';
         var difs = ['', 'facil', 'moderada', 'dificil', 'muy dificil'];
-        var difsTexto = ['Selecciona dificultad', 'Facil', 'Moderada', 'Dificil', 'Muy dificil'];
+        var difsTexto = ['Selecciona dificultad', 'Fácil', 'Moderada', 'Difícil', 'Muy difícil'];
         for (var d = 0; d < difs.length; d++) {
             var optD = document.createElement('option');
             optD.value = difs[d];
@@ -1020,9 +1020,9 @@ document.addEventListener('DOMContentLoaded', function () {
         grupoDif.appendChild(selectDif);
         form.appendChild(grupoDif);
 
-        // Descripcion
+        // Descripción
         var grupoDesc = crearElemento('div', null, 'formulario__grupo mb-2');
-        grupoDesc.appendChild(crearElemento('label', 'Descripcion', 'formulario__label'));
+        grupoDesc.appendChild(crearElemento('label', 'Descripción', 'formulario__label'));
         var texDesc = document.createElement('textarea');
         texDesc.id = 'admin-ruta-descripcion';
         texDesc.className = 'formulario__input';
@@ -1101,7 +1101,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (msgDiv) msgDiv.appendChild(crearElemento('p', data.message || 'Error al crear.', 'text-danger'));
                 }
             } catch (_e) {
-                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexion.', 'text-danger'));
+                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexión.', 'text-danger'));
             }
         });
 
@@ -1141,7 +1141,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (msgDiv) msgDiv.appendChild(crearElemento('p', data.message || 'Error al actualizar.', 'text-danger'));
                 }
             } catch (_e) {
-                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexion.', 'text-danger'));
+                if (msgDiv) msgDiv.appendChild(crearElemento('p', 'Error de conexión.', 'text-danger'));
             }
         });
 
@@ -1167,7 +1167,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(data.message || 'No se pudo eliminar la ruta.');
             }
         } catch (_error) {
-            alert('Error de conexion.');
+            alert('Error de conexión.');
         }
     }
 

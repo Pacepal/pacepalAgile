@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (_err) {
             var errP = document.createElement('p');
             errP.className = 'text-danger';
-            errP.textContent = 'Error de conexion.';
+            errP.textContent = 'Error de conexión.';
             if (msgDiv) msgDiv.appendChild(errP);
         }
     });

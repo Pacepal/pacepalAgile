@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', function () {
             tarjeta.appendChild(img);
         }
 
-        tarjeta.appendChild(crearElemento('p', 'Descripcion: ' + (ruta.descripcion || 'Sin descripcion')));
-        tarjeta.appendChild(crearElemento('p', 'Ubicacion: ' + (ruta.ubicacion || 'No disponible')));
+        tarjeta.appendChild(crearElemento('p', 'Descripción: ' + (ruta.descripcion || 'Sin descripción')));
+        tarjeta.appendChild(crearElemento('p', 'Ubicación: ' + (ruta.ubicacion || 'No disponible')));
         tarjeta.appendChild(crearElemento('p', 'Distancia: ' + (ruta.distancia ? ruta.distancia + ' km' : 'No disponible')));
         tarjeta.appendChild(crearElemento('p', 'Dificultad: ' + (ruta.dificultad || 'No disponible')));
         tarjeta.appendChild(crearElemento('p', 'Desnivel: ' + (ruta.desnivel ? ruta.desnivel + ' m' : 'No disponible')));
-        tarjeta.appendChild(crearElemento('p', 'Duracion: ' + (ruta.duracion || 'No disponible')));
+        tarjeta.appendChild(crearElemento('p', 'Duración: ' + (ruta.duracion || 'No disponible')));
 
         var acciones = crearElemento('div', null, 'mt-3');
 

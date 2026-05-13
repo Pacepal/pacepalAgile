@@ -129,7 +129,7 @@ if (formLogin) {
             });
 
             if (!response.ok || result.status !== 'ok') {
-                const message = result.message || 'No se pudo iniciar sesion.';
+                const message = result.message || 'No se pudo iniciar sesión.';
                 mostrarMensajeLogin(message, 'error');
                 return;
             }
@@ -137,7 +137,7 @@ if (formLogin) {
             mostrarMensajeLogin('Login correcto. Redirigiendo...', 'ok');
             window.location.href = '../usuario/perfil.php';
         } catch (_error) {
-            mostrarMensajeLogin('Error de conexion con el servidor.', 'error');
+            mostrarMensajeLogin('Error de conexión con el servidor.', 'error');
         }
     });
 }

@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         tarjeta.appendChild(crearElemento('p', 'Ruta: ' + (actividad.ruta_nombre || 'No disponible')));
-        tarjeta.appendChild(crearElemento('p', 'Ubicacion: ' + (actividad.ruta_ubicacion || 'No disponible')));
+        tarjeta.appendChild(crearElemento('p', 'Ubicación: ' + (actividad.ruta_ubicacion || 'No disponible')));
         tarjeta.appendChild(crearElemento('p', 'Distancia: ' + (actividad.ruta_distancia ? actividad.ruta_distancia + ' km' : 'No disponible')));
         tarjeta.appendChild(crearElemento('p', 'Dificultad ruta: ' + (actividad.ruta_dificultad || 'No disponible')));
         tarjeta.appendChild(crearElemento('p', 'Organizador: ' + (actividad.creador_nombre || 'No disponible')));
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var plazasTexto = actividad.plazas_max ? actividad.num_participantes + ' / ' + actividad.plazas_max : 'Sin limite';
         tarjeta.appendChild(crearElemento('p', 'Participantes: ' + plazasTexto));
         tarjeta.appendChild(crearElemento('p', 'Estado: ' + (actividad.estado || 'No disponible')));
-        tarjeta.appendChild(crearElemento('p', 'Descripcion: ' + (actividad.descripcion || 'Sin descripcion')));
+        tarjeta.appendChild(crearElemento('p', 'Descripción: ' + (actividad.descripcion || 'Sin descripción')));
 
         if (actividad.participantes && actividad.participantes.length > 0) {
             tarjeta.appendChild(crearElemento('h3', 'Lista de participantes'));
@@ -131,10 +131,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (data.status === 'ok') {
                 cargarDetalle();
             } else {
-                alert(data.message || 'No se pudo realizar la accion.');
+                alert(data.message || 'No se pudo realizar la acción.');
             }
         } catch (_error) {
-            alert('Error de conexion.');
+            alert('Error de conexión.');
         }
     }
 
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert(data.message || 'No se pudo eliminar.');
             }
         } catch (_error) {
-            alert('Error de conexion.');
+            alert('Error de conexión.');
         }
     }
 

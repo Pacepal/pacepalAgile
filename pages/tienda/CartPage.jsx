@@ -5,7 +5,7 @@ function CartPage({ cart, onNavigate }) {
     <main>
       <section className="encabezado-pagina contenedor">
         <h1>Mi carrito</h1>
-        <p>Revisa los productos que has anadido antes de finalizar tu pedido.</p>
+        <p>Revisa los productos que has añadido antes de finalizar tu pedido.</p>
       </section>
 
       <section className="seccion-pagina">

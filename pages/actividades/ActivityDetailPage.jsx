@@ -40,10 +40,10 @@ function ActivityDetailPage({ activityId, activities, session, onNavigate }) {
         const nextPayload = await requestJson(`/actividades/${activityId}`);
         setActivity(nextPayload.data || activity);
       } else {
-        alert(payload.message || 'No se pudo realizar la accion.');
+        alert(payload.message || 'No se pudo realizar la acción.');
       }
     } catch (error) {
-      alert(error.message || 'Error de conexion.');
+      alert(error.message || 'Error de conexión.');
     }
   }
 
@@ -64,7 +64,7 @@ function ActivityDetailPage({ activityId, activities, session, onNavigate }) {
     <main>
       <section className="encabezado-pagina contenedor">
         <h1>Detalle de actividad</h1>
-        <p>Organiza y revisa toda la informacion de esta salida en un solo bloque claro.</p>
+        <p>Organiza y revisa toda la información de esta salida en un solo bloque claro.</p>
       </section>
 
       <section className="seccion-pagina">
@@ -90,14 +90,14 @@ function ActivityDetailPage({ activityId, activities, session, onNavigate }) {
 
                 <div className="detalle-ficha">
                   <p><span>Ruta</span><strong>{activity.ruta_nombre || activity.nombre || 'No disponible'}</strong></p>
-                  <p><span>Ubicacion</span><strong>{activity.ruta_ubicacion || activity.ubicacion || 'No disponible'}</strong></p>
+                  <p><span>Ubicación</span><strong>{activity.ruta_ubicacion || activity.ubicacion || 'No disponible'}</strong></p>
                   <p><span>Distancia</span><strong>{activity.ruta_distancia ? `${activity.ruta_distancia} km` : 'No disponible'}</strong></p>
                   <p><span>Dificultad</span><strong>{activity.ruta_dificultad || activity.dificultad || 'No disponible'}</strong></p>
                   <p><span>Organizador</span><strong>{activity.creador_nombre || 'No disponible'}</strong></p>
                   <p><span>Fecha</span><strong>{activity.fecha || 'No disponible'}</strong></p>
                   <p><span>Hora</span><strong>{activity.hora || 'No disponible'}</strong></p>
                   <p><span>Nivel</span><strong>{activity.nivel || 'No disponible'}</strong></p>
-                  <p><span>Participantes</span><strong>{activity.plazas_max ? `${activity.num_participantes || 0} / ${activity.plazas_max}` : 'Sin limite'}</strong></p>
+                  <p><span>Participantes</span><strong>{activity.plazas_max ? `${activity.num_participantes || 0} / ${activity.plazas_max}` : 'Sin límite'}</strong></p>
                   <p><span>Estado</span><strong>{activity.estado || 'No disponible'}</strong></p>
                 </div>
 

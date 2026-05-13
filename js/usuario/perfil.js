@@ -20,9 +20,9 @@ document.addEventListener('DOMContentLoaded', function () {
         tarjeta.appendChild(crearElemento('p', 'DNI: ' + (usuario.dni || '')));
         tarjeta.appendChild(crearElemento('p', 'Rol: ' + (usuario.rol || 'usuario')));
         tarjeta.appendChild(crearElemento('p', 'Sexo: ' + (usuario.sexo || 'No indicado')));
-        tarjeta.appendChild(crearElemento('p', 'Fecha nacimiento: ' + (usuario.fecha_nacimiento || 'No indicada')));
-        tarjeta.appendChild(crearElemento('p', 'Direccion: ' + (usuario.direccion || 'No indicada')));
-        tarjeta.appendChild(crearElemento('p', 'Pais: ' + (usuario.pais || 'No indicado')));
+        tarjeta.appendChild(crearElemento('p', 'Fecha de nacimiento: ' + (usuario.fecha_nacimiento || 'No indicada')));
+        tarjeta.appendChild(crearElemento('p', 'Dirección: ' + (usuario.direccion || 'No indicada')));
+        tarjeta.appendChild(crearElemento('p', 'País: ' + (usuario.pais || 'No indicado')));
         tarjeta.appendChild(crearElemento('p', 'Registrado: ' + (usuario.fecha_registro || '')));
 
         var btnEditar = crearElemento('button', 'Editar perfil', 'boton boton--primario mt-3');
@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var campos = [
             { id: 'editNombre', label: 'Nombre', type: 'text', value: usuario.nombre || '', required: true },
             { id: 'editSexo', label: 'Sexo', type: 'text', value: usuario.sexo || '' },
-            { id: 'editFechaNacimiento', label: 'Fecha nacimiento', type: 'date', value: usuario.fecha_nacimiento || '' },
-            { id: 'editDireccion', label: 'Direccion', type: 'text', value: usuario.direccion || '' },
-            { id: 'editPais', label: 'Pais', type: 'text', value: usuario.pais || '' },
+            { id: 'editFechaNacimiento', label: 'Fecha de nacimiento', type: 'date', value: usuario.fecha_nacimiento || '' },
+            { id: 'editDireccion', label: 'Dirección', type: 'text', value: usuario.direccion || '' },
+            { id: 'editPais', label: 'País', type: 'text', value: usuario.pais || '' },
             { id: 'editTarjeta', label: 'Tarjeta', type: 'text', value: usuario.tarjeta || '' },
         ];
 
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         checkRevista.className = 'form-check-input';
         checkRevista.checked = !!usuario.revista;
         grupoRevista.appendChild(checkRevista);
-        var labelRevista = crearElemento('label', 'Suscripcion a revista', 'form-check-label');
+        var labelRevista = crearElemento('label', 'Suscripción a revista', 'form-check-label');
         labelRevista.setAttribute('for', 'editRevista');
         grupoRevista.appendChild(labelRevista);
         form.appendChild(grupoRevista);
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (_error) {
             if (msgEl) {
-                msgEl.textContent = 'Error de conexion.';
+                msgEl.textContent = 'Error de conexión.';
             }
         }
     }
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 for (var j = 0; j < pedido.lineas.length; j++) {
                     var linea = pedido.lineas[j];
                     var li = document.createElement('li');
-                    li.textContent = 'Articulo #' + linea.id_articulo + ' x' + linea.cantidad + ' - ' + Number(linea.precio_unitario).toFixed(2) + ' EUR/ud';
+                    li.textContent = 'Artículo #' + linea.id_articulo + ' x' + linea.cantidad + ' - ' + Number(linea.precio_unitario).toFixed(2) + ' EUR/ud';
                     listaLineas.appendChild(li);
                 }
                 tarjeta.appendChild(listaLineas);
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             if (!response.ok) {
-                perfilContenedor.textContent = 'Inicia sesion para ver tu perfil.';
+                perfilContenedor.textContent = 'Inicia sesión para ver tu perfil.';
                 return;
             }
 

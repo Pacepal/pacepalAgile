@@ -86,11 +86,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const boton = document.createElement('button');
         boton.type = 'button';
         boton.className = 'boton boton--primario';
-        boton.textContent = 'Anadir al carrito';
+        boton.textContent = 'Añadir al carrito';
 
         boton.addEventListener('click', async function () {
             boton.disabled = true;
-            boton.textContent = 'Anadiendo...';
+            boton.textContent = 'Añadiendo...';
 
             try {
                 var resp = await fetch('../../src/api/index.php/api/carrito', {
@@ -113,24 +113,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!resp.ok || result.status !== 'ok') {
                     boton.textContent = result.message || 'Error';
                     setTimeout(function () {
-                        boton.textContent = 'Anadir al carrito';
+                        boton.textContent = 'Añadir al carrito';
                         boton.disabled = false;
                     }, 2000);
                     return;
                 }
 
-                boton.textContent = 'Anadido!';
+                boton.textContent = '¡Añadido!';
                 if (typeof actualizarContadorCarrito === 'function') {
                     actualizarContadorCarrito();
                 }
                 setTimeout(function () {
-                    boton.textContent = 'Anadir al carrito';
+                    boton.textContent = 'Añadir al carrito';
                     boton.disabled = false;
                 }, 1500);
             } catch (_e) {
-                boton.textContent = 'Error de conexion';
+                boton.textContent = 'Error de conexión';
                 setTimeout(function () {
-                    boton.textContent = 'Anadir al carrito';
+                    boton.textContent = 'Añadir al carrito';
                     boton.disabled = false;
                 }, 2000);
             }

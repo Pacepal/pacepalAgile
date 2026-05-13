@@ -98,7 +98,7 @@ function ProfilePage({ session }) {
         setMessage(payload.message || 'Error al guardar.');
       }
     } catch (error) {
-      setMessage(error.message || 'Error de conexion.');
+      setMessage(error.message || 'Error de conexión.');
     }
   }
 
@@ -106,14 +106,14 @@ function ProfilePage({ session }) {
     <main>
       <section className="encabezado-pagina contenedor">
         <h1>Perfil</h1>
-        <p>Gestion basica del perfil de usuario.</p>
+        <p>Gestión básica del perfil de usuario.</p>
       </section>
 
       <section className="seccion-pagina">
         <div className="contenedor">
           <div id="perfil-usuario" aria-live="polite">
             {!session.user ? (
-              'Inicia sesion para ver tu perfil.'
+              'Inicia sesión para ver tu perfil.'
             ) : editing ? (
               <article className="tarjeta-pagina">
                 <h2>Editar perfil</h2>
@@ -121,9 +121,9 @@ function ProfilePage({ session }) {
                   {[
                     ['editNombre', 'Nombre', 'text', 'nombre', true],
                     ['editSexo', 'Sexo', 'text', 'sexo', false],
-                    ['editFechaNacimiento', 'Fecha nacimiento', 'date', 'fecha_nacimiento', false],
-                    ['editDireccion', 'Direccion', 'text', 'direccion', false],
-                    ['editPais', 'Pais', 'text', 'pais', false],
+                    ['editFechaNacimiento', 'Fecha de nacimiento', 'date', 'fecha_nacimiento', false],
+                    ['editDireccion', 'Dirección', 'text', 'direccion', false],
+                    ['editPais', 'País', 'text', 'pais', false],
                     ['editTarjeta', 'Tarjeta', 'text', 'tarjeta', false],
                   ].map(([id, label, type, field, required]) => (
                     <div className="mb-3" key={id}>
@@ -158,7 +158,7 @@ function ProfilePage({ session }) {
                       checked={editValues.revista}
                       onChange={(event) => updateField('revista', event.target.checked)}
                     />
-                    <label className="form-check-label" htmlFor="editRevista">Suscripcion a revista</label>
+                    <label className="form-check-label" htmlFor="editRevista">Suscripción a revista</label>
                   </div>
 
                   <div className="acciones-pagina">
@@ -178,9 +178,9 @@ function ProfilePage({ session }) {
                 <p>DNI: {perfil.dni || ''}</p>
                 <p>Rol: {perfil.rol || 'usuario'}</p>
                 <p>Sexo: {perfil.sexo || 'No indicado'}</p>
-                <p>Fecha nacimiento: {perfil.fecha_nacimiento || 'No indicada'}</p>
-                <p>Direccion: {perfil.direccion || 'No indicada'}</p>
-                <p>Pais: {perfil.pais || 'No indicado'}</p>
+                <p>Fecha de nacimiento: {perfil.fecha_nacimiento || 'No indicada'}</p>
+                <p>Dirección: {perfil.direccion || 'No indicada'}</p>
+                <p>País: {perfil.pais || 'No indicado'}</p>
                 <p>Registrado: {perfil.fecha_registro || ''}</p>
                 <button type="button" className="boton boton--primario mt-3" onClick={() => setEditing(true)}>
                   Editar perfil
@@ -208,7 +208,7 @@ function ProfilePage({ session }) {
                   <ul className="list-unstyled">
                     {pedido.lineas.map((linea) => (
                       <li key={`${pedido.id_pedido}-${linea.id_articulo}`}>
-                        Articulo #{linea.id_articulo} x{linea.cantidad} - {Number(linea.precio_unitario || 0).toFixed(2)} EUR/ud
+                        Artículo #{linea.id_articulo} x{linea.cantidad} - {Number(linea.precio_unitario || 0).toFixed(2)} EUR/ud
                       </li>
                     ))}
                   </ul>

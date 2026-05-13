@@ -86,10 +86,10 @@ function Header({ cartCount, session, currentPage, onNavigate }) {
               ) : (
                 <>
                   <a href="#login" aria-current={currentPage === 'login' ? 'page' : undefined} onClick={handleNavigate('login')}>
-                    Login
+                    Iniciar sesión
                   </a>
                   <a href="#registro" aria-current={currentPage === 'registro' ? 'page' : undefined} onClick={handleNavigate('registro')}>
-                    Register
+                    Registrarse
                   </a>
                 </>
               )}
@@ -114,16 +114,16 @@ function Header({ cartCount, session, currentPage, onNavigate }) {
               Perfil
             </a>
             <button type="button" className="boton cabecera__registro" id="botonLogout" onClick={handleLogout}>
-              Logout
+              Cerrar sesión
             </button>
           </>
         ) : isReady ? (
           <>
             <a className="boton boton--primario cabecera__login" href="#login" aria-current={currentPage === 'login' ? 'page' : undefined} onClick={handleNavigate('login')}>
-              Login
+              Iniciar sesión
             </a>
             <a className="boton cabecera__registro" href="#registro" aria-current={currentPage === 'registro' ? 'page' : undefined} onClick={handleNavigate('registro')}>
-              Register
+              Registrarse
             </a>
           </>
         ) : null}

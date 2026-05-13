@@ -2,7 +2,7 @@
 
 Plataforma web para conectar personas y promover actividades deportivas en comunidad.
 
-## Instalacion local recomendada con XAMPP
+## Instalación local recomendada con XAMPP
 
 Esta rama de trabajo es `sprint-3-react-jsx`. No trabajar sobre `main` para la revision final.
 
@@ -15,7 +15,7 @@ cd "pacepalAgile"
 git checkout sprint-3-react-jsx
 ```
 
-Ubicacion recomendada:
+Ubicación recomendada:
 
 ```text
 C:\xampp\htdocs\pacepalAgile
@@ -34,7 +34,7 @@ En XAMPP Control Panel:
 2. Importar el archivo `db/pacepal.sql`.
 3. Comprobar que se crea la base de datos `pacepal`.
 
-Tambien existen `db/schema.sql` y `db/seed.sql`, pero el archivo recomendado para instalar desde cero es `db/pacepal.sql`.
+También existen `db/schema.sql` y `db/seed.sql`, pero el archivo recomendado para instalar desde cero es `db/pacepal.sql`.
 
 ### 4. Configurar PHP
 
@@ -82,7 +82,7 @@ Abrir la URL que muestre Vite, normalmente:
 http://localhost:5173/
 ```
 
-### 7. URLs locales de validacion
+### 7. URLs locales de validación
 
 API PHP:
 
@@ -105,7 +105,7 @@ http://localhost:5173/#about
 http://localhost:5173/#contacto
 ```
 
-### 8. Documentacion completa
+### 8. Documentación completa
 
 Ver guia detallada en:
 

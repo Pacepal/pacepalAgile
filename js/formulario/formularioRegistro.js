@@ -280,7 +280,7 @@ if (formRegistro) {
                 window.location.href = 'login.php';
             }, 1500);
         } catch (_error) {
-            mostrarMensajeRegistro('Error de conexion con el servidor.', 'error');
+            mostrarMensajeRegistro('Error de conexión con el servidor.', 'error');
         }
     });
 }

@@ -111,7 +111,7 @@ export function useSession() {
         } catch (error) {
             if (!shouldUseDemoFallback(error)) {
                 applyAnonymousState();
-                setMessage(getErrorMessage(error, 'No se pudo verificar la sesion.'));
+                setMessage(getErrorMessage(error, 'No se pudo verificar la sesión.'));
                 setMessageType('error');
                 return;
             }
@@ -119,7 +119,7 @@ export function useSession() {
             warnAboutFallback('sesion', error);
         }
 
-        applyDemoSession(getApiUnavailableMessage('No se pudo contactar con la API PHP real. Sesion demo temporal.'));
+        applyDemoSession(getApiUnavailableMessage('No se pudo contactar con la API PHP real. Sesión demo temporal.'));
     }
 
     async function login(credentials) {
@@ -141,7 +141,7 @@ export function useSession() {
             if (!shouldUseDemoFallback(error)) {
                 applyAnonymousState();
                 setIsDemo(false);
-                setMessage(getErrorMessage(error, 'No se pudo iniciar sesion.'));
+                setMessage(getErrorMessage(error, 'No se pudo iniciar sesión.'));
                 setMessageType('error');
                 return false;
             }
@@ -153,7 +153,7 @@ export function useSession() {
             if (!demoUser) {
                 applyAnonymousState();
                 setIsDemo(false);
-                setMessage(getApiUnavailableMessage('No se pudo iniciar sesion con la API PHP real y no hay una cuenta demo guardada para este email.'));
+                setMessage(getApiUnavailableMessage('No se pudo iniciar sesión con la API PHP real y no hay una cuenta demo guardada para este email.'));
                 setMessageType('error');
                 return false;
             }
@@ -162,7 +162,7 @@ export function useSession() {
             setUser(restoredUser);
             setStatus('ok');
             setIsDemo(true);
-            setMessage('API PHP no disponible. Sesion demo temporal iniciada.');
+            setMessage('API PHP no disponible. Sesión demo temporal iniciada.');
             setMessageType('error');
             return true;
         }
@@ -202,7 +202,7 @@ export function useSession() {
             });
 
             if (!savedUser) {
-                setMessage('Ya existe una cuenta con ese correo electronico.');
+                setMessage('Ya existe una cuenta con ese correo electrónico.');
                 setMessageType('error');
                 return { ok: false, autoLogged: false };
             }
@@ -211,7 +211,7 @@ export function useSession() {
             setUser(restoredUser);
             setStatus('ok');
             setIsDemo(true);
-            setMessage('API PHP no disponible. Cuenta demo temporal creada y sesion iniciada.');
+            setMessage('API PHP no disponible. Cuenta demo temporal creada y sesión iniciada.');
             setMessageType('error');
             return { ok: true, autoLogged: true };
         }

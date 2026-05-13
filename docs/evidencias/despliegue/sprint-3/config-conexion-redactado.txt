@@ -1,0 +1,25 @@
+﻿CONFIGURACION DE CONEXION A BASE DE DATOS - PACEPAL
+
+Archivo real del proyecto:
+src/config/database.php
+
+Host:
+localhost
+
+Base de datos:
+pacepal
+
+Usuario:
+********
+
+Contraseña:
+********
+
+Charset:
+utf8mb4
+
+Metodo de conexion:
+PDO
+
+Nota:
+Las credenciales reales se ocultan en la documentacion final por seguridad.

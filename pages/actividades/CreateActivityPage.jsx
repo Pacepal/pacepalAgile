@@ -100,11 +100,11 @@ function CreateActivityPage({ selectedRouteId, routes, session, onNavigate }) {
               </select>
             </div>
             <div className="formulario__grupo">
-              <label htmlFor="crear-plazas" className="formulario__label">Plazas maximas</label>
+              <label htmlFor="crear-plazas" className="formulario__label">Plazas máximas</label>
               <input id="crear-plazas" name="plazas_max" type="number" min="1" className="formulario__input" value={values.plazas_max} onChange={(event) => updateField('plazas_max', event.target.value)} />
             </div>
             <div className="formulario__grupo formulario-actividad__full">
-              <label htmlFor="crear-descripcion" className="formulario__label">Descripcion</label>
+              <label htmlFor="crear-descripcion" className="formulario__label">Descripción</label>
               <textarea id="crear-descripcion" name="descripcion" className="formulario__input" rows="3" value={values.descripcion} onChange={(event) => updateField('descripcion', event.target.value)}></textarea>
             </div>
             </div>

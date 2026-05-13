@@ -26,25 +26,27 @@ function buildDevProxy() {
   };
 }
 
-function copyStaticImgDir() {
+function copyStaticPublicDirs() {
   return {
-    name: 'copy-static-img-dir',
+    name: 'copy-static-public-dirs',
     closeBundle() {
-      const sourceDir = path.resolve('img');
-      const targetDir = path.resolve('dist/img');
+      for (const dirName of ['img', 'audio']) {
+        const sourceDir = path.resolve(dirName);
+        const targetDir = path.resolve('dist', dirName);
 
-      if (!fs.existsSync(sourceDir)) {
-        return;
+        if (!fs.existsSync(sourceDir)) {
+          continue;
+        }
+
+        fs.mkdirSync(path.dirname(targetDir), { recursive: true });
+        fs.cpSync(sourceDir, targetDir, { recursive: true });
       }
-
-      fs.mkdirSync(path.dirname(targetDir), { recursive: true });
-      fs.cpSync(sourceDir, targetDir, { recursive: true });
     },
   };
 }
 
 export default defineConfig({
-  plugins: [react(), copyStaticImgDir()],
+  plugins: [react(), copyStaticPublicDirs()],
   base: './',
   server: {
     host: '127.0.0.1',

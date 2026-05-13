@@ -30,7 +30,7 @@ function ActivitiesPage({ activities, session, onNavigate }) {
             {activities.items.map((activity) => {
               const image = buildPublicAssetUrl(activity.ruta_imagen || activity.imagen || 'img/rutas/jarosa.webp');
               const title = activity.ruta_nombre || activity.nombre || activity.descripcion || 'Actividad';
-              const location = activity.ruta_ubicacion || activity.ubicacion || 'Ubicacion no disponible';
+              const location = activity.ruta_ubicacion || activity.ubicacion || 'Ubicación no disponible';
 
               return (
                 <article className="tarjeta tarjeta-actividad" key={activity.id_actividad}>

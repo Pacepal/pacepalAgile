@@ -54,7 +54,7 @@ function HomePage({ session, products, activities, onNavigate }) {
           <div className="rejilla rejilla--actividades">
             {featuredActivities.map((activity) => {
               const title = activity.ruta_nombre || activity.nombre || activity.descripcion || 'Actividad';
-              const location = activity.ruta_ubicacion || activity.ubicacion || 'Ubicacion no disponible';
+              const location = activity.ruta_ubicacion || activity.ubicacion || 'Ubicación no disponible';
 
               return (
                 <article className="tarjeta tarjeta-actividad" key={activity.id_actividad}>

@@ -162,7 +162,7 @@ function AdminPage({ session, products, activities, routes }) {
       setReportes(Array.isArray(reportsPayload.data) ? reportsPayload.data : []);
       setPedidos(Array.isArray(ordersPayload.data) ? ordersPayload.data : []);
     } catch (error) {
-      setNotice({ type: 'error', text: error.message || 'No se pudieron cargar los datos de administracion.' });
+      setNotice({ type: 'error', text: error.message || 'No se pudieron cargar los datos de administración.' });
     }
   }
 
@@ -525,7 +525,7 @@ function AdminPage({ session, products, activities, routes }) {
     return (
       <main>
         <section className="encabezado-pagina contenedor">
-          <h1>Panel de administracion</h1>
+          <h1>Panel de administración</h1>
           <p>Acceso reservado a administradores.</p>
         </section>
       </main>
@@ -535,7 +535,7 @@ function AdminPage({ session, products, activities, routes }) {
   return (
     <main>
       <section className="encabezado-pagina contenedor">
-        <h1>Panel de administracion</h1>
+        <h1>Panel de administración</h1>
         <p>Control operativo del sistema para administradores.</p>
       </section>
 
@@ -570,7 +570,7 @@ function AdminPage({ session, products, activities, routes }) {
               </label>
               {!editingUserId ? (
                 <label>
-                  Password
+                  Contraseña
                   <input type="password" value={userForm.password} onChange={(event) => updateUserField('password', event.target.value)} required />
                 </label>
               ) : null}
@@ -634,11 +634,11 @@ function AdminPage({ session, products, activities, routes }) {
                 <input type="number" min="0" step="1" value={productForm.stock} onChange={(event) => updateProductField('stock', event.target.value)} required />
               </label>
               <label>
-                Categoria
+                Categoría
                 <input type="number" min="1" step="1" value={productForm.id_categoria} onChange={(event) => updateProductField('id_categoria', event.target.value)} required />
               </label>
               <label className="admin-form-grid__full">
-                Descripcion
+                Descripción
                 <textarea rows="3" value={productForm.descripcion} onChange={(event) => updateProductField('descripcion', event.target.value)} />
               </label>
               <label>
@@ -669,7 +669,7 @@ function AdminPage({ session, products, activities, routes }) {
                 { key: 'nombre', label: 'Nombre' },
                 { key: 'precio', label: 'Precio', render: (product) => formatPrice(product.precio) },
                 { key: 'stock', label: 'Stock' },
-                { key: 'id_categoria', label: 'Categoria' },
+                { key: 'id_categoria', label: 'Categoría' },
                 { key: 'imagen1', label: 'Imagen' },
               ]}
               onEdit={editProduct}
@@ -715,7 +715,7 @@ function AdminPage({ session, products, activities, routes }) {
                 <input type="text" value={activityForm.nivel} onChange={(event) => updateActivityField('nivel', event.target.value)} />
               </label>
               <label>
-                Plazas max
+                Plazas máx.
                 <input type="number" min="0" step="1" value={activityForm.plazas_max} onChange={(event) => updateActivityField('plazas_max', event.target.value)} />
               </label>
               <label>
@@ -727,7 +727,7 @@ function AdminPage({ session, products, activities, routes }) {
                 </select>
               </label>
               <label className="admin-form-grid__full">
-                Descripcion
+                Descripción
                 <textarea rows="3" value={activityForm.descripcion} onChange={(event) => updateActivityField('descripcion', event.target.value)} />
               </label>
               <div className="admin-form-grid__actions">
@@ -776,7 +776,7 @@ function AdminPage({ session, products, activities, routes }) {
                 <input type="text" value={routeForm.nombre} onChange={(event) => updateRouteField('nombre', event.target.value)} required />
               </label>
               <label>
-                Ubicacion
+                Ubicación
                 <input type="text" value={routeForm.ubicacion} onChange={(event) => updateRouteField('ubicacion', event.target.value)} />
               </label>
               <label>
@@ -792,7 +792,7 @@ function AdminPage({ session, products, activities, routes }) {
                 <input type="number" step="1" value={routeForm.desnivel} onChange={(event) => updateRouteField('desnivel', event.target.value)} />
               </label>
               <label>
-                Duracion
+                Duración
                 <input type="text" value={routeForm.duracion} onChange={(event) => updateRouteField('duracion', event.target.value)} />
               </label>
               <label className="admin-form-grid__full">
@@ -800,7 +800,7 @@ function AdminPage({ session, products, activities, routes }) {
                 <input type="text" value={routeForm.imagen} onChange={(event) => updateRouteField('imagen', event.target.value)} placeholder="img/rutas/archivo.webp" />
               </label>
               <label className="admin-form-grid__full">
-                Descripcion
+                Descripción
                 <textarea rows="3" value={routeForm.descripcion} onChange={(event) => updateRouteField('descripcion', event.target.value)} />
               </label>
               <div className="admin-form-grid__actions">
@@ -821,7 +821,7 @@ function AdminPage({ session, products, activities, routes }) {
               columns={[
                 { key: 'id_ruta', label: 'ID' },
                 { key: 'nombre', label: 'Ruta' },
-                { key: 'ubicacion', label: 'Ubicacion' },
+                { key: 'ubicacion', label: 'Ubicación' },
                 { key: 'dificultad', label: 'Dificultad' },
                 { key: 'imagen', label: 'Imagen' },
               ]}

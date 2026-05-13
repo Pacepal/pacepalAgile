@@ -51,7 +51,7 @@ function validarMensaje(value) {
 }
 
 function validarPrivacidad(value) {
-  if (!value) return 'Debes aceptar la politica de privacidad.';
+  if (!value) return 'Debes aceptar la política de privacidad.';
   return '';
 }
 
@@ -137,7 +137,7 @@ function ContactPage() {
         <div className="contenedor contacto-encabezado">
           <h1>Contacto</h1>
           <p>
-            Escribenos si tienes dudas, sugerencias o has detectado alguna incidencia durante el uso de PacePal.
+            Escríbenos si tienes dudas, sugerencias o has detectado alguna incidencia durante el uso de PacePal.
           </p>
         </div>
       </section>
@@ -145,7 +145,7 @@ function ContactPage() {
       <section className="seccion-pagina">
         <div className="contenedor contacto-contenido">
           <aside className="contacto-info" aria-labelledby="contacto-info-titulo">
-            <h2 id="contacto-info-titulo">Informacion basica</h2>
+            <h2 id="contacto-info-titulo">Información básica</h2>
 
             <dl className="contacto-info__lista">
               <div>
@@ -153,8 +153,8 @@ function ContactPage() {
                 <dd><a href="mailto:contacto@pacepal.es">contacto@pacepal.es</a></dd>
               </div>
               <div>
-                <dt>Ubicacion</dt>
-                <dd>Madrid, Espana</dd>
+                <dt>Ubicación</dt>
+                <dd>Madrid, España</dd>
               </div>
               <div>
                 <dt>Horario orientativo</dt>
@@ -219,10 +219,10 @@ function ContactPage() {
                     onChange={(event) => updateField('motivo', event.target.value)}
                     className={fieldClass(values.motivo, errors.motivo)}
                   >
-                    <option value="">Selecciona una opcion</option>
+                    <option value="">Selecciona una opción</option>
                     <option value="duda">Duda general</option>
-                    <option value="colaboracion">Colaboracion</option>
-                    <option value="incidencia">Incidencia tecnica</option>
+                    <option value="colaboracion">Colaboración</option>
+                    <option value="incidencia">Incidencia técnica</option>
                     <option value="sugerencia">Sugerencia de mejora</option>
                     <option value="otro">Otro motivo</option>
                   </select>
@@ -235,7 +235,7 @@ function ContactPage() {
                     id={fieldIds.mensaje}
                     name="mensaje"
                     rows="5"
-                    placeholder="Cuentanos el contexto para poder ayudarte mejor."
+                    placeholder="Cuéntanos el contexto para poder ayudarte mejor."
                     required
                     aria-invalid={errors.mensaje ? 'true' : 'false'}
                     aria-describedby="error-contacto-mensaje"
@@ -260,7 +260,7 @@ function ContactPage() {
                   onBlur={() => validateField('privacidad')}
                 />
                 <label htmlFor={fieldIds.privacidad}>
-                  Acepto la politica de privacidad y el tratamiento de los datos enviados en este formulario.
+                  Acepto la política de privacidad y el tratamiento de los datos enviados en este formulario.
                 </label>
               </div>
               <div className="mensaje-error" id="error-contacto-privacidad" aria-live="polite">{errors.privacidad || ''}</div>

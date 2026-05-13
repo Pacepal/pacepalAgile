@@ -29,7 +29,7 @@ function ProductDetailPage({ productId, products, cart, onNavigate }) {
     }
 
     const ok = await cart.addItem(product, quantity);
-    setMessage(ok ? 'Anadido al carrito.' : 'No se pudo anadir al carrito.');
+    setMessage(ok ? '¡Añadido al carrito!' : 'No se pudo añadir al carrito.');
   }
 
   function handleBack(event) {

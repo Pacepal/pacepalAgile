@@ -73,7 +73,7 @@ export function useCart() {
             const nextItem = buildDemoCartItem(product, quantity);
 
             if (!nextItem) {
-                setMessage('No se pudo anadir.');
+                setMessage('No se pudo añadir.');
                 return false;
             }
 
@@ -84,7 +84,7 @@ export function useCart() {
                     : item)
                 : [...currentItems, nextItem];
 
-            applyDemoCart(nextItems, 'Anadido en carrito demo.');
+            applyDemoCart(nextItems, 'Añadido en carrito demo.');
             return true;
         }
 
@@ -93,11 +93,11 @@ export function useCart() {
                 method: 'POST',
                 body: JSON.stringify({ producto_id: product.id_articulo, cantidad: quantity }),
             });
-            setMessage('Anadido!');
+            setMessage('¡Añadido!');
             await loadCart();
             return true;
         } catch (error) {
-            setMessage(error.message || 'No se pudo anadir.');
+            setMessage(error.message || 'No se pudo añadir.');
             return false;
         }
     }

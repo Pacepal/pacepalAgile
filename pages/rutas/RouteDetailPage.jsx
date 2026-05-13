@@ -32,11 +32,11 @@ function RouteDetailPage({ routeId, routes, onNavigate }) {
                 </p>
 
                 <div className="detalle-ficha">
-                  <p><span>Ubicacion</span><strong>{route.ubicacion || 'No disponible'}</strong></p>
+                  <p><span>Ubicación</span><strong>{route.ubicacion || 'No disponible'}</strong></p>
                   <p><span>Distancia</span><strong>{route.distancia ? `${route.distancia} km` : 'No disponible'}</strong></p>
                   <p><span>Dificultad</span><strong>{route.dificultad || 'No disponible'}</strong></p>
                   <p><span>Desnivel</span><strong>{route.desnivel ? `${route.desnivel} m` : 'No disponible'}</strong></p>
-                  <p><span>Duracion</span><strong>{route.duracion || 'No disponible'}</strong></p>
+                  <p><span>Duración</span><strong>{route.duracion || 'No disponible'}</strong></p>
                 </div>
 
                 <div className="acciones-pagina">
