@@ -121,12 +121,12 @@ function buildApiWarning(baseUrl) {
         return '';
     }
 
-    if (isViteLocalRuntime()) {
-        return 'React esta ejecutandose desde Vite, pero falta VITE_PACEPAL_API_BASE_URL en .env.local de la raiz.';
+    if (isStaticHostWithoutPhp()) {
+        return '';
     }
 
-    if (isStaticHostWithoutPhp()) {
-        return 'La app se esta ejecutando en un host estatico que no puede ejecutar PHP. Configura VITE_PACEPAL_API_BASE_URL o habilita un fallback explicito.';
+    if (isViteLocalRuntime()) {
+        return 'React esta ejecutandose desde Vite, pero falta VITE_PACEPAL_API_BASE_URL en .env.local de la raiz.';
     }
 
     return 'No se pudo resolver la API PHP real de PacePal.';
@@ -144,8 +144,9 @@ export class ApiError extends Error {
 
 const configuredBaseUrl = detectApiBaseUrl();
 const apiWarning = buildApiWarning(configuredBaseUrl);
-const allowStaticFallback = readBooleanEnv(readEnvValue('VITE_PACEPAL_ENABLE_STATIC_FALLBACK'), false);
 const runtime = isViteLocalRuntime() ? 'vite' : isStaticHostWithoutPhp() ? 'static' : 'apache';
+const allowStaticFallback = runtime === 'static' || readBooleanEnv(readEnvValue('VITE_PACEPAL_ENABLE_STATIC_FALLBACK'), false);
+const useStaticDataOnly = runtime === 'static' && allowStaticFallback && !configuredBaseUrl;
 
 if (apiWarning) {
     warnOnce('api-base-url', apiWarning);
@@ -158,6 +159,7 @@ export const apiConfig = {
     warning: apiWarning,
     requiresRealApi: runtime !== 'static' && !allowStaticFallback,
     allowStaticFallback,
+    useStaticDataOnly,
     staticData: {
         productos: Array.isArray(productosData?.data) ? productosData.data : [],
         rutas: Array.isArray(rutasData?.data) ? rutasData.data : [],

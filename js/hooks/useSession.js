@@ -96,11 +96,16 @@ export function useSession() {
         setStatus(demoUser ? 'ok' : 'anonimo');
         setIsDemo(true);
         setMessage(nextMessage);
-        setMessageType(nextMessage ? 'error' : '');
+        setMessageType(nextMessage ? 'ok' : '');
     }
 
     async function checkSession() {
         setStatus('cargando');
+
+        if (apiConfig.useStaticDataOnly) {
+            applyDemoSession('');
+            return;
+        }
 
         try {
             const payload = await requestJsonWithTimeout('/session');
@@ -162,13 +167,44 @@ export function useSession() {
             setUser(restoredUser);
             setStatus('ok');
             setIsDemo(true);
-            setMessage('API PHP no disponible. Sesión demo temporal iniciada.');
-            setMessageType('error');
+            setMessage(apiConfig.useStaticDataOnly ? 'Sesión demo iniciada en GitHub Pages.' : 'Sesión demo temporal iniciada.');
+            setMessageType('ok');
             return true;
         }
     }
 
     async function register(data) {
+        if (apiConfig.useStaticDataOnly) {
+            const savedUser = saveDemoUser({
+                nombre: data.nombre,
+                email: data.email,
+                password: data.password,
+                dni: data.dni,
+                sexo: data.sexo,
+                fecha_nacimiento: data.fecha_nacimiento,
+                direccion: data.direccion,
+                pais: data.pais,
+                tarjeta: data.tarjeta,
+                notificaciones: data.notificaciones,
+                revista: data.revista,
+                rol: 'usuario',
+            });
+
+            if (!savedUser) {
+                setMessage('Ya existe una cuenta demo con ese correo electrónico.');
+                setMessageType('error');
+                return { ok: false, autoLogged: false };
+            }
+
+            const restoredUser = saveDemoSession(savedUser);
+            setUser(restoredUser);
+            setStatus('ok');
+            setIsDemo(true);
+            setMessage('Cuenta demo creada en GitHub Pages.');
+            setMessageType('ok');
+            return { ok: true, autoLogged: true };
+        }
+
         try {
             await requestJsonWithTimeout('/register', {
                 method: 'POST',
@@ -211,8 +247,8 @@ export function useSession() {
             setUser(restoredUser);
             setStatus('ok');
             setIsDemo(true);
-            setMessage('API PHP no disponible. Cuenta demo temporal creada y sesión iniciada.');
-            setMessageType('error');
+            setMessage('Cuenta demo temporal creada y sesión iniciada.');
+            setMessageType('ok');
             return { ok: true, autoLogged: true };
         }
     }
