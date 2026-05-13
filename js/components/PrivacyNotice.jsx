@@ -1,12 +1,74 @@
 import { useEffect, useState } from 'react';
-import { requestJson } from '../services/api.js';
+import { apiConfig, requestJson } from '../services/api.js';
 
 const defaultConsent = { preferences: false, analytics: false };
+const COOKIE_CONSENT_KEY = 'pacepal_cookie_consent';
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 function mapStatusToConsent(payload) {
   return {
     preferences: !!payload?.cookies?.preferences,
     analytics: !!payload?.cookies?.analytics,
+  };
+}
+
+function readStoredConsent() {
+  try {
+    const rawValue = window.localStorage.getItem(COOKIE_CONSENT_KEY);
+    if (!rawValue) return null;
+
+    const parsed = JSON.parse(rawValue);
+    return {
+      preferences: !!parsed.preferences,
+      analytics: !!parsed.analytics,
+    };
+  } catch (_error) {
+    return null;
+  }
+}
+
+function writeConsentCookie(consent) {
+  if (typeof document === 'undefined') return;
+
+  const value = encodeURIComponent(JSON.stringify(consent));
+  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `${COOKIE_CONSENT_KEY}=${value}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax${secure}`;
+}
+
+function saveStoredConsent(consent) {
+  try {
+    window.localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify(consent));
+  } catch (_error) {
+    // El consentimiento no debe bloquear la navegación si el almacenamiento está limitado.
+  }
+
+  writeConsentCookie(consent);
+}
+
+function buildLocalStatus() {
+  const storedConsent = readStoredConsent();
+
+  return {
+    hasConsent: !!storedConsent,
+    cookies: {
+      technical: true,
+      ...(storedConsent || defaultConsent),
+    },
+  };
+}
+
+function consentFromEndpoint(endpoint, body) {
+  if (endpoint.endsWith('/accept-all')) {
+    return { preferences: true, analytics: true };
+  }
+
+  if (endpoint.endsWith('/reject')) {
+    return defaultConsent;
+  }
+
+  return {
+    preferences: !!body?.preferences,
+    analytics: !!body?.analytics,
   };
 }
 
@@ -33,6 +95,15 @@ function PrivacyNotice({ onNavigate }) {
     let active = true;
 
     async function loadCookieStatus() {
+      if (apiConfig.useStaticDataOnly) {
+        const payload = buildLocalStatus();
+        if (!active) return;
+
+        setPreferences(mapStatusToConsent(payload));
+        setView(payload.hasConsent ? null : 'banner');
+        return;
+      }
+
       try {
         const payload = await requestJson('/cookies/status');
         if (!active) return;
@@ -47,6 +118,13 @@ function PrivacyNotice({ onNavigate }) {
     }
 
     async function openPreferences() {
+      if (apiConfig.useStaticDataOnly) {
+        const payload = buildLocalStatus();
+        setPreferences(payload.hasConsent ? mapStatusToConsent(payload) : defaultConsent);
+        setView('panel');
+        return;
+      }
+
       try {
         const payload = await requestJson('/cookies/status');
         setPreferences(payload.hasConsent ? mapStatusToConsent(payload) : defaultConsent);
@@ -68,6 +146,14 @@ function PrivacyNotice({ onNavigate }) {
     setIsSaving(true);
 
     try {
+      if (apiConfig.useStaticDataOnly) {
+        const nextConsent = consentFromEndpoint(endpoint, body);
+        saveStoredConsent(nextConsent);
+        setPreferences(nextConsent);
+        setView(null);
+        return;
+      }
+
       const payload = await requestJson(endpoint, {
         method: 'POST',
         ...(body ? { body: JSON.stringify(body) } : {}),
@@ -75,6 +161,13 @@ function PrivacyNotice({ onNavigate }) {
 
       if (payload.success) {
         setPreferences(mapStatusToConsent(payload));
+        setView(null);
+      }
+    } catch (_error) {
+      if (apiConfig.allowStaticFallback) {
+        const nextConsent = consentFromEndpoint(endpoint, body);
+        saveStoredConsent(nextConsent);
+        setPreferences(nextConsent);
         setView(null);
       }
     } finally {
