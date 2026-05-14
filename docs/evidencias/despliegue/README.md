@@ -28,4 +28,4 @@ Evidencia relacionada:
 
 ## Nota de trazabilidad
 
-La carpeta de documentacion de despliegue para Sprint 3 debe enlazar este inventario cuando se complete la guia operativa en `docs/06-daw/sprint-3/`.
+La carpeta de documentación de despliegue para Sprint 3 debe enlazar este inventario cuando se complete la guía operativa en `docs/06-daw/sprint-3/`.

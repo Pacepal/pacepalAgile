@@ -113,6 +113,7 @@ function detectApiBaseUrl() {
         return '';
     }
 
+    // En Apache local, deduce la API relativa al proyecto servido.
     return detectProjectApiBaseUrl().replace(/\/+$/, '');
 }
 
@@ -232,6 +233,7 @@ export async function requestJson(path, options = {}) {
         });
     }
 
+    // Unifica control de errores HTTP y errores de negocio devueltos por la API.
     if (!response.ok || payload.status === 'error' || payload.ok === false) {
         throw new ApiError(payload.error || payload.message || 'No se pudo completar la peticion.', {
             status: response.status,

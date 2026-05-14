@@ -25,6 +25,7 @@ export function useProducts() {
             if (total > products.length && perPage > 0) {
                 const totalPages = Math.ceil(total / perPage);
                 const extraRequests = [];
+                // Recupera páginas adicionales cuando la API devuelve resultados paginados.
                 for (let page = 2; page <= totalPages; page++) {
                     extraRequests.push(requestJson(`/productos?page=${page}`));
                 }

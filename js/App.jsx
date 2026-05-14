@@ -44,6 +44,7 @@ const validPages = new Set([
 ]);
 
 function readRouteFromHash() {
+  // Interpreta hashes simples (#tienda) y hashes con identificador (#producto-12).
   const hash = window.location.hash.replace(/^#/, '');
 
   if (validPages.has(hash)) {
@@ -105,6 +106,7 @@ function App() {
     if (window.location.hash !== nextHash) {
       window.location.hash = nextHash;
     } else {
+      // Si el hash no cambia, se fuerza actualización local para refrescar vista y scroll.
       setRoute({ page: nextPage, id: id ? String(id) : null });
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

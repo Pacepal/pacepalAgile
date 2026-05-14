@@ -42,6 +42,7 @@ function buildTimeoutSignal(timeoutMs) {
 }
 
 async function requestJsonWithTimeout(path, options = {}, timeoutMs = apiTimeoutMs) {
+    // Evita que la UI quede bloqueada cuando la API no responde.
     const timeout = buildTimeoutSignal(timeoutMs);
 
     try {
@@ -119,6 +120,7 @@ export function useSession() {
             warnAboutFallback('sesion', error);
         }
 
+        // Si la API falla, mantiene continuidad con sesión demo temporal.
         applyDemoSession(getApiUnavailableMessage('No se pudo contactar con la API PHP real. Sesión demo temporal.'));
     }
 

@@ -78,6 +78,7 @@ export function useCart() {
             }
 
             const existingItem = currentItems.find((item) => item.id_articulo === nextItem.id_articulo);
+            // Replica el comportamiento del backend acumulando cantidad y subtotal.
             const nextItems = existingItem
                 ? currentItems.map((item) => item.id_articulo === nextItem.id_articulo
                     ? { ...item, cantidad: item.cantidad + nextItem.cantidad, subtotal: Number(((item.cantidad + nextItem.cantidad) * item.precio_unitario).toFixed(2)) }
@@ -154,6 +155,7 @@ export function useCart() {
         setMessage('Procesando pedido...');
 
         if (isDemo) {
+            // En demo no hay persistencia real de pedidos, se simula confirmación local.
             applyDemoCart([], 'Pedido demo realizado correctamente. ID: DEMO');
             return true;
         }

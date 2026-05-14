@@ -57,6 +57,7 @@ function PrivacyNotice({ onNavigate }) {
     }
 
     loadCookieStatus();
+    // Permite abrir el panel desde cualquier punto de la app mediante evento global.
     window.addEventListener('pacepal:open-cookie-preferences', openPreferences);
     return () => {
       active = false;

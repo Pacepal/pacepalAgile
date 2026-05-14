@@ -37,6 +37,7 @@ function ActivityDetailPage({ activityId, activities, session, onNavigate }) {
     try {
       const payload = await requestJson(`/actividades/${activityId}/${action}`, { method: 'POST' });
       if (payload.status === 'ok') {
+        // Tras unirse/salir, se vuelve a leer el detalle para refrescar plazas y participantes.
         const nextPayload = await requestJson(`/actividades/${activityId}`);
         setActivity(nextPayload.data || activity);
       } else {
