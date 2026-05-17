@@ -1,8 +1,6 @@
-/* ========================================
-   Footer — CTA final + pie con enlaces y redes
-   ======================================== */
+/* Footer, CTA final y contenido legal. */
 
-/* ======== CTA FINAL (bloque verde oscuro) ======== */
+/* CTA final */
 
 .cta-final {
   background: var(--color-verde-oscuro);
@@ -28,7 +26,7 @@
   min-width: 138px;
 }
 
-/* ======== PIE PRINCIPAL ======== */
+/* Pie principal */
 
 .pie {
   background: var(--color-verde-oscuro);
@@ -101,7 +99,7 @@
   color: #ffffff;
 }
 
-/* ======== REDES SOCIALES ======== */
+/* Redes sociales */
 
 .redes {
   display: flex;
@@ -130,7 +128,7 @@
   font-size: 0.95rem;
 }
 
-/* Botón de configurar cookies en footer */
+/* Acceso al panel de cookies desde el footer. */
 .pie__btn-cookies {
   display: block;
   background: none;
@@ -149,7 +147,7 @@
   color: #ffffff;
 }
 
-/* ======== PÁGINA LEGAL ======== */
+/* Página legal */
 
 .legal-contenido h2 {
   margin-top: 1.8rem;

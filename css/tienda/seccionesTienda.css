@@ -1,6 +1,6 @@
 /* Las tarjetas de productos usan las clases .tarjeta .tarjeta-producto definidas en secciones.css (landing) */
 
-/* Estado de carga durante actualizaciones AJAX — galería sin recarga */
+/* Estado de carga sin recargar la galería. */
 .tienda-cargando {
     grid-column: 1 / -1;
     text-align: center;
@@ -9,7 +9,6 @@
     font-style: italic;
 }
 
-/* Mensaje de búsqueda sin resultados */
 .tienda-sin-resultados {
     grid-column: 1 / -1;
     text-align: center;
@@ -17,7 +16,7 @@
     color: var(--color-texto-secundario, #666);
 }
 
-/* Paginación de resultados de búsqueda */
+/* Paginación del listado clásico. */
 .tienda-paginacion {
     display: flex;
     justify-content: center;
@@ -56,7 +55,7 @@
     cursor: default;
 }
 
-/* Paginación React */
+/* Paginación de la vista React. */
 .paginacion {
     display: flex;
     justify-content: center;

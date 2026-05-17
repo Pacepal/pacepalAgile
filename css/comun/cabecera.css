@@ -1,7 +1,4 @@
-/* ========================================
-   Cabecera — navbar sticky con menú hamburguesa
-   en móvil se colapsa, en desktop se abre inline
-   ======================================== */
+/* Cabecera sticky con navegación móvil y desktop. */
 
 .cabecera {
   background: var(--color-blanco);
@@ -20,7 +17,7 @@
   padding: 0.15rem 0;
 }
 
-/* ======== LOGO ======== */
+/* Logo */
 
 .logo,
 .navbar-brand {
@@ -65,7 +62,7 @@
   font-size: 1.08rem;
 }
 
-/* ======== HAMBURGUESA ======== */
+/* Menú hamburguesa */
 
 .hamburguesa {
   width: 42px;
@@ -88,7 +85,7 @@
   border-radius: 99px;
 }
 
-/* ======== MENÚ MÓVIL ======== */
+/* Menú móvil */
 
 .menu {
   width: 100%;
@@ -111,7 +108,7 @@
   display: block;
 }
 
-/* ======== BOTONES AUTH (desktop) ======== */
+/* Acciones de autenticación en desktop */
 
 .cabecera__login {
   display: none;
@@ -129,7 +126,7 @@
   background: #edf0e8;
 }
 
-/* ======== AUTH ITEMS EN MENÚ MÓVIL ======== */
+/* Acciones de autenticación en móvil */
 
 /*
   .menu a ya cubre los <a> dentro del bloque móvil.

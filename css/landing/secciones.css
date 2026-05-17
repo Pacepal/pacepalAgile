@@ -1,6 +1,4 @@
-/* ========================================
-   Secciones de la landing — tarjetas, chips y beneficios
-   ======================================== */
+/* Secciones compartidas de landing, tarjetas y beneficios. */
 
 .seccion {
   padding: var(--esp-5) 0;
@@ -25,7 +23,7 @@
   max-width: 48ch;
 }
 
-/* ======== CHIPS DE FILTRO ======== */
+/* Chips de filtro */
 
 .chips {
   display: flex;
@@ -48,7 +46,7 @@
   font-size: 0.82rem;
 }
 
-/* ======== TARJETAS ======== */
+/* Tarjetas */
 
 .rejilla {
   display: grid;
@@ -62,7 +60,7 @@
   box-shadow: var(--sombra);
 }
 
-/* --- tarjeta de actividad --- */
+/* Tarjeta de actividad */
 
 .tarjeta-actividad {
   padding: var(--esp-3);
@@ -95,7 +93,7 @@
   color: var(--color-texto-suave);
 }
 
-/* --- tarjeta de producto --- */
+/* Tarjeta de producto */
 
 .tarjeta-producto img {
   width: 100%;
@@ -130,7 +128,7 @@
   margin-top: auto;
 }
 
-/* ======== BENEFICIOS ======== */
+/* Beneficios */
 
 .beneficios {
   background: #fff;

@@ -1,6 +1,4 @@
-/* ========================================
-   Secciones de la página Sobre Nosotros
-   ======================================== */
+/* Secciones de Sobre Nosotros. */
 
 .seccion-about {
   padding: 48px 0;
@@ -54,7 +52,7 @@
   margin: 0 0 0.8rem;
 }
 
-/* ======== GRID TEXTO + IMAGEN ======== */
+/* Grid de texto e imagen */
 
 .about-grid {
   display: grid;
@@ -94,7 +92,7 @@
   display: block;
 }
 
-/* ======== TARJETAS DE ACTIVIDAD (info) ======== */
+/* Tarjetas informativas de actividad */
 
 .tarjeta-actividad-info {
   height: 100%;
@@ -130,7 +128,7 @@
   margin-bottom: 0;
 }
 
-/* ======== TARJETAS INFO Y SEGURIDAD ======== */
+/* Tarjetas de información y seguridad */
 
 .tarjeta-info,
 .tarjeta-seguridad {
@@ -176,7 +174,7 @@
   margin: 0;
 }
 
-/* ======== BLOQUE SEGURIDAD (DNI + REPORTES) ======== */
+/* Bloque de seguridad: DNI y reportes */
 
 .seguridad-layout {
   display: grid;
