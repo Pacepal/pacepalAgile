@@ -5,6 +5,22 @@ const defaultConsent = { preferences: false, analytics: false };
 const COOKIE_CONSENT_KEY = 'pacepal_cookie_consent';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
+function clearStoredConsent() {
+  try {
+    window.localStorage.removeItem(COOKIE_CONSENT_KEY);
+  } catch (_error) {
+    // Si el almacenamiento falla, el banner debe seguir tratándose como pendiente.
+  }
+}
+
+function isValidStoredConsent(parsed) {
+  return !!parsed
+    && typeof parsed === 'object'
+    && !Array.isArray(parsed)
+    && typeof parsed.preferences === 'boolean'
+    && typeof parsed.analytics === 'boolean';
+}
+
 function mapStatusToConsent(payload) {
   return {
     preferences: !!payload?.cookies?.preferences,
@@ -15,14 +31,23 @@ function mapStatusToConsent(payload) {
 function readStoredConsent() {
   try {
     const rawValue = window.localStorage.getItem(COOKIE_CONSENT_KEY);
-    if (!rawValue) return null;
+    if (typeof rawValue !== 'string' || rawValue.trim() === '') {
+      clearStoredConsent();
+      return null;
+    }
 
     const parsed = JSON.parse(rawValue);
+    if (!isValidStoredConsent(parsed)) {
+      clearStoredConsent();
+      return null;
+    }
+
     return {
-      preferences: !!parsed.preferences,
-      analytics: !!parsed.analytics,
+      preferences: parsed.preferences,
+      analytics: parsed.analytics,
     };
   } catch (_error) {
+    clearStoredConsent();
     return null;
   }
 }
@@ -47,9 +72,11 @@ function saveStoredConsent(consent) {
 
 function buildLocalStatus() {
   const storedConsent = readStoredConsent();
+  const hasConsent = storedConsent !== null;
 
   return {
-    hasConsent: !!storedConsent,
+    hasConsent,
+    shouldShowBanner: !hasConsent,
     cookies: {
       technical: true,
       ...(storedConsent || defaultConsent),
@@ -100,7 +127,7 @@ function PrivacyNotice({ onNavigate }) {
         if (!active) return;
 
         setPreferences(mapStatusToConsent(payload));
-        setView(payload.hasConsent ? null : 'banner');
+        setView(payload.shouldShowBanner ? 'banner' : null);
         return;
       }
 
