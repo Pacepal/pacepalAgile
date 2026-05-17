@@ -11,6 +11,15 @@ export function useActivities() {
     setStatus('cargando');
     setMessage('Cargando actividades.');
 
+    if (apiConfig.useStaticDataOnly) {
+      const activities = await loadStaticData('actividades');
+      setItems(activities);
+      setIsDemo(true);
+      setStatus('ok');
+      setMessage(activities.length ? 'Modo GitHub Pages: actividades demo cargadas.' : 'No hay actividades disponibles.');
+      return;
+    }
+
     try {
       const payload = await requestJson('/actividades');
       const activities = Array.isArray(payload.data) ? payload.data : [];
@@ -35,7 +44,7 @@ export function useActivities() {
         setItems(activities);
         setIsDemo(true);
         setStatus('ok');
-        setMessage(activities.length ? 'API PHP no disponible. Mostrando JSON temporal.' : 'No hay actividades disponibles.');
+        setMessage(activities.length ? 'Modo demo: actividades cargadas desde JSON local.' : 'No hay actividades disponibles.');
       } catch (staticError) {
         setStatus('error');
         setMessage(staticError.message || error.message || 'No se pudieron cargar las actividades.');
