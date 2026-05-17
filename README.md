@@ -2,10 +2,10 @@
   <img src="img/logo/logo.png" alt="PacePal Logo" width="118">
 </p>
 
-<h1 align="center">PacePal — Plataforma web deportiva para comunidad, rutas y tienda</h1>
+<h1 align="center">PacePal — Plataforma web deportiva para rutas, actividades y comunidad</h1>
 
 <p align="center">
-  Proyecto intermodular DAW que integra frontend en React + Vite, API REST en PHP y base de datos MySQL para gestionar actividades, rutas, perfiles de usuario, autenticación y escaparate deportivo.
+  Aplicación web orientada a la actividad física, la organización de rutas deportivas, la participación en actividades en grupo y la consulta de productos relacionados con el deporte y el bienestar.
 </p>
 
 <p align="center">
@@ -18,82 +18,155 @@
   <img src="https://img.shields.io/badge/GitHub%20Pages-Static%20Demo-222222?style=for-the-badge&logo=githubpages&logoColor=white" alt="GitHub Pages">
 </p>
 
+---
+
 ## Visión general
 
-PacePal es una aplicación web orientada a actividad física, comunidad y descubrimiento deportivo. El proyecto combina una experiencia cliente en React con una API PHP conectada a MySQL para ofrecer rutas, actividades, autenticación, perfil de usuario, carrito y vistas administrativas dentro de un mismo entregable académico.
+PacePal es una plataforma web pensada para facilitar la conexión entre personas mediante actividades deportivas, rutas al aire libre y una experiencia digital sencilla, accesible y organizada.
 
-### Qué incluye
+El proyecto integra un cliente desarrollado con React y Vite, una API REST en PHP y una base de datos MySQL/MariaDB. La aplicación permite consultar rutas, crear y visualizar actividades, gestionar productos, utilizar carrito, registrar usuarios, iniciar sesión y acceder a secciones privadas según el contexto de uso.
 
-- Landing y navegación por secciones con diseño responsive.
-- Listados y detalle de productos, rutas y actividades.
-- Registro, login, sesión y perfil de usuario.
-- Panel de administración y reportes.
-- Integración local completa con XAMPP y base de datos real.
-- Demo estática desplegable en GitHub Pages con fallback controlado.
+El objetivo principal de PacePal es ofrecer un entorno claro y funcional donde cualquier persona pueda descubrir rutas, participar en actividades deportivas y consultar productos relacionados con una vida activa.
+
+---
+
+## Funcionalidades principales
+
+PacePal incluye las siguientes áreas funcionales:
+
+- Página principal con presentación del proyecto.
+- Navegación por secciones mediante interfaz responsive.
+- Listado y detalle de rutas deportivas.
+- Listado y detalle de actividades.
+- Creación de actividades asociadas a rutas.
+- Catálogo de productos deportivos.
+- Detalle de producto con información ampliada.
+- Carrito de compra con gestión básica de productos.
+- Registro e inicio de sesión de usuarios.
+- Perfil de usuario.
+- Secciones de administración y reportes.
+- Integración con API PHP y base de datos MySQL/MariaDB.
+- Demo estática desplegable en GitHub Pages mediante build de React y fallback controlado.
+
+---
 
 ## Demo y referencias
 
-- Demo estática: https://pacepal.github.io/pacepalAgile/
+- Demo estática en GitHub Pages: https://pacepal.github.io/pacepalAgile/
+- Rama activa del proyecto: `sprint3Definitivo`
 - Documentación del proyecto: [docs](docs)
-- Entrega final: [docs/09-entrega-final](docs/09-entrega-final)
+- Entrega final y materiales del proyecto: [docs/09-entrega-final](docs/09-entrega-final)
 - Evidencias técnicas: [docs/evidencias](docs/evidencias)
 
-## Tecnologías y arquitectura
+---
+
+## Tecnologías utilizadas
 
 ### Frontend
 
-- React 18 en la raíz del repositorio.
-- Vite 5 como entorno de desarrollo y build.
-- Componentes JSX en [js](js) y vistas en [pages](pages).
-- CSS modular por secciones y páginas en [css](css).
+- React 18.
+- Vite 5.
+- JavaScript con ES Modules.
+- JSX para la construcción de componentes.
+- CSS modular organizado por secciones.
+- Navegación basada en rutas hash para facilitar compatibilidad con GitHub Pages.
 
 ### Backend
 
-- API REST en PHP con entrada principal en [src/api/index.php](src/api/index.php).
-- Organización tipo MVC con controladores en [src/controllers](src/controllers) y modelos en [src/models](src/models).
-- Configuración local de base de datos en [src/config](src/config).
+- PHP.
+- API REST.
+- Organización mediante controladores, modelos y configuración.
+- Conexión a base de datos mediante configuración local.
+- Respuestas en formato JSON para consumo desde el cliente.
 
-### Datos y despliegue
+### Base de datos
 
-- Base de datos MySQL/MariaDB con scripts en [db](db).
-- Build de producción generado en `dist/`.
-- Workflow de despliegue de GitHub Pages en [.github/workflows/deploy-react-pages.yml](.github/workflows/deploy-react-pages.yml).
+- MySQL/MariaDB.
+- Scripts SQL incluidos en el repositorio.
+- Datos estructurados para usuarios, rutas, actividades, productos y operaciones relacionadas.
 
-## Ramas principales del repositorio
+### Herramientas y entorno
 
-Estas son las tres ramas clave que conviene distinguir durante la revisión y la entrega:
+- XAMPP para ejecución local.
+- Git y GitHub para control de versiones.
+- GitHub Pages para demo estática.
+- Postman para pruebas de endpoints.
+- Selenium y pruebas funcionales para validaciones adicionales.
 
-| Rama                 | Propósito                                                                                     | Uso recomendado                                                                                  |
-| -------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `main`               | Línea base e histórico principal del repositorio.                                             | Referencia general. No usar para la entrega final ni para la subida controlada del sprint final. |
-| `sprint3Definitivo`  | Rama de integración y entrega final del Sprint 3.                                             | Rama recomendada para revisión docente, comprobaciones finales y commits de cierre.              |
-| `PacepalGithubPages` | Rama orientada al despliegue y a los ajustes específicos de la demo estática en GitHub Pages. | Usarla solo cuando el cambio afecte al entorno estático publicado.                               |
+---
 
-Nota: también existen ramas históricas de trabajo usadas durante la migración a React, pero la referencia vigente para evaluación final es `sprint3Definitivo`.
+## Arquitectura general
 
-## Resumen de sprints
+El proyecto está organizado en tres bloques principales:
 
-| Sprint   | Resumen                                                                                                                                                                                     |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Sprint 0 | Organización agile del proyecto, backlog inicial, historias de usuario, reparto de trabajo y definición del alcance.                                                                        |
-| Sprint 1 | Diseño visual, identidad de marca, landing principal, wireframes, formularios de registro/login y validaciones en cliente.                                                                  |
-| Sprint 2 | Implementación del backend PHP con MySQL, endpoints REST, páginas secundarias, carrito, buscador, rutas, actividades y pruebas funcionales.                                                 |
-| Sprint 3 | Integración final del cliente React en la raíz del repositorio, fallback estático para GitHub Pages, mejoras de accesibilidad, validaciones finales, despliegue y documentación de entrega. |
+```text
+Cliente React + Vite
+        |
+        | Fetch / JSON
+        v
+API REST en PHP
+        |
+        | Consultas y operaciones
+        v
+Base de datos MySQL/MariaDB
+```
 
-### Documentación por sprints
+La aplicación puede ejecutarse de dos formas:
 
-- Bitácora general: [docs/01-bitacora](docs/01-bitacora)
+- Modo completo local, usando XAMPP, PHP y MySQL/MariaDB.
+- Modo demo estático, usando GitHub Pages y fallback de datos controlado.
+
+El modo completo permite trabajar con la API y la base de datos real.
+El modo demo permite navegar por la aplicación cuando no existe un backend PHP activo.
+
+---
+
+## Estructura de ramas
+
+La rama activa de trabajo, revisión y mantenimiento actual del proyecto es `sprint3Definitivo`.
+
+Las ramas `main` y `PacepalGithubPages` se conservan como histórico técnico de fases anteriores y no se utilizan como base de trabajo actual.
+
+| Rama                 | Estado actual                     | Propósito                                                                                           | Uso recomendado                                                    |
+| -------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `sprint3Definitivo`  | Rama principal actual             | Integración final del Sprint 3, documentación de cierre, build React y versión actual del proyecto. | Rama de referencia para revisión, mantenimiento y cambios finales. |
+| `main`               | Rama histórica / legacy           | Conserva una línea anterior del proyecto antes de la consolidación final del Sprint 3.              | No usar para nuevas subidas ni como base de trabajo actual.        |
+| `PacepalGithubPages` | Rama histórica de despliegue/demo | Conserva ajustes antiguos relacionados con una versión previa de la demo estática en GitHub Pages.  | No usar como rama de trabajo actual.                               |
+
+Pueden existir otras ramas históricas utilizadas durante el desarrollo, la migración a React o pruebas intermedias. La referencia vigente del proyecto es `sprint3Definitivo`.
+
+---
+
+## Resumen de evolución del proyecto
+
+| Fase     | Resumen                                                                                                                                                                |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sprint 0 | Organización inicial del proyecto, definición de alcance, backlog, reparto de tareas y estructura base de trabajo.                                                     |
+| Sprint 1 | Diseño visual, identidad de marca, landing principal, formularios, navegación inicial y primeras validaciones de interfaz.                                             |
+| Sprint 2 | Desarrollo del backend PHP con MySQL, endpoints REST, páginas secundarias, carrito, buscador, rutas, actividades y pruebas funcionales.                                |
+| Sprint 3 | Integración del cliente React, reorganización de componentes, fallback estático, mejoras de accesibilidad, validaciones finales, despliegue y documentación de cierre. |
+
+---
+
+## Documentación del proyecto
+
+La documentación está organizada dentro de la carpeta `docs`:
+
 - Material base: [docs/00-material](docs/00-material)
-- Evidencias: [docs/evidencias](docs/evidencias)
-- Documentación final: [docs/09-entrega-final](docs/09-entrega-final)
+- Bitácora y seguimiento: [docs/01-bitacora](docs/01-bitacora)
+- Entrega final y materiales principales: [docs/09-entrega-final](docs/09-entrega-final)
+- Evidencias técnicas: [docs/evidencias](docs/evidencias)
+- Archivo histórico no entregable: [docs/\_archivo-historico-no-entregable](docs/_archivo-historico-no-entregable)
 
-## Guía rápida de instalación para docentes
+---
 
-La forma recomendada de revisar PacePal en local es ejecutar la aplicación desde XAMPP con la API PHP real y la base de datos `pacepal`.
+## Instalación local
+
+La forma recomendada de ejecutar PacePal en local es mediante XAMPP, usando Apache, MySQL/MariaDB, PHP y el cliente React con Vite.
 
 ### 1. Clonar el repositorio
 
-Se recomienda clonar el proyecto dentro de `htdocs` para que Apache pueda resolver la API sin ajustes extra:
+Se recomienda clonar el proyecto dentro de `htdocs` para que Apache pueda resolver correctamente la API PHP.
 
 ```bash
 cd "C:\xampp\htdocs"
@@ -102,32 +175,43 @@ cd "pacepalAgile"
 git checkout sprint3Definitivo
 ```
 
-Ruta recomendada de trabajo:
+Ruta recomendada:
 
 ```text
 C:\xampp\htdocs\pacepalAgile
 ```
 
-Si se usa otra carpeta bajo `htdocs`, habrá que reflejar ese nombre en la URL de la API. Si la ruta contiene espacios, deben codificarse como `%20`.
+Si se usa otra carpeta dentro de `htdocs`, habrá que adaptar la URL de la API en el archivo `.env.local`.
 
 ### 2. Arrancar XAMPP
 
-En XAMPP Control Panel:
+Desde XAMPP Control Panel:
 
-- Iniciar `Apache`.
-- Iniciar `MySQL`.
+- Iniciar Apache.
+- Iniciar MySQL.
 
 ### 3. Crear e importar la base de datos
 
-1. Abrir `http://localhost/phpmyadmin`.
-2. Importar el archivo [db/pacepal.sql](db/pacepal.sql).
-3. Verificar que la base de datos creada o disponible se llama `pacepal`.
+Abrir phpMyAdmin:
 
-También existen [db/schema.sql](db/schema.sql) y [db/seed.sql](db/seed.sql), pero la opción más directa para corrección local es importar `pacepal.sql`.
+```text
+http://localhost/phpmyadmin
+```
 
-### 4. Configurar PHP si el entorno local es distinto
+Crear o seleccionar la base de datos `pacepal` e importar el archivo principal:
 
-La configuración por defecto espera estos valores:
+- [db/pacepal.sql](db/pacepal.sql)
+
+También existen los siguientes archivos SQL complementarios:
+
+- [db/schema.sql](db/schema.sql)
+- [db/seed.sql](db/seed.sql)
+
+La opción más directa para una instalación completa es importar `db/pacepal.sql`.
+
+### 4. Configurar PHP
+
+La configuración por defecto espera los siguientes valores:
 
 - Host: `127.0.0.1`
 - Base de datos: `pacepal`
@@ -135,11 +219,13 @@ La configuración por defecto espera estos valores:
 - Password: vacío
 - Puertos probados: `3306`, `3307`, `3308`
 
-Si el equipo docente usa otra configuración, copiar el ejemplo y ajustar credenciales locales:
+Si el entorno local utiliza otra configuración, se puede crear un archivo local a partir del ejemplo:
 
-```bash
-copy "src\config\config.example.php" "src\config\config.local.php"
+```powershell
+Copy-Item "src\config\config.example.php" "src\config\config.local.php"
 ```
+
+Después se deben ajustar las credenciales necesarias dentro del archivo local.
 
 ### 5. Instalar dependencias del cliente
 
@@ -147,19 +233,26 @@ Desde la raíz del proyecto:
 
 ```bash
 npm install
-copy ".env.local.example" ".env.local"
 ```
 
-Contenido recomendado de `.env.local` para revisión local con XAMPP:
+Crear el archivo de entorno local:
+
+```powershell
+Copy-Item ".env.local.example" ".env.local"
+```
+
+Contenido recomendado para `.env.local` usando XAMPP:
 
 ```env
 VITE_PACEPAL_API_BASE_URL=http://localhost/pacepalAgile/src/api/index.php/api
 VITE_PACEPAL_ENABLE_STATIC_FALLBACK=false
 ```
 
-### 6. Ejecutar y compilar la aplicación
+Si el proyecto se clona en una carpeta distinta a `pacepalAgile`, hay que actualizar la ruta de `VITE_PACEPAL_API_BASE_URL`.
 
-Desarrollo local:
+### 6. Ejecutar la aplicación
+
+Modo desarrollo:
 
 ```bash
 npm run dev
@@ -177,61 +270,12 @@ El build generado queda en:
 dist/
 ```
 
-### 7. URLs útiles para la revisión
-
-Frontend con Vite:
-
-```text
-http://localhost:5173/
-http://localhost:5173/#inicio
-http://localhost:5173/#actividades
-http://localhost:5173/#crear-actividad
-http://localhost:5173/#tienda
-http://localhost:5173/#producto-1
-http://localhost:5173/#carrito
-http://localhost:5173/#about
-http://localhost:5173/#contacto
-```
-
-API PHP en local:
-
-```text
-http://localhost/pacepalAgile/src/api/index.php/api/productos
-http://localhost/pacepalAgile/src/api/index.php/api/rutas
-http://localhost/pacepalAgile/src/api/index.php/api/actividades
-```
-
-## Modo local, fallback estático y localStorage
-
-PacePal puede funcionar en dos contextos distintos:
-
-- Revisión completa en local con XAMPP, PHP y MySQL reales.
-- Demo estática en GitHub Pages o en un host sin PHP.
-
-Para evaluación funcional completa se recomienda mantener:
-
-```env
-VITE_PACEPAL_ENABLE_STATIC_FALLBACK=false
-```
-
-Cuando el fallback estático se habilita explícitamente, la aplicación puede conservar datos de demostración en el navegador:
-
-- Sesión demo en `localStorage` y `sessionStorage`.
-- Usuarios demo persistidos en `localStorage`.
-- Carrito demo persistido en `localStorage`.
-- Cookie auxiliar de sesión demo para simular continuidad de uso.
-
-Esto permite que la demo estática siga siendo navegable sin una API PHP activa, pero la revisión docente más completa debe hacerse contra XAMPP y la base de datos real.
+---
 
 ## Árbol principal del proyecto
 
-La estructura actual del repositorio está organizada así:
-
 ```text
 pacepal/
-├── .github/
-│   └── workflows/
-│       └── deploy-react-pages.yml
 ├── assets/
 ├── audio/
 ├── css/
@@ -255,12 +299,7 @@ pacepal/
 │   ├── _archivo-historico-no-entregable/
 │   └── evidencias/
 ├── img/
-│   ├── about/
-│   ├── audio/
-│   ├── landing/
-│   ├── logo/
-│   ├── productos/
-│   └── rutas/
+├── .github/
 ├── js/
 │   ├── actividades/
 │   ├── admin/
@@ -273,9 +312,7 @@ pacepal/
 │   ├── services/
 │   ├── tienda/
 │   ├── usuario/
-│   ├── utils/
-│   ├── App.jsx
-│   └── main.jsx
+│   └── utils/
 ├── pages/
 │   ├── about/
 │   ├── actividades/
@@ -287,9 +324,7 @@ pacepal/
 │   ├── tienda/
 │   └── usuario/
 ├── scripts/
-│   ├── github/
-│   ├── build-root.mjs
-│   └── write-vite-index.mjs
+│   └── github/
 ├── src/
 │   ├── api/
 │   ├── config/
@@ -300,15 +335,14 @@ pacepal/
 │   ├── postman/
 │   ├── react-sprint-3/
 │   └── selenium/
-├── .env.local.example
-├── .htaccess
-├── index.html
-├── package-lock.json
-├── package.json
-└── vite.config.js
+└── dist/
 ```
 
-## Pruebas, evidencias y entregables
+---
+
+## Pruebas y evidencias
+
+El repositorio incluye diferentes recursos para comprobar el funcionamiento del proyecto:
 
 - Casos funcionales manuales: [tests/funcionales](tests/funcionales)
 - Colección Postman: [tests/postman](tests/postman)
@@ -316,6 +350,28 @@ pacepal/
 - Automatización Selenium: [tests/selenium](tests/selenium)
 - Evidencias de despliegue: [docs/evidencias/despliegue](docs/evidencias/despliegue)
 
+---
+
+## Consideraciones de uso
+
+- Para una experiencia completa, se recomienda ejecutar el proyecto en local con XAMPP, PHP y MySQL/MariaDB.
+- Para navegación rápida, se puede utilizar la demo estática publicada en GitHub Pages.
+- La demo estática no depende de PHP ni MySQL activos.
+- El modo completo local permite trabajar con datos reales y endpoints PHP.
+- La rama de referencia del proyecto es `sprint3Definitivo`.
+
+---
+
 ## Equipo
 
-Proyecto desarrollado por Pablo Sevillano y Alejandro Pacheco dentro del Proyecto Agile Intermodular del ciclo DAW.
+Proyecto desarrollado por:
+
+- Pablo Sevillano
+- Alejandro Pacheco
+
+---
+
+## Licencia y uso
+
+Este repositorio forma parte de un proyecto académico y técnico de desarrollo web.
+Su contenido se conserva como evidencia de desarrollo, documentación, pruebas, despliegue y evolución funcional del proyecto PacePal.
