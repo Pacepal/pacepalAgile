@@ -16,6 +16,10 @@ const defaultAdminUser = {
 let cookieSupportCache = null;
 
 function detectDemoCookiePath() {
+    if (typeof window !== 'undefined' && window.location.hostname.toLowerCase().endsWith('github.io')) {
+        return '/pacepalAgile';
+    }
+
     const baseUrl = String(import.meta.env?.BASE_URL || '/').trim();
 
     if (baseUrl.startsWith('/')) {
@@ -327,11 +331,11 @@ export function createDemoSession(user) {
 }
 
 export function setDemoCookie() {
-    return setSafeCookie(DEMO_SESSION_COOKIE, 'active', { maxAge: 86400 });
+    return setSafeCookie(DEMO_SESSION_COOKIE, 'active', { maxAge: 86400, path: demoCookiePath });
 }
 
 export function clearDemoCookie() {
-    deleteCookie(DEMO_SESSION_COOKIE);
+    deleteCookie(DEMO_SESSION_COOKIE, { path: demoCookiePath });
 }
 
 export function persistDemoSession(user) {
@@ -370,7 +374,14 @@ export function restoreDemoSession() {
     const storedSession = parseJson(readStorageValue(sessionStorageRef, DEMO_SESSION_STORAGE_KEY), null);
     const hasCookie = getCookie(DEMO_SESSION_COOKIE) === 'active';
 
+    if (!hasCookie) {
+        removeStorageValue(localStorageRef, DEMO_USER_STORAGE_KEY);
+        removeStorageValue(sessionStorageRef, DEMO_SESSION_STORAGE_KEY);
+        return null;
+    }
+
     if (!storedUser || typeof storedUser !== 'object') {
+        removeStorageValue(sessionStorageRef, DEMO_SESSION_STORAGE_KEY);
         return null;
     }
 
@@ -380,10 +391,6 @@ export function restoreDemoSession() {
             DEMO_SESSION_STORAGE_KEY,
             JSON.stringify({ active: true, email: storedUser.email || '', startedAt: Date.now() })
         );
-    }
-
-    if (!hasCookie) {
-        setDemoCookie();
     }
 
     return storedUser;
