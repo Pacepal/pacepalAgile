@@ -1,100 +1,188 @@
-# PacePal · Proyecto Agile DAW
+<p align="center">
+  <img src="img/logo/logo.png" alt="PacePal Logo" width="118">
+</p>
 
-Plataforma web para conectar personas y promover actividades deportivas en comunidad.
+<h1 align="center">PacePal — Plataforma web deportiva para comunidad, rutas y tienda</h1>
 
-## Instalación local recomendada con XAMPP
+<p align="center">
+  Proyecto intermodular DAW que integra frontend en React + Vite, API REST en PHP y base de datos MySQL para gestionar actividades, rutas, perfiles de usuario, autenticación y escaparate deportivo.
+</p>
 
-Esta rama de trabajo es `sprint-3-react-jsx`. No trabajar sobre `main` para la revision final.
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=111827" alt="React 18">
+  <img src="https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 5">
+  <img src="https://img.shields.io/badge/JavaScript-ESModules-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111827" alt="JavaScript ES Modules">
+  <img src="https://img.shields.io/badge/PHP-API-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP API">
+  <img src="https://img.shields.io/badge/MySQL-MariaDB-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL MariaDB">
+  <img src="https://img.shields.io/badge/XAMPP-Local%20Stack-FB7A24?style=for-the-badge&logo=xampp&logoColor=white" alt="XAMPP">
+  <img src="https://img.shields.io/badge/GitHub%20Pages-Static%20Demo-222222?style=for-the-badge&logo=githubpages&logoColor=white" alt="GitHub Pages">
+</p>
 
-### 1. Clonar y entrar en la rama correcta
+## Visión general
+
+PacePal es una aplicación web orientada a actividad física, comunidad y descubrimiento deportivo. El proyecto combina una experiencia cliente en React con una API PHP conectada a MySQL para ofrecer rutas, actividades, autenticación, perfil de usuario, carrito y vistas administrativas dentro de un mismo entregable académico.
+
+### Qué incluye
+
+- Landing y navegación por secciones con diseño responsive.
+- Listados y detalle de productos, rutas y actividades.
+- Registro, login, sesión y perfil de usuario.
+- Panel de administración y reportes.
+- Integración local completa con XAMPP y base de datos real.
+- Demo estática desplegable en GitHub Pages con fallback controlado.
+
+## Demo y referencias
+
+- Demo estática: https://pacepal.github.io/pacepalAgile/
+- Documentación del proyecto: [docs](docs)
+- Entrega final: [docs/09-entrega-final](docs/09-entrega-final)
+- Evidencias técnicas: [docs/evidencias](docs/evidencias)
+
+## Tecnologías y arquitectura
+
+### Frontend
+
+- React 18 en la raíz del repositorio.
+- Vite 5 como entorno de desarrollo y build.
+- Componentes JSX en [js](js) y vistas en [pages](pages).
+- CSS modular por secciones y páginas en [css](css).
+
+### Backend
+
+- API REST en PHP con entrada principal en [src/api/index.php](src/api/index.php).
+- Organización tipo MVC con controladores en [src/controllers](src/controllers) y modelos en [src/models](src/models).
+- Configuración local de base de datos en [src/config](src/config).
+
+### Datos y despliegue
+
+- Base de datos MySQL/MariaDB con scripts en [db](db).
+- Build de producción generado en `dist/`.
+- Workflow de despliegue de GitHub Pages en [.github/workflows/deploy-react-pages.yml](.github/workflows/deploy-react-pages.yml).
+
+## Ramas principales del repositorio
+
+Estas son las tres ramas clave que conviene distinguir durante la revisión y la entrega:
+
+| Rama                 | Propósito                                                                                     | Uso recomendado                                                                                  |
+| -------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `main`               | Línea base e histórico principal del repositorio.                                             | Referencia general. No usar para la entrega final ni para la subida controlada del sprint final. |
+| `sprint3Definitivo`  | Rama de integración y entrega final del Sprint 3.                                             | Rama recomendada para revisión docente, comprobaciones finales y commits de cierre.              |
+| `PacepalGithubPages` | Rama orientada al despliegue y a los ajustes específicos de la demo estática en GitHub Pages. | Usarla solo cuando el cambio afecte al entorno estático publicado.                               |
+
+Nota: también existen ramas históricas de trabajo usadas durante la migración a React, pero la referencia vigente para evaluación final es `sprint3Definitivo`.
+
+## Resumen de sprints
+
+| Sprint   | Resumen                                                                                                                                                                                     |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sprint 0 | Organización agile del proyecto, backlog inicial, historias de usuario, reparto de trabajo y definición del alcance.                                                                        |
+| Sprint 1 | Diseño visual, identidad de marca, landing principal, wireframes, formularios de registro/login y validaciones en cliente.                                                                  |
+| Sprint 2 | Implementación del backend PHP con MySQL, endpoints REST, páginas secundarias, carrito, buscador, rutas, actividades y pruebas funcionales.                                                 |
+| Sprint 3 | Integración final del cliente React en la raíz del repositorio, fallback estático para GitHub Pages, mejoras de accesibilidad, validaciones finales, despliegue y documentación de entrega. |
+
+### Documentación por sprints
+
+- Bitácora general: [docs/01-bitacora](docs/01-bitacora)
+- Material base: [docs/00-material](docs/00-material)
+- Evidencias: [docs/evidencias](docs/evidencias)
+- Documentación final: [docs/09-entrega-final](docs/09-entrega-final)
+
+## Guía rápida de instalación para docentes
+
+La forma recomendada de revisar PacePal en local es ejecutar la aplicación desde XAMPP con la API PHP real y la base de datos `pacepal`.
+
+### 1. Clonar el repositorio
+
+Se recomienda clonar el proyecto dentro de `htdocs` para que Apache pueda resolver la API sin ajustes extra:
 
 ```bash
 cd "C:\xampp\htdocs"
 git clone "https://github.com/Pacepal/pacepalAgile.git" "pacepalAgile"
 cd "pacepalAgile"
-git checkout sprint-3-react-jsx
+git checkout sprint3Definitivo
 ```
 
-Ubicación recomendada:
+Ruta recomendada de trabajo:
 
 ```text
 C:\xampp\htdocs\pacepalAgile
 ```
 
+Si se usa otra carpeta bajo `htdocs`, habrá que reflejar ese nombre en la URL de la API. Si la ruta contiene espacios, deben codificarse como `%20`.
+
 ### 2. Arrancar XAMPP
 
 En XAMPP Control Panel:
 
-- Arrancar `Apache`.
-- Arrancar `MySQL`.
+- Iniciar `Apache`.
+- Iniciar `MySQL`.
 
-### 3. Importar la base de datos
+### 3. Crear e importar la base de datos
 
 1. Abrir `http://localhost/phpmyadmin`.
-2. Importar el archivo `db/pacepal.sql`.
-3. Comprobar que se crea la base de datos `pacepal`.
+2. Importar el archivo [db/pacepal.sql](db/pacepal.sql).
+3. Verificar que la base de datos creada o disponible se llama `pacepal`.
 
-También existen `db/schema.sql` y `db/seed.sql`, pero el archivo recomendado para instalar desde cero es `db/pacepal.sql`.
+También existen [db/schema.sql](db/schema.sql) y [db/seed.sql](db/seed.sql), pero la opción más directa para corrección local es importar `pacepal.sql`.
 
-### 4. Configurar PHP
+### 4. Configurar PHP si el entorno local es distinto
 
-Por defecto la API usa:
+La configuración por defecto espera estos valores:
 
-- host: `127.0.0.1`
-- base de datos: `pacepal`
-- usuario: `root`
-- password: vacio
-- puertos: `3306`, `3307`, `3308`
+- Host: `127.0.0.1`
+- Base de datos: `pacepal`
+- Usuario: `root`
+- Password: vacío
+- Puertos probados: `3306`, `3307`, `3308`
 
-Si tu XAMPP usa otros datos:
+Si el equipo docente usa otra configuración, copiar el ejemplo y ajustar credenciales locales:
 
 ```bash
 copy "src\config\config.example.php" "src\config\config.local.php"
 ```
 
-Edita `src\config\config.local.php` con tus valores locales. No se deben subir credenciales privadas reales.
+### 5. Instalar dependencias del cliente
 
-### 5. Configurar React
+Desde la raíz del proyecto:
 
 ```bash
 npm install
 copy ".env.local.example" ".env.local"
 ```
 
-Para la ruta recomendada, `.env.local` en la raiz debe contener:
+Contenido recomendado de `.env.local` para revisión local con XAMPP:
 
 ```env
 VITE_PACEPAL_API_BASE_URL=http://localhost/pacepalAgile/src/api/index.php/api
 VITE_PACEPAL_ENABLE_STATIC_FALLBACK=false
 ```
 
-Si el proyecto esta en otra carpeta dentro de `htdocs`, sustituye `pacepalAgile` por la ruta web real. Si la carpeta tiene espacios, usa `%20` en la URL.
+### 6. Ejecutar y compilar la aplicación
 
-### 6. Ejecutar React
+Desarrollo local:
 
 ```bash
 npm run dev
 ```
 
-Abrir la URL que muestre Vite, normalmente:
+Build de producción:
+
+```bash
+npm run build
+```
+
+El build generado queda en:
+
+```text
+dist/
+```
+
+### 7. URLs útiles para la revisión
+
+Frontend con Vite:
 
 ```text
 http://localhost:5173/
-```
-
-### 7. URLs locales de validación
-
-API PHP:
-
-```text
-http://localhost/pacepalAgile/src/api/index.php/api/productos
-http://localhost/pacepalAgile/src/api/index.php/api/rutas
-http://localhost/pacepalAgile/src/api/index.php/api/actividades
-```
-
-React:
-
-```text
 http://localhost:5173/#inicio
 http://localhost:5173/#actividades
 http://localhost:5173/#crear-actividad
@@ -105,533 +193,129 @@ http://localhost:5173/#about
 http://localhost:5173/#contacto
 ```
 
-### 8. Documentación completa
-
-Ver guia detallada en:
+API PHP en local:
 
 ```text
-docs/despliegue/INSTALACION_LOCAL_XAMPP.md
+http://localhost/pacepalAgile/src/api/index.php/api/productos
+http://localhost/pacepalAgile/src/api/index.php/api/rutas
+http://localhost/pacepalAgile/src/api/index.php/api/actividades
 ```
 
-## Demo
+## Modo local, fallback estático y localStorage
 
-- GitHub Pages: https://pacepal.github.io/pacepalAgile/
-- Video Sprint 1 (YouTube): https://www.youtube.com/watch?v=lWd_V9rKP-k
-- Video Sprint 2 (YouTube): https://youtu.be/y_3bRf19TNg
+PacePal puede funcionar en dos contextos distintos:
 
-## Objetivo
+- Revisión completa en local con XAMPP, PHP y MySQL reales.
+- Demo estática en GitHub Pages o en un host sin PHP.
 
-- Descubrir actividades deportivas cercanas.
-- Organizar quedadas para correr o caminar.
-- Conectar personas con intereses similares.
-- Promover equipamiento deportivo sostenible.
+Para evaluación funcional completa se recomienda mantener:
 
-## Tecnologías
-
-Frontend:
-
-- HTML5
-- CSS3
-- JavaScript
-- Bootstrap
-- Bootstrap Icons
-
-Optimización:
-
-- imágenes WebP
-- `loading="lazy"`
-
-Diseño:
-
-- responsive mobile-first
-
-## Estructura
-
-**Generated:** 3/11/2026, 11:47:57 PM
-**Ubicacion local orientativa:** proyecto dentro de la carpeta web de XAMPP.
-
-```
-├── 📁 css
-│   ├── 📁 actividades
-│   │   ├── 🎨 cssestilosActividades.css
-│   │   ├── 🎨 heroActividades.css
-│   │   ├── 🎨 responsiveActividades.css
-│   │   └── 🎨 seccionesActividades.css
-│   ├── 📁 admin
-│   │   ├── 🎨 cssestilosAdmin.css
-│   │   ├── 🎨 heroAdmin.css
-│   │   ├── 🎨 responsiveAdmin.css
-│   │   └── 🎨 seccionesAdmin.css
-│   ├── 📁 comun
-│   │   ├── 🎨 cabecera.css
-│   │   ├── 🎨 cookies.css
-│   │   ├── 🎨 estilosGlobalPacepal.css
-│   │   ├── 🎨 footer.css
-│   │   └── 🎨 variables.css
-│   ├── 📁 formulario
-│   │   └── 🎨 formulario.css
-│   ├── 📁 landing
-│   │   ├── 🎨 cssestilosLanding.css
-│   │   ├── 🎨 hero.css
-│   │   ├── 🎨 responsiveLanding.css
-│   │   └── 🎨 secciones.css
-│   ├── 📁 rutas
-│   │   ├── 🎨 cssestilosRutas.css
-│   │   ├── 🎨 heroRutas.css
-│   │   ├── 🎨 responsiveRutas.css
-│   │   └── 🎨 seccionesRutas.css
-│   ├── 📁 sobrenosotros
-│   │   ├── 🎨 cssestilosSobrenosotros.css
-│   │   ├── 🎨 hero.css
-│   │   ├── 🎨 responsiveSobrenosotros.css
-│   │   └── 🎨 secciones.css
-│   ├── 📁 tienda
-│   │   ├── 🎨 cssestilosTienda.css
-│   │   ├── 🎨 heroTienda.css
-│   │   ├── 🎨 responsiveTienda.css
-│   │   └── 🎨 seccionesTienda.css
-│   ├── 📁 usuario
-│   │   ├── 🎨 cssestilosUsuario.css
-│   │   ├── 🎨 heroUsuario.css
-│   │   ├── 🎨 responsiveUsuario.css
-│   │   └── 🎨 seccionesUsuario.css
-│   └── 🎨 estilos.css
-├── 📁 db
-│   ├── 📄 schema.sql
-│   └── 📄 seed.sql
-├── 📁 docs
-│   ├── 📁 00-material
-│   │   ├── 📕 01 Sprint 3.pdf
-│   │   ├── 📕 2do Sprint DWES.pdf
-│   │   ├── 📕 DI1_ Análisis y Diseño de una Interfaz Web Interactiva.pdf
-│   │   ├── 📕 DI1_Implementación Landing Page.pdf
-│   │   ├── 📕 DI1_Investigación de Tendencias y Análisis de Competencia.pdf
-│   │   ├── 📕 DI2_Diseño de la aplicación web.pdf
-│   │   ├── 📕 DI2_Inspección y verificación de la usabilidad de la aplicación web Archivo.pdf
-│   │   ├── 📕 DI2_Landing page accesible.pdf
-│   │   ├── 📕 DI2_Optimización de imágenes en formato WebP y adaptación responsive Archivo.pdf
-│   │   ├── 📕 DWEC1_IMPLEMENTACIÓNDELFORMULARIO.pdf
-│   │   ├── 📕 DWEC2_BuscadorDeProducotosAjax.pdf
-│   │   ├── 📕 DWEC2_IMPLEMENTACIÓNDELCARRITO.pdf
-│   │   ├── 📕 Ejemplo guia de estilos 1.pdf
-│   │   ├── 📕 Ejemplo guia de estilos 2.pdf
-│   │   ├── 📕 Equipos Ágiles.pdf
-│   │   ├── 📕 Masterclass scrum.pdf
-│   │   ├── 📕 Programación del Proyecto Agile Intermodular 25-26.pdf
-│   │   ├── 📕 Proyecto Final Mi burbuja de té - Cristina Pascua.pdf
-│   │   ├── 📕 UD8_Guias de estilo.pptx.pdf
-│   │   └── 📕 tarjeta-historia-usuario.pdf
-│   ├── 📁 01-requisitos
-│   │   └── 📝 01-definicion-proyecto.md
-│   ├── 📁 02-agile
-│   │   ├── 📝 01-scrum-base.md
-│   │   ├── 📝 02-historias-usuario-v1.md
-│   │   ├── 📝 03-notas-sprint0.md
-│   │   ├── 📝 _hu_cards_preview.md
-│   │   └── 📕 historias-usuario.pdf
-│   ├── 📁 03-diw
-│   │   ├── 📁 media
-│   │   │   ├── 🖼️ logo.png
-│   │   │   ├── 🖼️ pacepal_iconografia.png
-│   │   │   ├── 🖼️ paleta.png
-│   │   │   ├── 🖼️ paletaIdentidadVisual.png
-│   │   │   ├── 🖼️ tarjetaActividadEjemplo.png
-│   │   │   ├── 🖼️ tarjetaProductoEjemplo.png
-│   │   │   └── 🖼️ tipografiaIdentidadVisual.png
-│   │   ├── 📁 sprint-1
-│   │   │   ├── 📝 01-tendencias-competencia.md
-│   │   │   ├── 📕 01-tendencias-competencia.pdf
-│   │   │   ├── 📝 03-guia-estilos.md
-│   │   │   ├── 📕 03-guia-estilos.pdf
-│   │   │   ├── 📝 03-wireframes.md
-│   │   │   └── 📝 04-boceto-final.md
-│   │   ├── 📁 sprint-2
-│   │   │   ├── 📝 01-accesibilidad-wcag.md
-│   │   │   ├── 📝 02-diseno-aplicacion.md
-│   │   │   ├── 📝 03-roles-y-perfiles-usuario.md
-│   │   │   ├── 📝 04-optimizacion-imagenes.md
-│   │   │   └── 📝 05-inspeccion-usabilidad.md
-│   │   ├── 📁 wireframes
-│   │   │   ├── 🖼️ wireframe-about-desktop.png
-│   │   │   ├── 🖼️ wireframe-about-mobile.png
-│   │   │   ├── 🖼️ wireframe-actividad-detalle-desktop.png
-│   │   │   ├── 🖼️ wireframe-actividad-detalle-mobile.png
-│   │   │   ├── 🖼️ wireframe-actividades-desktop.png
-│   │   │   ├── 🖼️ wireframe-actividades-mobile.png
-│   │   │   ├── 🖼️ wireframe-admin-desktop.png
-│   │   │   ├── 🖼️ wireframe-admin-mobile.png
-│   │   │   ├── 🖼️ wireframe-landing-desktop.png
-│   │   │   ├── 🖼️ wireframe-landing-mobile.png
-│   │   │   ├── 🖼️ wireframe-producto-desktop.png
-│   │   │   ├── 🖼️ wireframe-producto-mobile.png
-│   │   │   ├── 🖼️ wireframe-ruta-detalle-desktop.png
-│   │   │   ├── 🖼️ wireframe-ruta-detalle-mobile.png
-│   │   │   ├── 🖼️ wireframe-rutas-desktop.png
-│   │   │   ├── 🖼️ wireframe-rutas-mobile.png
-│   │   │   ├── 🖼️ wireframe-tienda-desktop.png
-│   │   │   └── 🖼️ wireframe-tienda-mobile.png
-│   │   └── 📝 README.md
-│   ├── 📁 04-dwec
-│   │   ├── 📁 sprint-1
-│   │   │   ├── 📝 01-formularios-login-register.md
-│   │   │   ├── 📝 02-validaciones-js.md
-│   │   │   ├── 📝 03-integracion-con-diw.md
-│   │   │   ├── 📝 04-preparacion-backend.md
-│   │   │   └── 📝 05-tests-funcionales.md
-│   │   ├── 📁 sprint-2
-│   │   │   ├── 📝 01-tienda-dinamica.md
-│   │   │   ├── 📝 02-buscador-ajax.md
-│   │   │   ├── 📝 03-carrito-dinamico.md
-│   │   │   ├── 📝 04-listados-rutas-actividades.md
-│   │   │   ├── 📝 05-navbar-dinamica-y-sesion.md
-│   │   │   ├── 📝 06-detalles-dinamicos.md
-│   │   │   ├── 📝 07-integracion-api-dwec-dwes.md
-│   │   │   └── 📝 08-tests-funcionales-sprint-2.md
-│   │   └── 📝 README.md
-│   ├── 📁 05-dwes
-│   │   ├── 📁 sprint-2
-│   │   │   ├── 📝 arquitectura-backend.md
-│   │   │   ├── 📝 endpoints-api.md
-│   │   │   ├── 📝 modelo-relacional.md
-│   │   │   ├── 📝 pruebas-postman.md
-│   │   │   └── 📝 roles-acceso.md
-│   │   └── 📝 README.md
-│   ├── 📁 07-sostenibilidad
-│   │   ├── 📁 concurso
-│   │   │   ├── 🖼️ pacepalA3.png
-│   │   │   ├── 🖼️ postalPacePalCaraA.png
-│   │   │   └── 🖼️ postalPacePalCaraB.png
-│   │   ├── 📕 ArquetipoClienteSevillanoPabloPachecoAlejandro.pdf
-│   │   └── 📕 Idea de negocio sostenible Alejandro Pacheco y Pablo Sevillano.pdf
-│   ├── 📁 dwes
-│   │   └── 📝 pruebas-postman.md
-│   └── 📁 evidencias
-│       ├── 📁 01-sprint0
-│       │   ├── 📝 README.md
-│       │   ├── 🖼️ sprint0-arbol.png
-│       │   └── 🖼️ sprint0-tablero.png
-│       ├── 📁 despliegue
-│       │   └── 📝 README.md
-│       ├── 📁 diw
-│       │   ├── 📁 sprint-1
-│       │   │   ├── 🖼️ komoot-interfaz.png
-│       │   │   ├── 🖼️ meetup-interfaz.png
-│       │   │   └── 🖼️ strava-interfaz.png
-│       │   ├── 📁 sprint-2
-│       │   │   ├── 🖼️ WCAG_Contrast_Checker.png
-│       │   │   ├── 🖼️ lighthouse-accesibilidad.png
-│       │   │   └── 🖼️ wave-analisis.png
-│       │   └── 📝 README.md
-│       ├── 📁 dwec
-│       │   ├── 📁 sprint-1
-│       │   │   ├── 🖼️ dniEvidencia.png
-│       │   │   ├── 🖼️ login-correcto.png
-│       │   │   ├── 🖼️ login-error.png
-│       │   │   ├── 🖼️ registro-correcto.png
-│       │   │   ├── 🖼️ registro-error.png
-│       │   │   ├── 🖼️ registro-validacionEnVivo.png
-│       │   │   ├── 🖼️ tarjeta-correcta.png
-│       │   │   ├── 🖼️ tarjeta-incorrecta.png
-│       │   │   └── 🖼️ tarjeta-visible.png
-│       │   └── 📝 README.md
-│       ├── 📁 dwes
-│       │   └── 📝 README.md
-│       └── 📁 sostenibilidad
-│           └── 📝 README.md
-├── 📁 img
-│   ├── 📁 about
-│   │   ├── 🖼️ 1.webp
-│   │   ├── 🖼️ comunidad-entrenamiento.webp
-│   │   ├── 🖼️ comunidad-running-urbano.webp
-│   │   ├── 🖼️ desarrollo-proyecto-pacepal.webp
-│   │   ├── 🖼️ grupo-run-fin-actividad.webp
-│   │   ├── 🖼️ organizar-actividad-running.webp
-│   │   └── 🖼️ ruta-parque-ciudad.webp
-│   ├── 📁 landing
-│   │   └── 🖼️ hero.webp
-│   ├── 📁 logo
-│   │   ├── 📁 favicon
-│   │   │   ├── 🖼️ apple-touch-icon.png
-│   │   │   ├── 🖼️ apple-touch-icon.webp
-│   │   │   ├── 🖼️ favicon-16x16.png
-│   │   │   ├── 🖼️ favicon-16x16.webp
-│   │   │   ├── 🖼️ favicon-32x32.png
-│   │   │   ├── 🖼️ favicon-32x32.webp
-│   │   │   └── 📄 favicon.ico
-│   │   ├── 🖼️ logo.png
-│   │   ├── 🖼️ logo.webp
-│   │   ├── 🖼️ logotipoTrecore.png
-│   │   └── 🖼️ logotipoTrecore.webp
-│   ├── 📁 productos
-│   │   ├── 🖼️ bastonesPacepal1.webp
-│   │   ├── 🖼️ bastonesPacepal2.webp
-│   │   ├── 🖼️ botellaPacepal1.webp
-│   │   ├── 🖼️ botellaPacepal2.webp
-│   │   ├── 🖼️ calcetinesPacepal1.webp
-│   │   ├── 🖼️ calcetinesPacepal2.webp
-│   │   ├── 🖼️ camisetaPacepal1.webp
-│   │   ├── 🖼️ camisetaPacepal2.webp
-│   │   ├── 🖼️ chalecoHidratacionPacepal1.webp
-│   │   ├── 🖼️ chalecoHidratacionPacepal2.webp
-│   │   ├── 🖼️ chaquetaPacepal1.webp
-│   │   ├── 🖼️ chaquetaPacepal2.webp
-│   │   ├── 🖼️ gorraPacepal1.webp
-│   │   ├── 🖼️ gorraPacepal2.webp
-│   │   ├── 🖼️ kitPpAaPAcepal1.webp
-│   │   ├── 🖼️ kitPpAaPAcepal2.webp
-│   │   ├── 🖼️ pantalonesPacepal1.webp
-│   │   ├── 🖼️ pantalonesPacepal2.webp
-│   │   ├── 🖼️ zapatillaPacepal1.webp
-│   │   └── 🖼️ zapatillaPacepal2.webp
-│   └── 📁 rutas
-│       ├── 🖼️ canto_cochino.webp
-│       ├── 🖼️ fuenfria.webp
-│       ├── 🖼️ herreria.webp
-│       ├── 🖼️ jarosa.webp
-│       ├── 🖼️ penalara.webp
-│       ├── 🖼️ purgatorio.webp
-│       ├── 🖼️ retiro.webp
-│       ├── 🖼️ schmidt.webp
-│       └── 🖼️ siete_picos.webp
-├── 📁 js
-│   ├── 📁 actividades
-│   │   ├── 📄 actividadDetalle.js
-│   │   ├── 📄 actividades.js
-│   │   └── 📄 crearActividad.js
-│   ├── 📁 admin
-│   │   └── 📄 panelAdmin.js
-│   ├── 📁 formulario
-│   │   ├── 📄 formularioLogin.js
-│   │   ├── 📄 formularioRegistro.js
-│   │   ├── 📄 ui.js
-│   │   └── 📄 validaciones.js
-│   ├── 📁 landing
-│   │   └── 📄 main.js
-│   ├── 📁 rutas
-│   │   ├── 📄 rutaDetalle.js
-│   │   └── 📄 rutas.js
-│   ├── 📁 tienda
-│   │   ├── 📄 carrito.js
-│   │   ├── 📄 productoDetalle.js
-│   │   └── 📄 productos.js
-│   ├── 📁 usuario
-│   │   └── 📄 perfil.js
-│   ├── 📄 app.js
-│   └── 📄 cookies.js
-├── 📁 pages
-│   ├── 📁 about
-│   │   └── 🌐 about.html
-│   ├── 📁 actividades
-│   │   ├── 🐘 actividadDetalle.php
-│   │   ├── 🐘 actividades.php
-│   │   └── 🐘 crearActividad.php
-│   ├── 📁 admin
-│   │   └── 🐘 panelAdmin.php
-│   ├── 📁 formulario
-│   │   ├── 🐘 login.php
-│   │   └── 🐘 register.php
-│   ├── 📁 legal
-│   │   └── 🐘 cookies.php
-│   ├── 📁 rutas
-│   │   ├── 🐘 rutaDetalle.php
-│   │   └── 🐘 rutas.php
-│   ├── 📁 tienda
-│   │   ├── 🐘 carrito.php
-│   │   ├── 🐘 producto.php
-│   │   └── 🐘 tienda.php
-│   └── 📁 usuario
-│       └── 🐘 perfil.php
-├── 📁 src
-│   ├── 📁 api
-│   │   └── 🐘 index.php
-│   ├── 📁 config
-│   │   └── 🐘 database.php
-│   ├── 📁 controllers
-│   │   ├── 🐘 ActividadController.php
-│   │   ├── 🐘 AuthController.php
-│   │   ├── 🐘 CookieController.php
-│   │   ├── 🐘 PedidoController.php
-│   │   ├── 🐘 ProductoController.php
-│   │   ├── 🐘 ReporteController.php
-│   │   ├── 🐘 RutaController.php
-│   │   └── 🐘 UsuarioController.php
-│   └── 📁 models
-│       ├── 🐘 ActividadModel.php
-│       ├── 🐘 PedidoModel.php
-│       ├── 🐘 ProductoModel.php
-│       ├── 🐘 ReporteModel.php
-│       ├── 🐘 RutaModel.php
-│       └── 🐘 UsuarioModel.php
-├── 📁 tests
-│   ├── 📁 funcionales
-│   │   ├── 📝 01-registro-incorrecto.md
-│   │   ├── 📝 02-registro-correcto.md
-│   │   ├── 📝 03-login-incorrecto.md
-│   │   ├── 📝 04-login-correcto.md
-│   │   └── 📝 05-tarjeta-aparece-desaparece.md
-│   ├── 📁 selenium
-│   │   └── 📄 test-registro.js
-│   └── 📝 tests.md
-├── 📝 README.md
-└── 🌐 index.html
+```env
+VITE_PACEPAL_ENABLE_STATIC_FALLBACK=false
 ```
 
----
+Cuando el fallback estático se habilita explícitamente, la aplicación puede conservar datos de demostración en el navegador:
 
-_Generated by FileTree Pro Extension_
+- Sesión demo en `localStorage` y `sessionStorage`.
+- Usuarios demo persistidos en `localStorage`.
+- Carrito demo persistido en `localStorage`.
+- Cookie auxiliar de sesión demo para simular continuidad de uso.
 
-## Rutas clave
+Esto permite que la demo estática siga siendo navegable sin una API PHP activa, pero la revisión docente más completa debe hacerse contra XAMPP y la base de datos real.
 
-- Landing: `index.html`
-- About: `pages/about/about.html`
-- Registro: `pages/formulario/register.php`
-- Login: `pages/formulario/login.php`
-- Actividades: `pages/actividades/actividades.php`
-- Rutas: `pages/rutas/rutas.php`
-- Tienda: `pages/tienda/tienda.php`
-- Perfil: `pages/usuario/perfil.php`
-- Admin: `pages/admin/panelAdmin.php`
-- Validaciones cliente: `js/formulario/validaciones.js`
+## Árbol principal del proyecto
 
-## Sitemap web
+La estructura actual del repositorio está organizada así:
 
-| Sección           | Ruta                                     | Desde navbar |
-| ----------------- | ---------------------------------------- | ------------ |
-| Landing           | `index.html`                             | Logo PacePal |
-| Actividades       | `pages/actividades/actividades.php`      | Si           |
-| Detalle actividad | `pages/actividades/actividadDetalle.php` | Si           |
-| Tienda            | `pages/tienda/tienda.php`                | Si           |
-| Detalle producto  | `pages/tienda/producto.php`              | Si           |
-| Rutas             | `pages/rutas/rutas.php`                  | Sí           |
-| Detalle ruta      | `pages/rutas/rutaDetalle.php`            | Si           |
-| Sobre nosotros    | `pages/about/about.html`                 | Si           |
-| Login             | `pages/formulario/login.php`             | Si           |
-| Registro          | `pages/formulario/register.php`          | Si           |
-| Perfil usuario    | `pages/usuario/perfil.php`               | Si           |
-| Panel admin       | `pages/admin/panelAdmin.php`             | Si           |
+```text
+pacepal/
+├── .github/
+│   └── workflows/
+│       └── deploy-react-pages.yml
+├── assets/
+├── audio/
+├── css/
+│   ├── actividades/
+│   ├── admin/
+│   ├── comun/
+│   ├── formulario/
+│   ├── landing/
+│   ├── rutas/
+│   ├── sobrenosotros/
+│   ├── tienda/
+│   └── usuario/
+├── db/
+│   ├── pacepal.sql
+│   ├── schema.sql
+│   └── seed.sql
+├── docs/
+│   ├── 00-material/
+│   ├── 01-bitacora/
+│   ├── 09-entrega-final/
+│   ├── _archivo-historico-no-entregable/
+│   └── evidencias/
+├── img/
+│   ├── about/
+│   ├── audio/
+│   ├── landing/
+│   ├── logo/
+│   ├── productos/
+│   └── rutas/
+├── js/
+│   ├── actividades/
+│   ├── admin/
+│   ├── components/
+│   ├── data/
+│   ├── formulario/
+│   ├── hooks/
+│   ├── landing/
+│   ├── rutas/
+│   ├── services/
+│   ├── tienda/
+│   ├── usuario/
+│   ├── utils/
+│   ├── App.jsx
+│   └── main.jsx
+├── pages/
+│   ├── about/
+│   ├── actividades/
+│   ├── admin/
+│   ├── formulario/
+│   ├── landing/
+│   ├── legal/
+│   ├── rutas/
+│   ├── tienda/
+│   └── usuario/
+├── scripts/
+│   ├── github/
+│   ├── build-root.mjs
+│   └── write-vite-index.mjs
+├── src/
+│   ├── api/
+│   ├── config/
+│   ├── controllers/
+│   └── models/
+├── tests/
+│   ├── funcionales/
+│   ├── postman/
+│   ├── react-sprint-3/
+│   └── selenium/
+├── .env.local.example
+├── .htaccess
+├── index.html
+├── package-lock.json
+├── package.json
+└── vite.config.js
+```
 
-Navbar compartido renderizado desde: `js/formulario/ui.js`.
+## Pruebas, evidencias y entregables
 
-## Sprint 1 · DIW
+- Casos funcionales manuales: [tests/funcionales](tests/funcionales)
+- Colección Postman: [tests/postman](tests/postman)
+- Validaciones del cliente React: [tests/react-sprint-3](tests/react-sprint-3)
+- Automatización Selenium: [tests/selenium](tests/selenium)
+- Evidencias de despliegue: [docs/evidencias/despliegue](docs/evidencias/despliegue)
 
-Resumen breve:
+## Equipo
 
-- Diseño e implementación de la landing principal del proyecto.
-- estructura visual responsive
-- identidad gráfica definida mediante guía de estilos
-- secciones principales: hero, actividades, tienda, beneficios, CTA y footer
-
-Documentación principal:
-
-- `docs/03-diw/sprint-1/01-tendencias-competencia.md`
-- `docs/03-diw/sprint-1/03-guia-estilos.md`
-- `docs/03-diw/sprint-1/04-boceto-final.md`
-- `docs/03-diw/sprint-1/03-wireframes.md`
-- `docs/03-diw/wireframes/`
-
-Accesibilidad y calidad (Lighthouse aprox.):
-
-| Métrica          | Puntuación |
-| ---------------- | ---------- |
-| Performance      | 95         |
-| Accesibilidad    | 100        |
-| Buenas prácticas | 100        |
-| SEO              | 100        |
-
-## Sprint 1 · DWEC
-
-Funcionalidades implementadas:
-
-- Formulario de registro.
-- Formulario de login.
-- Validaciones JavaScript en cliente.
-- Validación de DNI y contraseña fuerte.
-- Validación en tiempo real.
-- Lógica condicional de tarjeta.
-
-Pruebas y evidencias:
-
-- Índice de tests: `tests/tests.md`
-- Casos funcionales: `tests/funcionales/`
-- Selenium: `tests/selenium/test-registro.js`
-- Evidencias: `docs/evidencias/dwec/README.md`
-
-Comando Selenium:
-
-- `node tests/selenium/test-registro.js`
-
-## Sprint 2 · DIW
-
-Resumen breve:
-
-- Maquetación de páginas secundarias: tienda, rutas, about y perfil usuario.
-- Responsive avanzado en todas las vistas (test en móvil real y emuladores).
-- Ajustes de accesibilidad (contraste, navegación por teclado, roles ARIA).
-- Optimización de imágenes y recursos (WebP, lazy load, compresión extra).
-- Revisión de usabilidad con checklist y test de usuario real.
-
-Documentación principal:
-
-- `docs/03-diw/sprint-2/01-accesibilidad-wcag.md`
-- `docs/03-diw/sprint-2/02-diseno-aplicacion.md`
-- `docs/03-diw/sprint-2/03-roles-y-perfiles-usuario.md`
-- `docs/03-diw/sprint-2/04-optimizacion-imagenes.md`
-- `docs/03-diw/sprint-2/05-inspeccion-usabilidad.md`
-
-Evidencias:
-
-- `docs/evidencias/diw/sprint-2/`
-
-## Sprint 2 · DWEC
-
-Funcionalidades implementadas:
-
-- Navbar y footer dinámicos según sesión (login/logout, admin, carrito).
-- Carrito de la tienda en JS, persistente en sesión.
-- Buscador de productos AJAX (filtro en vivo sin recargar).
-- Listados dinámicos de rutas y actividades desde la API.
-- Detalles de producto, ruta y actividad con carga dinámica.
-- Integración completa con la API REST (fetch, JSON, control de errores).
-
-Pruebas y evidencias:
-
-- Índice de tests: `tests/tests.md`
-- Casos funcionales: `tests/funcionales/`
-- Selenium: `tests/selenium/test-registro.js`
-- Evidencias: `docs/evidencias/dwec/README.md`
-
-## Sprint 2 · DWES
-
-Resumen breve:
-
-- Implementación del backend PHP en MVC (controllers y models por entidad).
-- API REST centralizada en `src/api/index.php` con rutas para todas las entidades.
-- Gestión de sesiones PHP, roles y permisos (usuario/admin).
-- Endpoints para login, registro, actividades, rutas, productos, pedidos y reportes.
-- Control de stock y transacciones en pedidos (con `FOR UPDATE`).
-- Validaciones backend independientes del frontend.
-- Pruebas con Postman y evidencias de respuestas reales.
-
-Documentación principal:
-
-- `docs/05-dwes/sprint-2/arquitectura-backend.md`
-- `docs/05-dwes/sprint-2/endpoints-api.md`
-- `docs/05-dwes/sprint-2/modelo-relacional.md`
-- `docs/05-dwes/sprint-2/pruebas-postman.md`
-- `docs/05-dwes/sprint-2/roles-acceso.md`
-
-Evidencias:
-
-- `docs/evidencias/dwes/README.md`
-
-## Resumen por próximos sprints
-
-En cada sprint de cada asignatura hemos ido añadiendo un resumen breve de lo realizado y su evidencia asociada en `docs/`.
-
-## Proyecto académico
-
-Desarrollo del Proyecto Intermodular del ciclo DAW.
-
-El objetivo es integrar diferentes módulos del ciclo en un único proyecto web completo.
-
-Equipo: Pablo Sevillano y Alejandro Pacheco (equipo [Treecore Studio](https://treecorestudio.es/)).
+Proyecto desarrollado por Pablo Sevillano y Alejandro Pacheco dentro del Proyecto Agile Intermodular del ciclo DAW.
