@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Modelo de productos — accede a la tabla articulos
+// Acceso a productos de la tabla articulos.
 
 class ProductoModel
 {
@@ -86,7 +86,6 @@ class ProductoModel
 
         $producto = $stmt->fetch();
 
-        // Si no existe, devolver null
         return $producto === false ? null : $producto;
     }
 

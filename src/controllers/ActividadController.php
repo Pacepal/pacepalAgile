@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Controlador de actividades — CRUD + join/leave para participaciones
+// Controlador de actividades y participaciones.
 require_once __DIR__ . '/../models/ActividadModel.php';
 
 class ActividadController
@@ -35,7 +35,7 @@ class ActividadController
     }
 
     // ===== CREAR ACTIVIDAD =====
-    // Cualquier usuario logueado puede crear actividades
+    // Los usuarios autenticados pueden proponer actividades.
     public function createActividad(): void
     {
         $this->iniciarSesion();
@@ -116,7 +116,6 @@ class ActividadController
         resumeSessionIfActive();
     }
 
-    // Verificar si el usuario tiene rol usuario o admin
     private function tieneRolUsuario(): bool
     {
         return isset($_SESSION['rol']) && ($_SESSION['rol'] === 'usuario' || $_SESSION['rol'] === 'admin');
@@ -180,7 +179,6 @@ class ActividadController
 
         $idUsuario = (int) $_SESSION['usuario_id'];
 
-        // Verifica que exista
         $actividad = $this->actividadModel->getActividadById($idActividad);
         if ($actividad === null) {
             $this->jsonResponse([
@@ -190,7 +188,6 @@ class ActividadController
             return;
         }
 
-        // comprobar que no esté ya apuntado
         if ($this->actividadModel->isParticipante($idUsuario, $idActividad)) {
             $this->jsonResponse([
                 'status' => 'error',
@@ -199,7 +196,7 @@ class ActividadController
             return;
         }
 
-        // control de plazas libres
+        // Las plazas se validan antes de crear la participación.
         $plazasMax = (int) ($actividad['plazas_max'] ?? 0);
         if ($plazasMax > 0) {
 
@@ -245,7 +242,7 @@ class ActividadController
 
         $idUsuario = (int) $_SESSION['usuario_id'];
 
-        // Comprobar que esté inscrito antes de borrar
+        // Solo se elimina la participación si existe.
         if (!$this->actividadModel->isParticipante($idUsuario, $idActividad)) {
             $this->jsonResponse([
                 'status' => 'error',
@@ -272,7 +269,7 @@ class ActividadController
     }
 
     // ===== EDITAR / ELIMINAR =====
-    // Solo el creador o un admin pueden tocar estas
+    // Edición y borrado quedan limitados al creador o a administración.
 
     public function updateActividad(int $idActividad): void
     {
@@ -290,7 +287,6 @@ class ActividadController
             return;
         }
 
-        // Solo creador o admin pueden editar
         $esCreador = $idUsuario === (int) $actividad['id_usuario_creador'];
         $esAdmin = isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin';
 
@@ -313,7 +309,6 @@ class ActividadController
             return;
         }
 
-        // Datos actualizados
         $data = [
             'id_ruta' => $idRuta,
             'fecha' => $input['fecha'] ?? $actividad['fecha'],
@@ -357,7 +352,6 @@ class ActividadController
             return;
         }
 
-        // Solo creador o admin pueden eliminar
         $esCreador = $idUsuario === (int) $actividad['id_usuario_creador'];
         $esAdmin = isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin';
 

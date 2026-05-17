@@ -1,5 +1,4 @@
-// Listado de productos de la tienda — carga desde la API y los pinta como tarjetas
-// incluye buscador por nombre y boton de añadir al carrito
+// Tienda clásica: listado, búsqueda y acciones de carrito contra la API PHP.
 
 document.addEventListener('DOMContentLoaded', function () {
     const endpointProductos = '../../src/api/index.php/api/productos?destacados=1';
@@ -9,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    // ── Estado compartido — declarado antes de cualquier fetch ───────────────
     var PRODUCTOS_POR_PAGINA = 6;
     var paginaActual         = 1;
     var terminoBusqueda      = '';
@@ -47,21 +45,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const tarjeta = document.createElement('article');
         tarjeta.className = 'tarjeta tarjeta-producto';
 
-        // <img src="..." alt="..." loading="lazy" />
         const imagen = document.createElement('img');
         imagen.src = '../../' + (producto.imagen1 || 'img/productos/zapatillaPacepal1.webp');
         imagen.alt = producto.nombre || 'Producto PacePal';
         imagen.loading = 'lazy';
 
-        // <div class="tarjeta-producto__cuerpo">
         const cuerpo = document.createElement('div');
         cuerpo.className = 'tarjeta-producto__cuerpo';
 
-        // <h3>Nombre</h3>
         const nombre = document.createElement('h3');
         nombre.textContent = producto.nombre || 'Producto sin nombre';
 
-        // <p><i class="bi bi-leaf-fill"></i> Precio</p>
         const precioP = document.createElement('p');
         const iconoPrecio = document.createElement('i');
         iconoPrecio.className = 'bi bi-leaf-fill';
@@ -74,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
             precioP.appendChild(document.createTextNode(' Precio no disponible'));
         }
 
-        // <p><i class="bi bi-leaf-fill"></i> Producción responsable</p>
         const ecoP = document.createElement('p');
         const iconoEco = document.createElement('i');
         iconoEco.className = 'bi bi-leaf-fill';
@@ -82,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
         ecoP.appendChild(iconoEco);
         ecoP.appendChild(document.createTextNode(' Producción responsable'));
 
-        // <button> Anadir al carrito </button>
         const boton = document.createElement('button');
         boton.type = 'button';
         boton.className = 'boton boton--primario';
@@ -136,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // <a class="boton boton--primario">Ver producto</a>
         const enlaceDetalle = document.createElement('a');
         enlaceDetalle.className = 'boton boton--primario';
         enlaceDetalle.textContent = 'Ver producto';
@@ -155,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function cargarProductos() {
-        // Cancelar cualquier fetch anterior (búsqueda o carga de destacados)
+        // Evita que una búsqueda anterior sobrescriba resultados más recientes.
         if (controladorActual) { controladorActual.abort(); }
         controladorActual = new AbortController();
         var signal = controladorActual.signal;
@@ -200,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     cargarProductos();
 
-    // ── Helpers de paginación ─────────────────────────────────────────────────
     function limpiarPaginacion() {
         if (!paginacion) { return; }
         while (paginacion.firstChild) {
@@ -239,7 +229,6 @@ document.addEventListener('DOMContentLoaded', function () {
         paginacion.appendChild(nav);
     }
 
-    // ── Fetch de búsqueda con soporte de paginación ───────────────────────────
     function ejecutarBusqueda(q, pagina) {
         paginaActual    = pagina;
         terminoBusqueda = q;
@@ -289,7 +278,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // ── Retorno a destacados ──────────────────────────────────────────────────
     function volverADestacados() {
         if (buscador)        { buscador.value = ''; }
         if (btnVerDestacados) { btnVerDestacados.hidden = true; }
@@ -303,7 +291,6 @@ document.addEventListener('DOMContentLoaded', function () {
         btnVerDestacados.addEventListener('click', volverADestacados);
     }
 
-    // ── Buscador ──────────────────────────────────────────────────────────────
     if (buscador) {
         buscador.addEventListener('input', function () {
             var q = buscador.value.trim();

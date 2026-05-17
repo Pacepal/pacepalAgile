@@ -1,17 +1,10 @@
-// =========================================================
-// VALIDACIONES DEL FORMULARIO DE PACEPAL (DWEC - Sprint 1)
-// =========================================================
-// He intentado dejarlo sencillo y modular para poder explicarlo fácil.
-// Todas las funciones devuelven true / false.
+// Validaciones compartidas por los formularios clásicos de PacePal.
 
-// Función pequeña para normalizar cualquier texto:
-// quito null/undefined y también espacios al inicio y al final.
 function limpiarTexto(valor) {
     return (valor ?? '').toString().trim();
 }
 
-// Busco el contenedor de error que corresponde a un input.
-// Prioridad: id "error-<idInput>" y si no existe uso el siguiente .mensaje-error.
+// Compatibilidad con formularios que usan id de error o un mensaje contiguo al campo.
 function obtenerContenedorError(input) {
     if (!input || !input.id) {
         return null;
@@ -30,14 +23,13 @@ function obtenerContenedorError(input) {
     return null;
 }
 
-// Muestro o limpio el mensaje debajo del campo.
 function mostrarErrorCampo(input, mensaje) {
     const contenedor = obtenerContenedorError(input);
     if (contenedor) {
         contenedor.textContent = mensaje || '';
     }
 
-    // También marco el campo en verde o rojo para feedback visual.
+    // El estado visual se sincroniza con el mensaje de validación.
     if (!input) {
         return;
     }
@@ -55,7 +47,7 @@ function mostrarErrorCampo(input, mensaje) {
     }
 }
 
-// ---------- 1) NOMBRE Y APELLIDOS ----------
+// Nombre y apellidos
 function validarNombre(valor, input) {
     const nombre = limpiarTexto(valor);
 
@@ -74,7 +66,7 @@ function validarNombre(valor, input) {
         return false;
     }
 
-    // Solo permito letras (incluyendo acentos/ñ) y espacios.
+    // Acepta nombres con acentos y ñ, sin números ni símbolos.
     if (!/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]+$/.test(nombre)) {
         mostrarErrorCampo(input, 'El nombre solo puede contener letras y espacios.');
         return false;
@@ -84,7 +76,7 @@ function validarNombre(valor, input) {
     return true;
 }
 
-// ---------- 2) EMAIL ----------
+// Email
 function validarEmail(valor, input) {
     const email = limpiarTexto(valor);
 
@@ -98,7 +90,7 @@ function validarEmail(valor, input) {
         return false;
     }
 
-    // Formato básico: texto@dominio.algo
+    // Validación sintáctica básica; el backend comprueba unicidad.
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
         mostrarErrorCampo(input, 'Introduce un correo electrónico válido.');
         return false;
@@ -108,7 +100,7 @@ function validarEmail(valor, input) {
     return true;
 }
 
-// ---------- 3) DNI ----------
+// DNI
 function normalizarDni(dni) {
     return limpiarTexto(dni).toUpperCase();
 }
@@ -121,7 +113,7 @@ function validarDNI(valor, input) {
         return false;
     }
 
-    // Debe ser 8 números + 1 letra
+    // Formato nacional: 8 dígitos y letra de control.
     if (!/^\d{8}[A-Z]$/.test(dni)) {
         mostrarErrorCampo(input, 'El DNI debe tener 8 números y una letra.');
         return false;
@@ -141,7 +133,7 @@ function validarDNI(valor, input) {
     return true;
 }
 
-// ---------- 4) CONTRASEÑA ----------
+// Contraseña
 function validarPassword(valor, input) {
     const password = (valor ?? '').toString();
 
@@ -167,7 +159,7 @@ function validarPassword(valor, input) {
     return true;
 }
 
-// ---------- 5) CONFIRMAR CONTRASEÑA ----------
+// Confirmar contraseña
 function validarConfirmarPassword(password, confirmarPassword, input) {
     const confirmar = (confirmarPassword ?? '').toString();
 
@@ -185,11 +177,10 @@ function validarConfirmarPassword(password, confirmarPassword, input) {
     return true;
 }
 
-// ---------- 6) FECHA DE NACIMIENTO (opcional) ----------
+// Fecha de nacimiento opcional
 function validarFechaNacimiento(valor, input) {
     const fechaTexto = limpiarTexto(valor);
 
-    // Si está vacío, es válido porque es opcional
     if (!fechaTexto) {
         mostrarErrorCampo(input, '');
         return true;
@@ -218,15 +209,14 @@ function validarFechaNacimiento(valor, input) {
     return true;
 }
 
-// ---------- 7) TARJETA DE CRÉDITO (condicional) ----------
+// Tarjeta de crédito condicional
 function validarTarjetaCredito(valor, input) {
     const texto = limpiarTexto(valor);
 
-    // Solo quito espacios internos para validar número real
+    // Se ignoran espacios internos para validar el número real.
     const tarjetaSinEspacios = texto.replace(/\s+/g, '');
 
-    // Si llega vacío aquí, la decisión de si es obligatorio o no
-    // la toma la lógica del formulario según visibilidad.
+    // La obligatoriedad depende de si el formulario muestra el campo.
     if (!tarjetaSinEspacios) {
         mostrarErrorCampo(input, 'Introduce un número de tarjeta válido.');
         return false;
@@ -241,7 +231,6 @@ function validarTarjetaCredito(valor, input) {
     return true;
 }
 
-// ---------- Utilidad para limpiar todos los errores del formulario ----------
 function limpiarErroresFormulario(formulario) {
     if (!formulario) {
         return;
@@ -253,7 +242,7 @@ function limpiarErroresFormulario(formulario) {
     });
 }
 
-// Objeto global opcional para usarlo de forma modular.
+// API global usada por los formularios clásicos sin bundler.
 window.ValidacionesPacePal = {
     limpiarTexto,
     mostrarErrorCampo,

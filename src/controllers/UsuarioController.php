@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Controlador de usuarios — perfil propio + CRUD admin
+// Controlador de perfil propio y gestión de usuarios desde administración.
 require_once __DIR__ . '/../models/UsuarioModel.php';
 require_once __DIR__ . '/../models/PedidoModel.php';
 
@@ -87,7 +87,7 @@ class UsuarioController
     }
 
     // ===== PEDIDOS DEL USUARIO =====
-    // Agrupa las filas del LEFT JOIN por id_pedido para devolver un array limpio
+    // Agrupa las filas del LEFT JOIN para exponer pedidos con sus líneas.
 
     public function getPedidosUsuario(): void
     {
@@ -162,7 +162,7 @@ class UsuarioController
         }
     }
 
-    // Crear usuario desde panel admin — comprobamos DNI y email duplicados antes de insertar
+    // Administración valida DNI y email antes de insertar usuarios.
     public function createUsuarioAdmin(): void
     {
         $this->iniciarSesion();
@@ -268,7 +268,7 @@ class UsuarioController
         }
     }
 
-    // no te puedes borrar a ti mismo, eso sería un desastre
+    // Se evita que el usuario activo elimine su propia cuenta.
     public function deleteUsuario(int $idUsuario): void
     {
         $this->iniciarSesion();

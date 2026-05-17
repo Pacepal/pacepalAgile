@@ -3,7 +3,7 @@ import { buildPublicAssetUrl } from '../utils/paths.js';
 
 /**
  * Botón flotante de accesibilidad.
- * Reproduce la locución local definida para Sprint 3.
+ * Reproduce la locución local incluida con la aplicación.
  */
 export default function AccessibilityButton() {
   const audioRef = useRef(null);

@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-// Controlador de pedidos — carrito en sesión + creación de pedido
-// el carrito se guarda en $_SESSION porque no necesitamos persistirlo en BD
+// El carrito vive en la sesión PHP hasta que se convierte en pedido persistido.
 require_once __DIR__ . '/../models/PedidoModel.php';
 
 class PedidoController
@@ -21,7 +20,7 @@ class PedidoController
     {
         $this->iniciarSesion();
 
-        // Solo usuarios o admin pueden usar el carrito
+        // El carrito requiere sesión de usuario o administrador.
         if (!$this->tieneRolUsuario()) {
             $this->jsonResponse([
                 'status' => 'error',
@@ -43,7 +42,6 @@ class PedidoController
             return;
         }
 
-        // Comprobar que el producto exista
         $articulo = $this->pedidoModel->getArticuloById($productoId);
         if ($articulo === null) {
             $this->jsonResponse([
@@ -53,16 +51,14 @@ class PedidoController
             return;
         }
 
-        // Crear carrito en sesión si no existe
         if (!isset($_SESSION['carrito']) || !is_array($_SESSION['carrito'])) {
             $_SESSION['carrito'] = [];
         }
 
-        // Calcular nueva cantidad total en carrito
         $cantidadActual = (int) ($_SESSION['carrito'][$productoId] ?? 0);
         $nuevaCantidad = $cantidadActual + $cantidad;
 
-        // Verificar stock disponible
+        // Se valida contra stock real antes de acumular unidades en sesión.
         $stockDisponible = (int) $articulo['stock'];
         if ($nuevaCantidad > $stockDisponible) {
             $this->jsonResponse([
@@ -104,7 +100,6 @@ class PedidoController
         $items = [];
         $total = 0.0;
 
-        // Recorrer productos del carrito
         foreach ($carrito as $idArticulo => $cantidad) {
             $idArticulo = (int) $idArticulo;
             $cantidad = (int) $cantidad;
@@ -113,7 +108,6 @@ class PedidoController
                 continue;
             }
 
-            // Obtener datos del producto
             $articulo = $this->pedidoModel->getArticuloById($idArticulo);
             if ($articulo === null) {
                 continue;
@@ -123,7 +117,6 @@ class PedidoController
             $subtotal = $precio * $cantidad;
             $total += $subtotal;
 
-            // Preparar datos de salida
             $items[] = [
                 'id_articulo' => (int) $articulo['id_articulo'],
                 'nombre' => $articulo['nombre'],
@@ -145,7 +138,7 @@ class PedidoController
     }
 
     // ===== CREAR PEDIDO =====
-    // Pasa el carrito de sesión a la BD como pedido real
+    // Convierte el carrito de sesión en un pedido persistido.
     public function crearPedido(): void
     {
         $this->iniciarSesion();
@@ -193,7 +186,7 @@ class PedidoController
                 continue;
             }
 
-            // verificamos stock otra vez antes de confirmar
+            // El stock se vuelve a comprobar antes de confirmar la compra.
             $stockDisponible = (int) $articulo['stock'];
             if ($stockDisponible < $cantidad) {
                 $this->jsonResponse([
@@ -213,7 +206,6 @@ class PedidoController
             ];
         }
 
-        // Validaciones finales del pedido
         if (count($lineasPedido) === 0) {
             $this->jsonResponse([
                 'status' => 'error',
@@ -233,7 +225,7 @@ class PedidoController
         try {
             $idPedido = $this->pedidoModel->createPedido($idUsuario, $lineasPedido, $total);
 
-            // vaciamos carrito despues de comprar
+            // El carrito se limpia solo después de persistir el pedido.
             $_SESSION['carrito'] = [];
 
             $this->jsonResponse([
@@ -309,7 +301,6 @@ class PedidoController
             $_SESSION['carrito'] = [];
         }
 
-        // Borrar producto del carrito
         unset($_SESSION['carrito'][$productoId]);
 
         $this->jsonResponse([
@@ -348,11 +339,11 @@ class PedidoController
             $_SESSION['carrito'] = [];
         }
 
-        // Si la cantidad es 0 o menor, se elimina
+        // Una cantidad no positiva equivale a retirar el producto.
         if ($cantidad <= 0) {
             unset($_SESSION['carrito'][$productoId]);
         } else {
-            // Comprobar stock antes de actualizar
+            // La actualización no puede superar el stock actual.
             $articulo = $this->pedidoModel->getArticuloById($productoId);
 
             if ($articulo !== null) {

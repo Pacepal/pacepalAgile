@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Modelo de pedidos — gestión de compras con transacciones y control de stock
+// Gestión de pedidos con transacciones y control de stock.
 
 class PedidoModel
 {
@@ -13,14 +13,12 @@ class PedidoModel
         $this->pdo = $pdo;
     }
 
-    // ===== CREAR PEDIDO =====
-    // Usa transacciones con FOR UPDATE para que no se venda el mismo stock a dos personas a la vez
+    // FOR UPDATE bloquea el stock durante la compra para evitar ventas simultáneas.
     public function createPedido(int $idUsuario, array $productos, float $total, string $estado = 'pendiente'): int
     {
         $this->pdo->beginTransaction();
 
         try {
-            // comprobamos stock con FOR UPDATE para bloquear las filas y evitar condiciones de carrera
             foreach ($productos as $producto) {
                 $idArticulo = $producto['id_articulo'] ?? $producto['id'];
                 $cantidad = (int) $producto['cantidad'];
@@ -42,7 +40,6 @@ class PedidoModel
                 }
             }
 
-            // Insertar pedido
             $sqlPedido = 'INSERT INTO pedidos (id_usuario, total, estado) VALUES (:id_usuario, :total, :estado)';
             $stmtPedido = $this->pdo->prepare($sqlPedido);
             $stmtPedido->execute([
@@ -53,7 +50,6 @@ class PedidoModel
 
             $idPedido = (int) $this->pdo->lastInsertId();
 
-            // Insertar lineas del pedido y descontar stock
             $sqlDetalle = 'INSERT INTO detalle_pedido (id_pedido, id_articulo, cantidad, precio_unitario)
                            VALUES (:id_pedido, :id_articulo, :cantidad, :precio_unitario)';
             $stmtDetalle = $this->pdo->prepare($sqlDetalle);
@@ -86,8 +82,6 @@ class PedidoModel
         }
     }
 
-    // ===== CONSULTAS =====
-
     public function getArticuloById(int $idArticulo): ?array
     {
         $sql = 'SELECT id_articulo, nombre, precio, stock, imagen1, imagen2
@@ -102,7 +96,7 @@ class PedidoModel
         return $articulo === false ? null : $articulo;
     }
 
-    // pedidos del usuario con sus lineas de detalle (LEFT JOIN para incluir pedidos sin lineas)
+    // LEFT JOIN conserva pedidos aunque todavía no tengan líneas asociadas.
     public function getPedidosUsuario(int $idUsuario): array
     {
         $sql = 'SELECT
@@ -126,7 +120,7 @@ class PedidoModel
         return $stmt->fetchAll();
     }
 
-    // vista admin — todos los pedidos con nombre y email del usuario
+    // Vista administrativa con datos básicos del usuario comprador.
     public function getAllPedidos(): array
     {
         $sql = 'SELECT
