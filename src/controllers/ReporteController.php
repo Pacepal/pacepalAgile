@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Controlador de reportes — crear reportes + gestión desde admin
+// Controlador de reportes y revisión desde administración.
 require_once __DIR__ . '/../models/ReporteModel.php';
 
 class ReporteController
@@ -30,7 +30,6 @@ class ReporteController
 
         $input = $this->getJsonInput();
 
-        // Validar motivo del reporte
         $motivo = trim((string) ($input['motivo'] ?? ''));
         if ($motivo === '') {
             $this->jsonResponse([
@@ -94,7 +93,7 @@ class ReporteController
     }
 
     // ===== ACTUALIZAR ESTADO =====
-    // Los estados posibles: pendiente, revisado, resuelto, descartado
+    // El estado queda limitado al flujo de revisión definido para reportes.
 
     public function updateReporte(int $idReporte): void
     {
@@ -175,7 +174,6 @@ class ReporteController
         return is_array($data) ? $data : [];
     }
 
-    // Enviar respuesta JSON
     private function jsonResponse(array $payload, int $statusCode = 200): void
     {
         http_response_code($statusCode);

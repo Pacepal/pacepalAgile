@@ -1,11 +1,6 @@
-// ===================================================================
-// UI COMPARTIDA — navbar y footer dinámicos
-// Se monta en cada página usando los divs #navbarCompartida y
-// #footerCompartido. Consulta la sesión del usuario para decidir
-// si mostrar login/register o perfil/logout.
-// ===================================================================
+// UI compartida para páginas clásicas: cabecera, footer y estado de sesión.
 
-// Funciones DOM compartidas — usadas en detalle, perfil y admin
+// Helper DOM compartido por detalle, perfil y administración.
 function crearElemento(tag, texto, clase) {
 	var el = document.createElement(tag);
 	if (texto) el.textContent = texto;
@@ -43,7 +38,7 @@ async function fetchSessionStatus(basePath) {
 			return { logged: false };
 		}
 	} catch (_error) {
-		// Se prueba fallback mas abajo.
+			// La instalación puede funcionar sin reglas de reescritura.
 	}
 
 	try {
@@ -70,7 +65,6 @@ async function fetchSessionStatus(basePath) {
 	}
 }
 
-// si la ruta principal falla (sin reescritura), probamos fallback
 async function doLogout(basePath) {
 	const logoutUrl = `${basePath}src/api/index.php/api/logout`;
 
@@ -84,7 +78,7 @@ async function doLogout(basePath) {
 			return;
 		}
 	} catch (_error) {
-		// Se prueba fallback mas abajo.
+		// La instalación puede funcionar sin reglas de reescritura.
 	}
 
 	const fallbackUrl = `${basePath}api/logout`;
@@ -96,7 +90,6 @@ async function doLogout(basePath) {
 	});
 }
 
-// monta los botones de auth según estado de sesión
 function buildAuthActions(base, current, sessionData) {
 	const isLogin = current === 'login';
 	const isRegistro = current === 'registro';
@@ -176,7 +169,7 @@ async function renderNavbarCompartida() {
 		});
 	}
 
-	// Si esta logeado, remplazar CTAs de registro en la landing.
+		// Evita que una sesión activa siga mostrando CTAs de registro.
 	if (sessionData && sessionData.logged === true) {
 		var ctaLinks = document.querySelectorAll('a[href*="register.php"]');
 		for (var ci = 0; ci < ctaLinks.length; ci++) {
@@ -247,11 +240,10 @@ function renderFooterCompartido() {
 			</div>
 		</footer>`;
 }
-// Iniciar
 renderNavbarCompartida();
 renderFooterCompartido();
 
-// badge del carrito en el nav — cuenta total de items
+// El badge resume el carrito guardado en la sesión PHP.
 function actualizarContadorCarrito() {
 	var mount = document.getElementById('navbarCompartida');
 	var base = mount ? (mount.dataset.base || '') : '';
@@ -283,7 +275,6 @@ function actualizarContadorCarrito() {
 			badge.style.display = 'none';
 		}
 	}).catch(function () {
-		// silencioso
+		// El contador no debe bloquear la navegación si la API falla.
 	});
 }
-

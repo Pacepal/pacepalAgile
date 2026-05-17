@@ -1,8 +1,4 @@
-/* ========================================
-   Base para la página Sobre Nosotros
-   usa las variables globales de variables.css
-   solo añade --verde-secundario (color propio)
-   ======================================== */
+/* Base de Sobre Nosotros; añade el color propio de esta vista. */
 
 :root {
   --verde-secundario: #5d8c16;

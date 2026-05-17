@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Controlador de rutas — CRUD completo, solo admin para crear/editar/eliminar
+// Controlador de rutas; las escrituras quedan restringidas a administración.
 require_once __DIR__ . '/../models/RutaModel.php';
 
 class RutaController
@@ -66,7 +66,6 @@ class RutaController
     {
         $this->iniciarSesion();
 
-        // Verificar permisos
         if (!$this->esAdmin()) {
             $this->jsonResponse([
                 'status' => 'error',
@@ -125,7 +124,6 @@ class RutaController
             return;
         }
 
-        // Comprobar que la ruta exista
         $ruta = $this->rutaModel->getRutaById($idRuta);
         if ($ruta === null) {
             $this->jsonResponse([
@@ -186,7 +184,6 @@ class RutaController
             return;
         }
 
-        // Verificar que exista
         $ruta = $this->rutaModel->getRutaById($idRuta);
         if ($ruta === null) {
             $this->jsonResponse([

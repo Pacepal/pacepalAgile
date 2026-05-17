@@ -1,6 +1,6 @@
 # Evidencias - rutas React XAMPP
 
-## Fecha de validacion
+## Fecha de validación
 
 2026-05-08
 
@@ -9,7 +9,7 @@
 - Proyecto en ruta web de XAMPP con carpeta intermedia con espacios: `treecore Trabajos/pacepal`.
 - Build React: `frontend-react/dist/index.html`.
 - Apache/XAMPP: activo en Windows, validado desde `cmd.exe /C curl`.
-- Nota: desde WSL `curl http://localhost/...` no alcanzaba el Apache de Windows, por eso la validacion HTTP local se hizo con `cmd.exe`.
+- Nota: desde WSL, `curl http://localhost/...` no alcanzaba el Apache de Windows; por eso la validación HTTP local se hizo con `cmd.exe`.
 
 ## URL local probada
 
@@ -40,10 +40,10 @@ Pruebas realizadas:
 
 Resultado: no llegan a PacePal. Apache responde con HTML de otro proyecto
 (`El Juramento de Valtherion`) y `Content-Type: text/html`. La incidencia queda
-pendiente de configuracion local de Apache/vhost: `127.0.0.1` debe apuntar al
+pendiente de configuración local de Apache/vhost: `127.0.0.1` debe apuntar al
 mismo DocumentRoot que `localhost` para que esta ruta funcione.
 
-## Comprobacion de URL generada
+## Comprobación de URL generada
 
 Destino calculado por el lanzador:
 
@@ -72,7 +72,7 @@ Comprobado por HTTP:
 - imagen de ruta/actividad -> `200`
 - API health/productos/rutas/actividades -> `200` en `localhost`
 
-No se ha automatizado la inspeccion visual de DevTools. Queda pendiente abrir el navegador, confirmar la redireccion visible y revisar Console/Network.
+No se ha automatizado la inspección visual de DevTools. Queda pendiente abrir el navegador, confirmar la redirección visible y revisar Console/Network.
 
 ## Capturas pendientes
 
@@ -81,13 +81,13 @@ Pablo debe añadir manualmente estas capturas:
 1. React cargando desde `http://localhost/treecore%20Trabajos/pacepal/`.
 2. URL final sin `C:/xampp`, sin `htdocs` y sin `localhost/C:`.
 3. Header con logo visible.
-4. Tienda con imagenes de productos visibles.
-5. Actividades/rutas con imagenes visibles.
+4. Tienda con imágenes de productos visibles.
+5. Actividades/rutas con imágenes visibles.
 6. DevTools Console sin errores nuevos.
 7. DevTools Network filtrando `img`, `assets` y `data` sin 404 relevantes.
 
 ## Incidencias pendientes
 
-- Validacion visual manual en navegador.
+- Validación visual manual en navegador.
 - `127.0.0.1` sirve otro proyecto en este equipo; no es un fallo de ruta de PacePal mientras Apache no apunte ese host al DocumentRoot correcto.
 - Si la base de datos local contiene rutas absolutas antiguas, deben corregirse en datos o normalizarse temporalmente desde React hasta limpiar la BD.

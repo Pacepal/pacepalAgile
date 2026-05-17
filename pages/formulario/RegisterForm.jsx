@@ -131,6 +131,7 @@ function RegisterForm({ onRegister, sessionMessage, sessionMessageType, onNaviga
   }
 
   function validateAll() {
+    // Ejecuta validación cruzada de todo el formulario antes de enviar al backend.
     const nextErrors = {
       nombreApellidos: validarNombre(values.nombreApellidos),
       email: validarEmail(values.email),
@@ -180,6 +181,8 @@ function RegisterForm({ onRegister, sessionMessage, sessionMessageType, onNaviga
     if (showCard && limpiarTexto(values.tarjetaCredito)) payload.tarjeta = limpiarTexto(values.tarjetaCredito);
     if (values.notificaciones) payload.notificaciones = true;
     if (values.revistaDigital) payload.revista = true;
+
+    // Solo se envían campos opcionales cuando el usuario los ha informado.
 
     setLocalMessage('Registrando usuario...');
     setMessageType('ok');

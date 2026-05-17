@@ -1,15 +1,13 @@
-/* ========================================
-   Responsive landing — breakpoints movil/tablet/desktop
-   ======================================== */
+/* Breakpoints principales de landing y navegación. */
 
-/* tablet pequeño */
+/* Tablet pequeño */
 @media (min-width: 576px) {
   .contenedor {
     width: min(100% - 2rem, var(--ancho-max));
   }
 }
 
-/* tablet */
+/* Tablet */
 @media (min-width: 768px) {
   .hero h1 {
     font-size: 2.3rem;
@@ -26,7 +24,7 @@
   }
 }
 
-/* desktop */
+/* Desktop */
 @media (min-width: 992px) {
   .hero {
     min-height: 76vh;
@@ -114,7 +112,7 @@
   }
 }
 
-/* pantallas grandes */
+/* Pantallas grandes */
 @media (min-width: 1200px) {
   .hero {
     min-height: 82vh;

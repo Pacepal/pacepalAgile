@@ -152,6 +152,7 @@ function AdminPage({ session, products, activities, routes }) {
     }
 
     try {
+      // Agrupa las lecturas iniciales para evitar estados intermedios inconsistentes.
       const [usersPayload, reportsPayload, ordersPayload] = await Promise.all([
         requestJson('/usuarios'),
         requestJson('/reportes'),

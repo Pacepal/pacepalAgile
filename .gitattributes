@@ -1,1 +1,10 @@
 *.php linguist-language=PHP
+
+# Normaliza texto y fija LF en el repositorio para evitar avisos CRLF/LF.
+* text=auto
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.css text eol=lf
+*.html text eol=lf

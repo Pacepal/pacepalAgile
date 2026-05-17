@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Modelo de actividades — CRUD + gestión de participaciones
+// Acceso a actividades y participaciones.
 
 class ActividadModel
 {
@@ -12,8 +12,6 @@ class ActividadModel
     {
         $this->pdo = $pdo;
     }
-
-    // ===== LISTADO Y DETALLE =====
 
     public function getAllActividades(): array
     {
@@ -49,8 +47,6 @@ class ActividadModel
         return $actividad === false ? null : $actividad;
     }
 
-    // ===== CREAR ACTIVIDAD =====
-
     public function createActividad(array $data): int
     {
         $sql = 'INSERT INTO actividades (id_ruta, id_usuario_creador, fecha, hora, nivel, plazas_max, descripcion, estado)
@@ -68,11 +64,10 @@ class ActividadModel
             'estado' => $data['estado'] ?? 'activa',
         ]);
 
-        // Devuelve el ID insertado
         return (int) $this->pdo->lastInsertId();
     }
 
-    // JOIN con rutas y usuarios para la vista de detalle
+    // Detalle enriquecido para evitar consultas adicionales en la vista.
     public function getActividadConRuta(int $idActividad): ?array
     {
         $sql = 'SELECT a.id_actividad, a.id_ruta, a.id_usuario_creador, a.fecha, a.hora, a.nivel,
@@ -93,8 +88,6 @@ class ActividadModel
 
         return $row === false ? null : $row;
     }
-
-    // ===== PARTICIPACIONES =====
 
     public function getParticipantes(int $idActividad): array
     {
@@ -155,8 +148,6 @@ class ActividadModel
         ]);
     }
 
-    // ===== ACTUALIZAR / ELIMINAR =====
-
     public function updateActividad(int $idActividad, array $data): void
     {
         $sql = 'UPDATE actividades SET id_ruta = :id_ruta, fecha = :fecha, hora = :hora, nivel = :nivel,
@@ -176,7 +167,7 @@ class ActividadModel
         ]);
     }
 
-    // borramos primero las participaciones porque tienen FK a actividades
+    // Las participaciones se eliminan antes por la FK hacia actividades.
     public function deleteActividad(int $idActividad): void
     {
         $sql = 'DELETE FROM participaciones WHERE id_actividad = :id_actividad';

@@ -1,9 +1,6 @@
-// ===================================================================
-// FORMULARIO DE REGISTRO — coordina los campos y manda al API
-// Toda la lógica de validación vive en validaciones.js
-// ===================================================================
+// Registro clásico: coordina campos y reutiliza las validaciones compartidas.
 
-// Si ya hay sesion activa, redirigir a perfil.
+// Una sesión activa evita mostrar de nuevo el formulario de registro.
 (async function () {
     try {
         var res = await fetch('../../src/api/index.php/api/session', {
@@ -17,7 +14,7 @@
             return;
         }
     } catch (_e) {
-        // Si falla, seguimos mostrando el formulario.
+        // La comprobación es preventiva; el formulario sigue disponible si la API no responde.
     }
 })();
 
@@ -124,12 +121,10 @@ function validarCampoEnTiempoReal(input) {
         }
     }
 
-    // Al salir del campo (blur) muestro error si lo hay.
     input.addEventListener('blur', function () {
         ejecutarValidacionSegunCampo();
     });
 
-    // Mientras escribe, valido también para ir pintando en verde/rojo al momento.
     input.addEventListener('input', function () {
         if (limpiarTexto(input.value) === '') {
             mostrarErrorCampo(input, '');
@@ -188,7 +183,6 @@ if (formRegistro) {
 
         let formularioValido = true;
 
-        // Campos obligatorios
         formularioValido = validarNombre(inputNombre?.value || '', inputNombre) && formularioValido;
         formularioValido = validarEmail(inputEmail?.value || '', inputEmail) && formularioValido;
         if (inputDNI) {
@@ -202,13 +196,12 @@ if (formRegistro) {
             inputConfirmPassword
         ) && formularioValido;
 
-        // Campo opcional
         formularioValido = validarFechaNacimiento(inputFechaNacimiento?.value || '', inputFechaNacimiento) && formularioValido;
 
-        // Regla de consistencia: dirección y país deben ir juntos.
+        // Dirección y país se envían como un bloque coherente.
         formularioValido = validarRelacionDireccionPais() && formularioValido;
 
-        // Tarjeta: solo valido si el campo está visible.
+        // La tarjeta solo se valida cuando el formulario la solicita.
         const tarjetaVisible = Boolean(contenedorTarjeta && contenedorTarjeta.style.display !== 'none');
         if (tarjetaVisible) {
             formularioValido = validarTarjetaCredito(inputTarjeta?.value || '', inputTarjeta) && formularioValido;

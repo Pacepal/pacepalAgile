@@ -1,5 +1,4 @@
-// Listado de actividades — pide las actividades a la API y las pinta como tarjetas
-// si el usuario esta logueado, muestra el boton para crear una nueva
+// Listado clásico de actividades conectado a la API PHP.
 
 document.addEventListener('DOMContentLoaded', function () {
     const endpointActividades = '../../src/api/index.php/api/actividades';
@@ -27,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const tarjeta = document.createElement('article');
         tarjeta.className = 'tarjeta tarjeta-actividad';
 
-        // <h3><i class="bi bi-geo-alt-fill"></i> Nombre</h3>
         const titulo = document.createElement('h3');
         const iconoUbicacion = document.createElement('i');
         iconoUbicacion.className = 'bi bi-geo-alt-fill';
@@ -35,14 +33,12 @@ document.addEventListener('DOMContentLoaded', function () {
         titulo.appendChild(iconoUbicacion);
         titulo.appendChild(document.createTextNode(' ' + (actividad.nombre || actividad.descripcion || 'Actividad')));
 
-        // <p class="linea">Tipo · nivel</p>
         const linea = document.createElement('p');
         linea.className = 'linea';
         const tipo = actividad.tipo || 'Actividad';
         const nivel = actividad.nivel || 'General';
         linea.textContent = tipo + ' · nivel ' + nivel;
 
-        // <p><i class="bi bi-calendar3"></i> Fecha · Hora</p>
         const fechaP = document.createElement('p');
         const iconoCalendario = document.createElement('i');
         iconoCalendario.className = 'bi bi-calendar3';
@@ -52,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const horaTexto = actividad.hora || '';
         fechaP.appendChild(document.createTextNode(' ' + fechaTexto + (horaTexto ? ' · ' + horaTexto : '')));
 
-        // <p><i class="bi bi-people-fill"></i> X plazas disponibles</p>
         const plazasP = document.createElement('p');
         const iconoPlazas = document.createElement('i');
         iconoPlazas.className = 'bi bi-people-fill';
@@ -63,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
             : 'Plazas no disponibles';
         plazasP.appendChild(document.createTextNode(' ' + plazasValor));
 
-        // <a class="boton boton--primario">Ver actividad</a>
         const enlaceDetalle = document.createElement('a');
         enlaceDetalle.className = 'boton boton--primario';
         enlaceDetalle.textContent = 'Ver actividad';
@@ -117,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     cargarActividades();
 
-    // --- Mostrar boton "Crear actividad" si el usuario esta logueado ---
     var botonCrearContenedor = document.getElementById('boton-crear-actividad');
 
     async function mostrarBotonCrear() {
@@ -140,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 botonCrearContenedor.appendChild(btnCrear);
             }
         } catch (_e) {
-            // no mostrar boton si falla la sesion
+            // Sin sesión verificada, la acción de creación no se muestra.
         }
     }
 

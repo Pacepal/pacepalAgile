@@ -1,6 +1,4 @@
-/* ========================================
-   Estilos globales — reset básico, contenedor y botones
-   ======================================== */
+/* Base global: reset mínimo, contenedor y botones. */
 
 * {
   box-sizing: border-box;
@@ -23,14 +21,12 @@ body {
     sans-serif;
 }
 
-/* ======== CONTENEDOR ======== */
 
 .contenedor {
   width: min(100% - 1.2rem, var(--ancho-max));
   margin: 0 auto;
 }
 
-/* ======== BOTONES ======== */
 
 .boton {
   display: inline-block;
@@ -57,7 +53,7 @@ body {
   border-color: var(--color-lima-hover);
 }
 
-/* focus visible para accesibilidad */
+/* Foco visible en controles principales. */
 .boton--primario:focus,
 .hamburguesa:focus,
 .menu a:focus,

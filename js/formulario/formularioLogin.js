@@ -1,8 +1,6 @@
-// ===================================================================
-// FORMULARIO DE LOGIN — usa funciones de validaciones.js
-// ===================================================================
+// Login clásico con validaciones compartidas.
 
-// Si ya hay sesion activa, redirigir a perfil.
+// Una sesión activa evita repetir el login.
 (async function () {
     try {
         var res = await fetch('../../src/api/index.php/api/session', {
@@ -16,7 +14,7 @@
             return;
         }
     } catch (_e) {
-        // Si falla, seguimos mostrando el formulario.
+        // Si la sesión no puede comprobarse, el login sigue disponible.
     }
 })();
 
@@ -25,7 +23,6 @@ const inputEmail = document.getElementById('email');
 const inputPassword = document.getElementById('password');
 const mensajeLogin = document.getElementById('mensajeLogin');
 
-// fallback para entornos sin reescritura de URL
 async function loginApi(payload) {
     const primaryResponse = await fetch('../../src/api/index.php/api/login', {
         method: 'POST',
@@ -41,7 +38,7 @@ async function loginApi(payload) {
         return primaryResponse;
     }
 
-    // Fallback para entornos sin reescritura de URL.
+    // Compatibilidad con instalaciones sin reescritura de URL.
     return fetch('../../api/login', {
         method: 'POST',
         headers: {
@@ -90,7 +87,6 @@ if (inputPassword) {
             mostrarErrorCampo(inputPassword, '');
             return;
         }
-        // En login solo pedimos que no esté vacía.
         mostrarErrorCampo(inputPassword, '');
     });
 }

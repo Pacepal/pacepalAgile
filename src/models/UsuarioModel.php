@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Modelo de usuarios — CRUD + búsquedas por email/DNI
+// Acceso a usuarios y comprobaciones de unicidad.
 
 class UsuarioModel
 {
@@ -12,8 +12,6 @@ class UsuarioModel
     {
         $this->pdo = $pdo;
     }
-
-    // ===== CREAR USUARIO =====
 
     public function createUsuario(array $data): int
     {
@@ -64,9 +62,6 @@ class UsuarioModel
         return (int) $this->pdo->lastInsertId();
     }
 
-    // ===== CONSULTAS =====
-
-    // Obtener usuario por email (usado en login)
     public function getUsuarioByEmail(string $email): ?array
     {
         $sql = 'SELECT id_usuario, nombre, dni, email, password, sexo, fecha_nacimiento, direccion, pais, tarjeta, notificaciones, revista, rol, fecha_registro
@@ -79,11 +74,9 @@ class UsuarioModel
 
         $usuario = $stmt->fetch();
 
-        // Si no existe, devolver null
         return $usuario === false ? null : $usuario;
     }
 
-    // Obtener usuario por ID
     public function getUsuarioById(int $idUsuario): ?array
     {
         $sql = 'SELECT id_usuario, nombre, dni, email, sexo, fecha_nacimiento, direccion, pais, tarjeta, notificaciones, revista, rol, fecha_registro
@@ -99,7 +92,6 @@ class UsuarioModel
         return $usuario === false ? null : $usuario;
     }
 
-    // Actualizar datos del perfil de usuario
     public function updateUsuario(int $idUsuario, array $data): void
     {
         $sql = 'UPDATE usuarios SET nombre = :nombre, sexo = :sexo, fecha_nacimiento = :fecha_nacimiento,
@@ -122,7 +114,6 @@ class UsuarioModel
         ]);
     }
 
-    // Obtener todos los usuarios (panel admin)
     public function getAllUsuarios(): array
     {
         $sql = 'SELECT id_usuario, nombre, dni, email, rol, fecha_registro
@@ -134,7 +125,6 @@ class UsuarioModel
         return $stmt->fetchAll();
     }
 
-    // Actualizar usuario desde el panel de administración
     public function updateUsuarioAdmin(int $idUsuario, array $data): void
     {
         $sql = 'UPDATE usuarios SET nombre = :nombre, email = :email, rol = :rol
@@ -150,7 +140,6 @@ class UsuarioModel
         ]);
     }
 
-    // Eliminar usuario
     public function deleteUsuario(int $idUsuario): void
     {
         $sql = 'DELETE FROM usuarios WHERE id_usuario = :id_usuario';
@@ -159,7 +148,6 @@ class UsuarioModel
         $stmt->execute(['id_usuario' => $idUsuario]);
     }
 
-    // Comprobar si un email ya existe en otro usuario
     public function emailExisteOtro(string $email, int $idExcluir): bool
     {
         $sql = 'SELECT COUNT(*) FROM usuarios WHERE email = :email AND id_usuario != :id_usuario';
@@ -173,7 +161,6 @@ class UsuarioModel
         return (int) $stmt->fetchColumn() > 0;
     }
 
-    // Comprobar si un DNI ya existe
     public function dniExiste(string $dni): bool
     {
         $sql = 'SELECT COUNT(*) FROM usuarios WHERE dni = :dni';
@@ -184,7 +171,6 @@ class UsuarioModel
         return (int) $stmt->fetchColumn() > 0;
     }
 
-    // Comprobar si un email ya existe
     public function emailExiste(string $email): bool
     {
         $sql = 'SELECT COUNT(*) FROM usuarios WHERE email = :email';

@@ -15,15 +15,6 @@ export function useProducts() {
         setStatus('cargando');
         setMessage('Cargando productos.');
 
-        if (apiConfig.useStaticDataOnly) {
-            const products = await loadStaticData('productos');
-            setItems(products);
-            setIsDemo(true);
-            setStatus('ok');
-            setMessage(products.length ? 'Modo GitHub Pages: catálogo demo cargado.' : 'No hay productos disponibles.');
-            return;
-        }
-
         try {
             const payload = await requestJson('/productos');
             const products = Array.isArray(payload.data) ? payload.data : [];
@@ -34,6 +25,7 @@ export function useProducts() {
             if (total > products.length && perPage > 0) {
                 const totalPages = Math.ceil(total / perPage);
                 const extraRequests = [];
+                // Recupera páginas adicionales cuando la API devuelve resultados paginados.
                 for (let page = 2; page <= totalPages; page++) {
                     extraRequests.push(requestJson(`/productos?page=${page}`));
                 }
@@ -66,7 +58,7 @@ export function useProducts() {
                 setItems(products);
                 setIsDemo(true);
                 setStatus('ok');
-                setMessage(products.length ? 'Modo demo: catálogo cargado desde JSON local.' : 'No hay productos disponibles.');
+                setMessage(products.length ? 'API PHP no disponible. Mostrando JSON temporal.' : 'No hay productos disponibles.');
             } catch (staticError) {
                 setStatus('error');
                 setMessage(staticError.message || error.message || 'No se pudieron cargar los productos.');

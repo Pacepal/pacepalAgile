@@ -1,4 +1,4 @@
-// Listado de rutas — las pide a la API y las renderiza como tarjetas con ubicacion y distancia
+// Listado clásico de rutas conectado a la API PHP.
 
 document.addEventListener('DOMContentLoaded', function () {
     const endpointRutas = '../../src/api/index.php/api/rutas';
@@ -26,21 +26,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const tarjeta = document.createElement('article');
         tarjeta.className = 'tarjeta tarjeta-producto';
 
-        // <img src="..." alt="..." loading="lazy" />
         const imagen = document.createElement('img');
         imagen.loading = 'lazy';
         imagen.alt = ruta.nombre || 'Ruta PacePal';
         imagen.src = '../../' + (ruta.imagen || 'img/rutas/jarosa.webp');
 
-        // <div class="tarjeta-producto__cuerpo">
         const cuerpo = document.createElement('div');
         cuerpo.className = 'tarjeta-producto__cuerpo';
 
-        // <h3>Nombre</h3>
         const nombre = document.createElement('h3');
         nombre.textContent = ruta.nombre || 'Ruta sin nombre';
 
-        // <p><i class="bi bi-geo-alt-fill"></i> Ubicación</p>
         const ubicacionP = document.createElement('p');
         const iconoUbi = document.createElement('i');
         iconoUbi.className = 'bi bi-geo-alt-fill';
@@ -48,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
         ubicacionP.appendChild(iconoUbi);
         ubicacionP.appendChild(document.createTextNode(' ' + (ruta.ubicacion || 'No disponible')));
 
-        // <p><i class="bi bi-signpost-2-fill"></i> Distancia</p>
         const distanciaP = document.createElement('p');
         const iconoDist = document.createElement('i');
         iconoDist.className = 'bi bi-signpost-2-fill';
@@ -59,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
             : 'No disponible';
         distanciaP.appendChild(document.createTextNode(' ' + distanciaTexto));
 
-        // <a class="boton boton--primario">Ver detalle</a>
         const enlaceDetalle = document.createElement('a');
         enlaceDetalle.className = 'boton boton--primario';
         enlaceDetalle.textContent = 'Ver detalle';

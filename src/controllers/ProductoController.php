@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Controlador de productos — lectura publica y CRUD de admin
+// Controlador de productos; la lectura es pública y las escrituras son de administración.
 require_once __DIR__ . '/../models/ProductoModel.php';
 
 class ProductoController
@@ -264,7 +264,6 @@ class ProductoController
         return $value !== '' ? $value : null;
     }
 
-    // Función auxiliar para devolver respuestas JSON
     private function jsonResponse(array $payload, int $statusCode = 200): void
     {
         if (!array_key_exists('ok', $payload)) {

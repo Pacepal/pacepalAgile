@@ -1,5 +1,5 @@
-// Panel de administración — CRUD completo de usuarios, actividades, rutas, reportes y pedidos
-// todo se pinta con JS vanilla (createElement), sin innerHTML, para evitar XSS
+// Panel clásico de administración.
+// La interfaz se monta con createElement para no inyectar HTML desde datos externos.
 
 document.addEventListener('DOMContentLoaded', function () {
     var apiBase = '../../src/api/index.php/api';
@@ -135,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
             form.appendChild(g);
         }
 
-        // Rol select
         var grupoRol = crearElemento('div', null, 'formulario__grupo mb-2');
         grupoRol.appendChild(crearElemento('label', 'Rol', 'formulario__label'));
         var selectRol = document.createElement('select');
@@ -445,7 +444,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var titulo = crearElemento('h4', esEdicion ? 'Editar actividad #' + actividad.id_actividad : 'Nueva actividad');
         form.appendChild(titulo);
 
-        // Ruta (solo en creacion)
+        // En edición se mantiene la ruta original de la actividad.
         if (!esEdicion) {
             var grupoRuta = crearElemento('div', null, 'formulario__grupo mb-2');
             grupoRuta.appendChild(crearElemento('label', 'Ruta', 'formulario__label'));
@@ -479,7 +478,6 @@ document.addEventListener('DOMContentLoaded', function () {
             form.appendChild(g);
         }
 
-        // Nivel select
         var grupoNivel = crearElemento('div', null, 'formulario__grupo mb-2');
         grupoNivel.appendChild(crearElemento('label', 'Nivel', 'formulario__label'));
         var selectNivel = document.createElement('select');
@@ -500,7 +498,6 @@ document.addEventListener('DOMContentLoaded', function () {
         grupoNivel.appendChild(selectNivel);
         form.appendChild(grupoNivel);
 
-        // Plazas
         var grupoPlazas = crearElemento('div', null, 'formulario__grupo mb-2');
         grupoPlazas.appendChild(crearElemento('label', 'Plazas máximas', 'formulario__label'));
         var inpPlazas = document.createElement('input');
@@ -512,7 +509,6 @@ document.addEventListener('DOMContentLoaded', function () {
         grupoPlazas.appendChild(inpPlazas);
         form.appendChild(grupoPlazas);
 
-        // Descripción
         var grupoDesc = crearElemento('div', null, 'formulario__grupo mb-2');
         grupoDesc.appendChild(crearElemento('label', 'Descripción', 'formulario__label'));
         var texDesc = document.createElement('textarea');
@@ -523,7 +519,7 @@ document.addEventListener('DOMContentLoaded', function () {
         grupoDesc.appendChild(texDesc);
         form.appendChild(grupoDesc);
 
-        // Estado (solo en edicion)
+        // El estado solo se expone al editar actividades existentes.
         if (esEdicion) {
             var grupoEstado = crearElemento('div', null, 'formulario__grupo mb-2');
             grupoEstado.appendChild(crearElemento('label', 'Estado', 'formulario__label'));
@@ -621,7 +617,6 @@ document.addEventListener('DOMContentLoaded', function () {
         formContenedor.appendChild(form);
         formContenedor.style.display = '';
 
-        // Cargar rutas en el select
         cargarRutasEnSelect();
     }
 
@@ -693,7 +688,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 selectRuta.appendChild(opt);
             }
         } catch (_e) {
-            // select queda con la opcion por defecto
+            // Si no cargan las rutas, se conserva la opción por defecto.
         }
     }
 
@@ -887,7 +882,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // cargo todas las secciones en paralelo
+        // Las secciones son independientes y pueden cargarse en paralelo.
         cargarUsuarios();
         cargarReportes();
         cargarActividades();
@@ -1000,7 +995,6 @@ document.addEventListener('DOMContentLoaded', function () {
             form.appendChild(g);
         }
 
-        // Dificultad select
         var grupoDif = crearElemento('div', null, 'formulario__grupo mb-2');
         grupoDif.appendChild(crearElemento('label', 'Dificultad', 'formulario__label'));
         var selectDif = document.createElement('select');
@@ -1020,7 +1014,6 @@ document.addEventListener('DOMContentLoaded', function () {
         grupoDif.appendChild(selectDif);
         form.appendChild(grupoDif);
 
-        // Descripción
         var grupoDesc = crearElemento('div', null, 'formulario__grupo mb-2');
         grupoDesc.appendChild(crearElemento('label', 'Descripción', 'formulario__label'));
         var texDesc = document.createElement('textarea');

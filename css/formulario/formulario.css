@@ -1,7 +1,4 @@
-/* ========================================
-   Formulario de login/registro
-   layout centrado + tarjeta + validación visual
-   ======================================== */
+/* Formularios de autenticación y contacto. */
 
 .pagina-formulario {
   min-height: 100dvh;
@@ -89,7 +86,7 @@
   resize: vertical;
 }
 
-/* ======== VALIDACIÓN VISUAL ======== */
+/* Validación visual */
 
 .campo-invalido {
   border: 2px solid #dc3545 !important;
@@ -135,7 +132,7 @@
   font-weight: 500;
 }
 
-/* ======== MENSAJES DE FEEDBACK ======== */
+/* Mensajes de formulario */
 
 .mensaje-formulario {
   display: none;

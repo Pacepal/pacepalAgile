@@ -14,7 +14,7 @@ Registrar evidencia local verificable para el despliegue en XAMPP, cumpliendo lo
 - Disponibilidad de phpMyAdmin
 - Base de datos `pacepal` importada/visible
 - Acceso de la aplicación desde `localhost`
-- Conectividad básica app/API
+- Conectividad básica de app/API
 - Validación técnica de puertos y procesos
 - Prueba de login y sesión activa (admin)
 - Publicación HTTPS
@@ -67,7 +67,7 @@ Registrar evidencia local verificable para el despliegue en XAMPP, cumpliendo lo
 - Resultado: `{ "logged": true, "usuario_id": 1, "rol": "admin" }`
 - Usuario: admin@pacepal.com
 
-Esta captura demuestra que el login de administrador funciona y la API reconoce la sesión activa correctamente.
+Esta captura demuestra que el login de administrador funciona y que la API reconoce la sesión activa correctamente.
 
 ---
 

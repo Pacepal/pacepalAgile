@@ -1,7 +1,4 @@
-/* ========================================
-   Botón flotante de accesibilidad — PacePal
-   Símbolo universal · ayuda por voz · teclado
-   ======================================== */
+/* Botón flotante de accesibilidad y ayuda por voz. */
 
 .btn-accesibilidad {
   position: fixed;
@@ -25,7 +22,7 @@
     background 0.2s ease,
     color 0.2s ease,
     transform 0.1s ease;
-  /* Asegurar que el foco sea visible */
+  /* El foco visible se define en :focus-visible. */
   outline: none;
 }
 
@@ -41,7 +38,7 @@
   outline-offset: 3px;
 }
 
-/* Estado: ayuda por voz activada */
+/* Estado activo durante la reproducción de audio. */
 .btn-accesibilidad--activo {
   background: var(--color-lima);
   color: var(--color-verde-oscuro);
@@ -51,7 +48,7 @@
   background: var(--color-lima-hover);
 }
 
-/* Responsive: pantallas pequeñas */
+/* Ajuste para pantallas pequeñas. */
 @media (max-width: 576px) {
   .btn-accesibilidad {
     bottom: 1rem;

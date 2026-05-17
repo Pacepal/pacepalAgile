@@ -299,7 +299,7 @@ body,
   margin-bottom: 0.4rem;
 }
 
-/* ── Ficha de producto ── */
+/* Detalle de producto */
 .producto-detalle {
   max-width: 1000px;
   margin: 0 auto;
@@ -314,7 +314,7 @@ body,
   letter-spacing: -0.01em;
 }
 
-/* Galería: dos columnas iguales */
+/* Galería de imágenes del producto. */
 .producto-detalle__galeria {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -338,7 +338,7 @@ body,
   display: block;
 }
 
-/* Bloque de información: 2 columnas en desktop */
+/* Información y compra se separan en desktop. */
 .producto-detalle__info {
   display: grid;
   gap: 1.25rem;

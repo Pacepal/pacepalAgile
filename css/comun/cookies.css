@@ -1,8 +1,5 @@
-/* ========================================
-   Banner y panel de cookies — PacePal
-   ======================================== */
+/* Banner y panel de preferencias de cookies. */
 
-/* Overlay oscuro */
 .cookie-overlay {
   position: fixed;
   inset: 0;
@@ -13,7 +10,6 @@
   justify-content: center;
 }
 
-/* Banner inferior */
 .cookie-banner,
 .cookie-panel {
   background: var(--color-blanco, #ffffff);
@@ -64,7 +60,6 @@
   color: var(--color-lima-hover, #92df20);
 }
 
-/* Botones */
 .cookie-banner__botones {
   display: flex;
   flex-wrap: wrap;
@@ -93,7 +88,7 @@
   background: var(--color-borde, #d9dfd2);
 }
 
-/* Panel de preferencias */
+/* El panel puede superar la altura visible en móvil. */
 .cookie-panel {
   max-height: 85vh;
   overflow-y: auto;
@@ -140,7 +135,7 @@
   line-height: 1.45;
 }
 
-/* Responsive */
+/* Ajuste para pantallas estrechas. */
 @media (max-width: 500px) {
   .cookie-banner,
   .cookie-panel {

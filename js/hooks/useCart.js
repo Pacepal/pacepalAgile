@@ -41,11 +41,6 @@ export function useCart() {
     async function loadCart() {
         setStatus('cargando');
 
-        if (apiConfig.useStaticDataOnly) {
-            applyDemoCart(readDemoCart(), 'Modo GitHub Pages: carrito demo activo.');
-            return;
-        }
-
         try {
             const payload = await requestJson('/carrito');
             applyRealCart(payload);
@@ -60,7 +55,7 @@ export function useCart() {
             }
 
             warnAboutFallback('carrito', error);
-            applyDemoCart(readDemoCart(), getApiUnavailableMessage('Modo demo: carrito temporal activo.'));
+            applyDemoCart(readDemoCart(), getApiUnavailableMessage('No se pudo contactar con la API PHP real. Mostrando carrito demo temporal.'));
         }
     }
 
@@ -73,7 +68,7 @@ export function useCart() {
             return false;
         }
 
-        if (isDemo || apiConfig.useStaticDataOnly) {
+        if (isDemo) {
             const currentItems = readDemoCart();
             const nextItem = buildDemoCartItem(product, quantity);
 
@@ -83,6 +78,7 @@ export function useCart() {
             }
 
             const existingItem = currentItems.find((item) => item.id_articulo === nextItem.id_articulo);
+            // Replica el comportamiento del backend acumulando cantidad y subtotal.
             const nextItems = existingItem
                 ? currentItems.map((item) => item.id_articulo === nextItem.id_articulo
                     ? { ...item, cantidad: item.cantidad + nextItem.cantidad, subtotal: Number(((item.cantidad + nextItem.cantidad) * item.precio_unitario).toFixed(2)) }
@@ -108,7 +104,7 @@ export function useCart() {
     }
 
     async function updateItem(productId, quantity) {
-        if (isDemo || apiConfig.useStaticDataOnly) {
+        if (isDemo) {
             const currentItems = readDemoCart();
             const nextItems = currentItems.map((item) => item.id_articulo === Number(productId)
                 ? { ...item, cantidad: Math.max(1, Number(quantity) || 1), subtotal: Number((Math.max(1, Number(quantity) || 1) * Number(item.precio_unitario || 0)).toFixed(2)) }
@@ -133,7 +129,7 @@ export function useCart() {
     }
 
     async function removeItem(productId) {
-        if (isDemo || apiConfig.useStaticDataOnly) {
+        if (isDemo) {
             const currentItems = readDemoCart();
             const nextItems = currentItems.filter((item) => item.id_articulo !== Number(productId));
 
@@ -158,7 +154,8 @@ export function useCart() {
     async function checkout() {
         setMessage('Procesando pedido...');
 
-        if (isDemo || apiConfig.useStaticDataOnly) {
+        if (isDemo) {
+            // En demo no hay persistencia real de pedidos, se simula confirmación local.
             applyDemoCart([], 'Pedido demo realizado correctamente. ID: DEMO');
             return true;
         }

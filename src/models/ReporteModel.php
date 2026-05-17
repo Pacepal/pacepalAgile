@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Modelo de reportes — sistema de denuncias entre usuarios
+// Acceso a reportes entre usuarios y actividades.
 
 class ReporteModel
 {
@@ -24,13 +24,13 @@ class ReporteModel
             'id_usuario_reportado' => $data['id_usuario_reportado'] ?? null,
             'id_actividad' => $data['id_actividad'] ?? null,
             'motivo' => $data['motivo'],
-            'estado' => 'pendiente', // siempre arranca como pendiente
+            'estado' => 'pendiente', // Estado inicial del flujo de revisión.
         ]);
 
         return (int) $this->pdo->lastInsertId();
     }
 
-    // JOIN con usuarios para sacar los nombres de quien reporta y del reportado
+    // Incluye nombres de usuarios para que administración no dependa solo de IDs.
     public function getAllReportes(): array
     {
         $sql = 'SELECT r.id_reporte, r.id_usuario_reporta, r.id_usuario_reportado, r.id_actividad,
