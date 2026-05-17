@@ -8,12 +8,6 @@ try {
     const projectRoot = path.resolve(scriptsDir, '..');
     const npxCommand = process.platform === 'win32' ? 'npx.cmd' : 'npx';
 
-    console.log('Copying index template...');
-    fs.copyFileSync(
-      path.join(scriptsDir, 'vite-index.template.html'),
-      path.join(projectRoot, 'index.html')
-    );
-
     console.log('Running vite build...');
     const build = spawnSync(npxCommand, ['vite', 'build'], {
       cwd: projectRoot,
@@ -28,7 +22,6 @@ try {
 
     const distIndex = path.join(projectRoot, 'dist', 'index.html');
     const distAssets = path.join(projectRoot, 'dist', 'assets');
-    const rootAssets = path.join(projectRoot, 'assets');
 
     console.log('Checking dist files...');
     if (!fs.existsSync(distIndex)) {
@@ -39,14 +32,6 @@ try {
       throw new Error('No se genero dist/assets.');
     }
 
-    console.log('Copying dist files to root...');
-    fs.copyFileSync(distIndex, path.join(projectRoot, 'index.html'));
-    
-    console.log('Cleaning and copying assets...');
-    if (fs.existsSync(rootAssets)) {
-        fs.rmSync(rootAssets, { recursive: true, force: true });
-    }
-    fs.cpSync(distAssets, rootAssets, { recursive: true });
     console.log('Build completed successfully.');
 } catch (err) {
     console.error('Caught error:', err);
