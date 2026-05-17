@@ -70,7 +70,7 @@ function saveStoredConsent(consent) {
   writeConsentCookie(consent);
 }
 
-function buildLocalStatus() {
+function buildLocalFallbackStatus() {
   const storedConsent = readStoredConsent();
   const hasConsent = storedConsent !== null;
 
@@ -99,6 +99,18 @@ function consentFromEndpoint(endpoint, body) {
   };
 }
 
+async function requestCookieStatusWithFallback() {
+  try {
+    return await requestJson('/cookies/status');
+  } catch (error) {
+    if (apiConfig.allowStaticFallback) {
+      return buildLocalFallbackStatus();
+    }
+
+    throw error;
+  }
+}
+
 function PreferenceGroup({ title, description, checked, disabled, onChange }) {
   return (
     <div className="cookie-pref">
@@ -122,38 +134,23 @@ function PrivacyNotice({ onNavigate }) {
     let active = true;
 
     async function loadCookieStatus() {
-      if (apiConfig.useStaticDataOnly) {
-        const payload = buildLocalStatus();
-        if (!active) return;
-
-        setPreferences(mapStatusToConsent(payload));
-        setView(payload.shouldShowBanner ? 'banner' : null);
-        return;
-      }
-
       try {
-        const payload = await requestJson('/cookies/status');
+        const payload = await requestCookieStatusWithFallback();
         if (!active) return;
 
         setPreferences(mapStatusToConsent(payload));
         setView(payload.hasConsent ? null : 'banner');
       } catch (_error) {
         if (active) {
+          setPreferences(defaultConsent);
           setView('banner');
         }
       }
     }
 
     async function openPreferences() {
-      if (apiConfig.useStaticDataOnly) {
-        const payload = buildLocalStatus();
-        setPreferences(payload.hasConsent ? mapStatusToConsent(payload) : defaultConsent);
-        setView('panel');
-        return;
-      }
-
       try {
-        const payload = await requestJson('/cookies/status');
+        const payload = await requestCookieStatusWithFallback();
         setPreferences(payload.hasConsent ? mapStatusToConsent(payload) : defaultConsent);
       } catch (_error) {
         setPreferences(defaultConsent);
@@ -173,14 +170,6 @@ function PrivacyNotice({ onNavigate }) {
     setIsSaving(true);
 
     try {
-      if (apiConfig.useStaticDataOnly) {
-        const nextConsent = consentFromEndpoint(endpoint, body);
-        saveStoredConsent(nextConsent);
-        setPreferences(nextConsent);
-        setView(null);
-        return;
-      }
-
       const payload = await requestJson(endpoint, {
         method: 'POST',
         ...(body ? { body: JSON.stringify(body) } : {}),
