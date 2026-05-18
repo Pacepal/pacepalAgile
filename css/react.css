@@ -464,6 +464,10 @@ body,
   background: linear-gradient(180deg, #eef5ea 0%, rgba(238, 245, 234, 0) 100%);
 }
 
+.pagina-contacto .seccion-pagina {
+  padding: 0.7rem 0 2.2rem;
+}
+
 .contacto-encabezado,
 .contacto-contenido {
   width: min(100%, 940px);
